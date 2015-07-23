@@ -165,6 +165,7 @@ execute pathogen#infect()
 
 " Set relative number instead (according to Thought Bot's tutorial)
 set relativenumber
+set number
 
 " Change up the position for new windows to a more natural order
 set splitbelow
