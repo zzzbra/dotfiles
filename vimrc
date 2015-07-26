@@ -60,7 +60,7 @@ set hlsearch
 " Modelines have historically been a source of security vulnerabilities. As
 " such, it may be a good idea to disable them and use the securemodelines
 " script, <http://www.vim.org/scripts/script.php?script_id=1876>.
-" set nomodeline
+set nomodeline
 
 
 "------------------------------------------------------------
@@ -110,7 +110,7 @@ set t_vb=
 set mouse=a
 
 " Set the command window height to 2 lines, to avoid many cases of having to
-" "press <Enter> to continue"
+ "press <Enter> to continue"
 set cmdheight=2
 
 " Display line numbers on the left
@@ -130,6 +130,10 @@ set pastetoggle=<F11>
 
 " Indentation settings for using 4 spaces instead of tabs.
 " Do not change 'tabstop' from its default value of 8 with this setup.
+" ACTUALLY I am gonna change 'tabstop' because it's what this guy
+" recommened: http://stevelosh.com/blog/2010/09/coming-home-to-vim/
+" TODO figure out why they originally didn't 
+set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set expandtab
@@ -170,3 +174,106 @@ set number
 " Change up the position for new windows to a more natural order
 set splitbelow
 set splitright
+
+" Some more stuff from the guy who 'Switched Back to Vim':
+" http://stevelosh.com/blog/2010/09/coming-home-to-vim/
+set encoding=utf-8
+set scrolloff=3
+set showmode
+set wildmenu
+set wildmode=list:longest
+set visualbell
+set cursorline
+set ttyfast
+set undofile
+
+" let mapleader="\"
+
+
+" Searching / Moving
+"
+" The first two lines fix Vim’s horribly broken default regex “handling” by
+" automatically inserting a \v before any string you search for. This turns off
+" Vim’s crazy default regex characters and makes searches use normal regexes. I
+" already know Perl/Python compatible regex formatting, why would I want to
+" learn another scheme?
+
+" ignorecase and smartcase together make Vim deal with case-sensitive search
+" intelligently. If you search for an all-lowercase string your search will be
+" case-insensitive, but if one or more characters is uppercase the search will
+" be case-sensitive. Most of the time this does what you want.
+
+" gdefault applies substitutions globally on lines. For example, instead of
+" :%s/foo/bar/g you just type :%s/foo/bar/. This is almost always what you want
+" (when was the last time you wanted to only replace the first occurrence of a
+" word on a line?) and if you need the previous behavior you just tack on the g
+" again.
+
+" incsearch, showmatch and hlsearch work together to highlight search results
+" (as you type). It’s really quite handy, as long as you have the next line as
+" well.
+
+" The <leader><space> mapping makes it easy to clear out a search by typing
+" ,<space>. This gets rid of the distracting highlighting once I’ve found what
+" I’m looking for.
+
+" The last two lines make the tab key match bracket pairs. I use this to move
+" around all the time and <tab> is a hell of a lot easier to type than %.
+
+nnoremap / /\v
+vnoremap / /\v
+set ignorecase
+set smartcase
+set gdefault
+set incsearch
+set showmatch
+set hlsearch
+nnoremap <leader><space> :noh<cr>
+nnoremap <tab> %
+vnoremap <tab> %
+
+
+" These lines manage my line wrapping settings and also show a colored column
+" at 85 characters (so I can see when I write a too-long line of code).
+
+set wrap
+set textwidth=79
+set formatoptions=qrn1
+" set colorcolumn=85
+
+
+" SO YOU DO THINGS THE RIGHT WAY
+
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+nnoremap j gj
+nnoremap k gk
+
+
+" Leader key combos
+
+" strip all trailing whitespace in the current file
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+
+" re-hardwrap paragraphs of text
+nnoremap <leader>q gqip
+
+" open a new vertical split and switch over to it
+nnoremap <leader>w <C-w>v<C-w>l
+
+" This next set of mappings maps <C-[h/j/k/l]> to the commands needed to move
+" around your splits
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+
+" Quicker Escaping
+inoremap jj <ESC>
