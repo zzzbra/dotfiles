@@ -277,3 +277,10 @@ nnoremap <C-l> <C-w>l
 
 " Quicker Escaping
 inoremap jj <ESC>
+
+" Move a line at a time even on linewrapped lines
+:nmap j gj
+:nmap k gk
+
+" broken lines wrap to the indented line from which they broke
+:set breakindent
