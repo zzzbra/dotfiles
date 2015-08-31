@@ -284,7 +284,7 @@ alias atom='open -a Atom'
 # Sublime
 # ================
 # Make sublime our editor of choice
-export EDITOR="sublime -W"
+export EDITOR="vim"
 # export EDITOR=/usr/bin/vim
 
 # =================
@@ -411,6 +411,9 @@ alias moneta="cd ~/dev/wdi/moneta"
 
 # CL shortcuts
 alias G="gulp; gulp watch;"
+alias GD="gulp; gulp desktop"
+alias GM="gulp; gulp mobile"
+
 
 # MySQL Aliases
 alias mysql_kill='killall -9 mysqld'

@@ -277,3 +277,7 @@ nnoremap <C-l> <C-w>l
 
 " Quicker Escaping
 inoremap jj <ESC>
+
+" Turn off Vim generating a backup file everytime I edit
+set nobackup
+set nowritebackup
