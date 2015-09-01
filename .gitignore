@@ -1,1 +1,4 @@
 makesymlinks.sh
+*~
+*.swp
+*.swo

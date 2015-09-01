@@ -241,6 +241,8 @@ set textwidth=79
 set formatoptions=qrn1
 " set colorcolumn=85
 
+" Enable line wrapping the (hanging?) indent
+set breakindent
 
 " SO YOU DO THINGS THE RIGHT WAY
 
