@@ -1,3 +1,6 @@
+" URL: http://vim.wikia.com/wiki/Example_vimrc
+" Authors: http://vim.wikia.com/wiki/Vim_on_Freenode
+" Description: A minimal, but feature rich, example .vimrc. If you are a
 "              newbie, basing your first .vimrc on this file is a good choice.
 "              If you're a more advanced user, building your own .vimrc based
 "              on this file is still a good idea.
@@ -283,4 +286,8 @@ inoremap jj <ESC>
 :nmap k gk
 
 " broken lines wrap to the indented line from which they broke
-:set breakindent
+set breakindent
+
+" Turn off Vim generating a backup file everytime I edit
+set nobackup
+set nowritebackup
