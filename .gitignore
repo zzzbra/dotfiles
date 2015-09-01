@@ -2,3 +2,4 @@ makesymlinks.sh
 *~
 *.swp
 *.swo
+vim/.netrwhist
