@@ -279,6 +279,7 @@ alias rogue='lsof -i TCP:3000'
 alias subl='open -a "Sublime Text"'
 alias flow='open /Applications/Flowdock.app'
 alias atom='open -a Atom'
+alias mou='open -a /Applications/Mou.app'
 
 # ================
 # Sublime
@@ -401,8 +402,9 @@ alias sites="cd ~/dev/sites"
 
 # Projects 
 alias ob="cd ~/dev/wondersauce/outback"
+alias bb="cd ~/dev/wondersauce/outback-bloomin-brands"
 alias outback="cd ~/dev/wondersauce/outback"
-alias carrabbas="cd ~/dev/wondersauce/carrabbas"
+alias cig="cd ~/dev/wondersauce/carrabbas"
 alias bfg="cd ~/dev/wondersauce/bonefish-grill"
 alias ecole="cd ~/dev/wondersauce/ecole"
 alias splash="cd ~/dev/wondersauce/ecole-splash"
