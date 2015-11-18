@@ -188,7 +188,7 @@ set wildmode=list:longest
 set visualbell
 set cursorline
 set ttyfast
-set undofile
+" set undofile
 
 " let mapleader="\"
 

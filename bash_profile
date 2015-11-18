@@ -6,7 +6,7 @@
 #                         |_|
 # When Bash starts, it executes the commands in this script
 # http://en.wikipedia.org/wiki/Bash_(Unix_shell)
-# 
+#
 # Written by Philip Lamplugh, Instructor General Assembly (2013)
 #   Updated by PJ Hughes, Instructor General Assembly (2013)
 
@@ -73,13 +73,13 @@
 # eval "$(rbenv init -)"
 
 
-#  _   _  ___ _____ _____     
-# | \ | |/ _ \_   _| ____|  _ 
+#  _   _  ___ _____ _____
+# | \ | |/ _ \_   _| ____|  _
 # |  \| | | | || | |  _|   (_)
-# | |\  | |_| || | | |___   _ 
+# | |\  | |_| || | | |___   _
 # |_| \_|\___/ |_| |_____| (_)
-# previously above formula (excepy RVM scripts) were used to dynamically update the PATH but that 
-# caused a curious issue where the PATH itself would come to have the same directories needlessly 
+# previously above formula (excepy RVM scripts) were used to dynamically update the PATH but that
+# caused a curious issue where the PATH itself would come to have the same directories needlessly
 # appended to it on every session reload. This made reading the PATH cumberson so I cam now statically
 # assigning it its variables here
 
@@ -131,7 +131,7 @@ alias ip?="ifconfig en0 | grep 'inet'"
 # export AWS_ACCESS_KEY_ID="AKIAI735S2XFLYSLIWPA"
 # export AWS_SECRET_ACCESS_KEY="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"
 
-# Post-GA 
+# Post-GA
 # =================
 
 # TODO: Evernote, etc.
@@ -227,7 +227,7 @@ echo $(brew -v)
 echo "npm " $(npm -v)
 echo $(taocl)
 echo "------------------------------------------"
-# figlet -f $font "lean" Hi world. 
+# figlet -f $font "lean" Hi world.
 # say "Zach you are such a good programmer!"
 # ---------------------
 # style the prompt
@@ -399,8 +399,9 @@ alias installs="cd /usr/local/bin"
 alias cellar="cd /usr/local/Cellar"
 alias scratch="cd ~/dev/scratch"
 alias sites="cd ~/dev/sites"
+alias bewd="cd ~/dev/BEWD-NYC"
 
-# Projects 
+# Projects
 alias ob="cd ~/dev/wondersauce/outback"
 alias bb="cd ~/dev/wondersauce/outback-bloomin-brands"
 alias outback="cd ~/dev/wondersauce/outback"
