@@ -164,7 +164,7 @@ nnoremap <C-L> :nohl<CR><C-L>
 "------------------------------------------------------------
 " Custom Styles
 
-colorscheme molokai
+colorscheme seti
 
 " Installing Pathogen for managing vim runtimepath / installing shit
 
