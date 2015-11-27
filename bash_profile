@@ -277,7 +277,7 @@ alias rogue='lsof -i TCP:3000'
 # Application Aliases
 # ================
 alias subl='open -a "Sublime Text"'
-alias flow='open /Applications/Flowdock.app'
+alias slack='open /Applications/Slack.app'
 alias atom='open -a Atom'
 alias mou='open -a /Applications/Mou.app'
 
@@ -389,7 +389,6 @@ alias cdhw=cdhwfunc
 alias b="cd .."
 
 # Directories
-alias not_school="cd ~/Documents/Code/Ruby/"
 alias dev="cd ~/dev"
 alias work="cd ~/dev/wondersauce"
 alias practice="cd ~/dev/tutorial_practice"
@@ -405,8 +404,8 @@ alias bewd="cd ~/dev/BEWD-NYC"
 alias ob="cd ~/dev/wondersauce/outback"
 alias bb="cd ~/dev/wondersauce/outback-bloomin-brands"
 alias outback="cd ~/dev/wondersauce/outback"
-alias reskin="cd ~/dev/wondersauce/cig-reskin"
 alias cig="cd ~/dev/wondersauce/carrabbas"
+alias reskin="cd ~/dev/wondersauce/cig-reskin"
 alias bfg="cd ~/dev/wondersauce/bonefish-grill"
 alias ecole="cd ~/dev/wondersauce/ecole"
 alias splash="cd ~/dev/wondersauce/ecole-splash"
@@ -426,14 +425,15 @@ alias mysql_stop='mysql.server stop'
 alias mysql_restart='mysql.server restart'
 
 # Virtual Host
-alias hosts='subl /etc/hosts'
-alias vhosts='subl /etc/apache2/extra/httpd-vhosts.conf'
+alias hosts='vim /etc/hosts'
+alias vhosts='vim /etc/apache2/extra/httpd-vhosts.conf'
+# Make sublime our editor of choice
 
 # Apache Services
 alias apache_start='sudo apachectl start'
 alias apache_restart='sudo apachectl restart'
 alias apache_stop='sudo apachectl stop'
-alias httpd_config='subl /etc/apache2/httpd.conf'
+alias httpd_config='vim /etc/apache2/httpd.conf'
 
 # Open this file
 alias bp="vim ~/.bash_profile"
@@ -472,3 +472,4 @@ fi
 
 export NVM_DIR="/Users/zzzbra/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+source /usr/local/opt/nvm/nvm.sh
