@@ -284,7 +284,7 @@ alias mou='open -a /Applications/Mou.app'
 # ================
 # Sublime
 # ================
-# Make sublime our editor of choice
+# Make vim our editor of choice
 export EDITOR="vim"
 # export EDITOR=/usr/bin/vim
 
@@ -436,7 +436,7 @@ alias apache_stop='sudo apachectl stop'
 alias httpd_config='subl /etc/apache2/httpd.conf'
 
 # Open this file
-alias bp="subl ~/.bash_profile"
+alias bp="vim ~/.bash_profile"
 
 # Set Logout Message
 alias exit='sh ~/seeyouspacecowboy.sh; sleep 2; exit'
