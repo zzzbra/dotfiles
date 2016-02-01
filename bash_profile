@@ -284,6 +284,7 @@ alias mou='open -a /Applications/Mou.app'
 # ================
 # Sublime
 # ================
+# Make vim our editor of choice
 export EDITOR="vim"
 # export EDITOR=/usr/bin/vim
 
