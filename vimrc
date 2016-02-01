@@ -136,9 +136,9 @@ set pastetoggle=<F11>
 " ACTUALLY I am gonna change 'tabstop' because it's what this guy
 " recommened: http://stevelosh.com/blog/2010/09/coming-home-to-vim/
 " TODO figure out why they originally didn't 
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
 set expandtab
 
 " Indentation settings for using hard tabs for indent. Display tabs as
@@ -164,7 +164,7 @@ nnoremap <C-L> :nohl<CR><C-L>
 "------------------------------------------------------------
 " Custom Styles
 
-colorscheme seti
+colorscheme monokai
 
 " Installing Pathogen for managing vim runtimepath / installing shit
 
