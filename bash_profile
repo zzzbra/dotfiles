@@ -150,7 +150,7 @@ export HISTCONTROL=ignoredups
 # ignore same sucessive entries.
 export HISTCONTROL=ignoreboth
 # Make some commands not show up in history
-export HISTIGNORE="h:ls:ls *:ll:ll *:"
+# export HISTIGNORE="h:ls:ls *:ll:ll *:"
 
 # =================
 # Bash Prompt
