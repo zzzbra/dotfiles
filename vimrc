@@ -136,9 +136,9 @@ set pastetoggle=<F11>
 " ACTUALLY I am gonna change 'tabstop' because it's what this guy
 " recommened: http://stevelosh.com/blog/2010/09/coming-home-to-vim/
 " TODO figure out why they originally didn't 
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
 set expandtab
 
 " Indentation settings for using hard tabs for indent. Display tabs as
@@ -292,3 +292,19 @@ set breakindent
 " Turn off Vim generating a backup file everytime I edit
 set nobackup
 set nowritebackup
+
+" ============================================================================
+" NERDTree stuff I've stolen from vcavalo
+" ============================================================================
+
+" map 'tt' to open up NERDTree "
+:map tt :NERDTreeToggle
+
+" open NERDTree automatically when vim starts "
+" if has("gui")
+" autocmd vimenter * NERDTree
+" endif
+
+" close vim if NERDTree is the only window left "
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+

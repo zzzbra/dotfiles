@@ -150,7 +150,7 @@ export HISTCONTROL=ignoredups
 # ignore same sucessive entries.
 export HISTCONTROL=ignoreboth
 # Make some commands not show up in history
-export HISTIGNORE="h:ls:ls *:ll:ll *:"
+# export HISTIGNORE="h:ls:ls *:ll:ll *:"
 
 # =================
 # Bash Prompt
@@ -406,6 +406,8 @@ alias bb="cd ~/dev/wondersauce/outback-bloomin-brands"
 alias outback="cd ~/dev/wondersauce/outback"
 alias cig="cd ~/dev/wondersauce/carrabbas"
 alias reskin="cd ~/dev/wondersauce/cig-reskin"
+alias lively="cd ~/dev/wondersauce/lively"
+alias lively-splash="cd ~/dev/wondersauce/lively-splash"
 alias bfg="cd ~/dev/wondersauce/bonefish-grill"
 alias ecole="cd ~/dev/wondersauce/ecole"
 alias splash="cd ~/dev/wondersauce/ecole-splash"
