@@ -293,3 +293,19 @@ set breakindent
 " Turn off Vim generating a backup file everytime I edit
 set nobackup
 set nowritebackup
+
+" ============================================================================
+" NERDTree stuff I've stolen from vcavalo
+" ============================================================================
+
+" map 'tt' to open up NERDTree "
+:map tt :NERDTreeToggle
+
+" open NERDTree automatically when vim starts "
+" if has("gui")
+" autocmd vimenter * NERDTree
+" endif
+
+" close vim if NERDTree is the only window left "
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
