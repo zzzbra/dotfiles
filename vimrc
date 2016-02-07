@@ -164,11 +164,10 @@ nnoremap <C-L> :nohl<CR><C-L>
 "------------------------------------------------------------
 " Custom Styles
 
-colorscheme seti
-
 " Installing Pathogen for managing vim runtimepath / installing shit
-
 execute pathogen#infect()
+
+colorscheme seti
 
 " Set relative number instead (according to Thought Bot's tutorial)
 set relativenumber
