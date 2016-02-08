@@ -399,6 +399,7 @@ alias cellar="cd /usr/local/Cellar"
 alias scratch="cd ~/dev/scratch"
 alias sites="cd ~/dev/sites"
 alias bewd="cd ~/dev/BEWD-NYC"
+alias dotfiles="cd ~/dotfiles"
 
 # Projects
 alias ob="cd ~/dev/wondersauce/outback"
