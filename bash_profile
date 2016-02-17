@@ -225,7 +225,8 @@ echo $(heroku --version)
 echo $(psql --version)
 echo $(brew -v)
 echo "npm " $(npm -v)
-echo $(taocl)
+echo "Is the internet on fire? " $(dig +short -t txt istheinternetonfire.com)
+echo "TIL: " $(taocl)
 echo "------------------------------------------"
 # figlet -f $font "lean" Hi world.
 # say "Zach you are such a good programmer!"
