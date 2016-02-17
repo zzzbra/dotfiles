@@ -167,7 +167,7 @@ nnoremap <C-L> :nohl<CR><C-L>
 " Installing Pathogen for managing vim runtimepath / installing shit
 execute pathogen#infect()
 
-colorscheme monokai
+colorscheme Tomorrow-Night
 
 " Set relative number instead (according to Thought Bot's tutorial)
 set relativenumber
