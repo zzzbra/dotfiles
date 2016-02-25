@@ -298,7 +298,8 @@ set nowritebackup
 " ============================================================================
 
 " map 'tt' to open up NERDTree "
-:map tt :NERDTreeToggle
+" :map tt :NERDTreeToggle
+:map tt <plug>NERDTreeTabsToggle<CR>
 
 " open NERDTree automatically when vim starts "
 " if has("gui")

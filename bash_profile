@@ -53,10 +53,6 @@
 # This is a list of all directories in which to look for commands, scripts and programs
 # ==================
 
-# Load RVM into a shell session *as a function*
-#[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # PJ: using rbenv now...
-# Add RVM to PATH for scripting
-# PATH=$PATH:$HOME/.rvm/bin # PJ: using rbenv now...
 # Home brew directories
 # PATH="/usr/local/bin:$PATH"
 # Node Package Manager
@@ -65,25 +61,22 @@
 # PATH="/Applications/Postgres.app/Contents/MacOS/bin:$PATH" # PJ: off
 # Heroku Toolbelt
 # PATH="/usr/local/heroku/bin:$PATH"
+#  _   _  ___ _____ _____
+# | \ | |/ _ \_   _| ____|  _
+# |  \| | | | || | |  _|   (_)
+# | |\  | |_| || | | |___   _
+# |_| \_|\___/ |_| |_____| (_)
+
+# assigning it its variables here
+
+PATH="/Users/zzzbra/.rbenv/shims:/usr/local/heroku/bin:/usr/local/share/npm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin"
+
 
 # =================
 # rbenv
 # =================
 # start rbenv (our Ruby environment and version manager) on open
 # eval "$(rbenv init -)"
-
-
-#  _   _  ___ _____ _____
-# | \ | |/ _ \_   _| ____|  _
-# |  \| | | | || | |  _|   (_)
-# | |\  | |_| || | | |___   _
-# |_| \_|\___/ |_| |_____| (_)
-# previously above formula (excepy RVM scripts) were used to dynamically update the PATH but that
-# caused a curious issue where the PATH itself would come to have the same directories needlessly
-# appended to it on every session reload. This made reading the PATH cumberson so I cam now statically
-# assigning it its variables here
-
-PATH="/Users/zzzbra/.rbenv/shims:/usr/local/heroku/bin:/usr/local/share/npm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin"
 
 
 # ====================
