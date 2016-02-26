@@ -308,3 +308,8 @@ set nowritebackup
 " close vim if NERDTree is the only window left "
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
+
+" ============================================================================
+" Ctrl P settings
+" ============================================================================
+let g:ctrlp_custom_ignore = '\v[\/]\theme$'
