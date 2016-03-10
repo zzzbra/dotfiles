@@ -389,7 +389,7 @@ function light() {
   else
     src="cat $2"
   fi
-  $src | highlight -O rtf --syntax $1 --font Inconsolata --style solarized-dark --font-size 24 | pbcopy
+  $src | highlight -O rtf --syntax $1 --line-numbers --font Inconsolata --style solarized-dark --font-size 24 | pbcopy
 }
 
 # Directories
