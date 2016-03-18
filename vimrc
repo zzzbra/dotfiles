@@ -88,7 +88,7 @@ set autoindent
 " Stop certain movements from always going to the first character of a line.
 " While this behaviour deviates from that of Vi, it does what most users
 " coming from other editors would expect.
-set nostartofline
+" set nostartofline
 
 " Display the cursor position on the last line of the screen or in the status
 " line of a window
