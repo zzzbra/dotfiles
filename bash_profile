@@ -345,6 +345,13 @@ prompt_git() {
     printf "${WHITE} on ${style_branch}${git_info}"
 }
 
+# Branch Autocompletion 
+# http://code-worrier.com/blog/autocomplete-git/
+if [ -f ~/.git-completion.bash ]; then
+. ~/.git-completion.bash
+fi
+
+
 # =================
 # Rails
 # =================
