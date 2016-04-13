@@ -37,12 +37,14 @@
 #  8. Git
 #  9. Rails
 # 10. rbenv
+# TODO:
+# 11. nvm
 # --------------------
 # Other Settings
 # --------------------
-# 11. Shortcuts
-# 12. Source Files
-# 13. Reserved
+# 12. Shortcuts
+# 13. Source Files
+# 14. Reserved
 
 
 # SYSTEM SETTINGS
@@ -57,8 +59,6 @@
 # PATH="/usr/local/bin:$PATH"
 # Node Package Manager
 # PATH="/usr/local/share/npm/bin:$PATH"
-# Make sure we're pointing to the Postgres App's psql
-# PATH="/Applications/Postgres.app/Contents/MacOS/bin:$PATH" # PJ: off
 # Heroku Toolbelt
 # PATH="/usr/local/heroku/bin:$PATH"
 #  _   _  ___ _____ _____
@@ -67,10 +67,19 @@
 # | |\  | |_| || | | |___   _
 # |_| \_|\___/ |_| |_____| (_)
 
+# A bit about the /usr directory (stole this from
+# https://github.com/vcavallo/dotfiles/blob/master/darwin_bashrc.sh, should
+# rebuild my path using some of this knowledge
+    # The /usr directory is a convention from linux that creates a common place to put
+    # files and executables that the entire system needs access too. It tries to be user
+    # independent, so whichever user is logged in should have permissions to the /usr directory.
+    # We call that /usr/local. Within /usr/local, there is a bin directory for actually
+    # storing the binaries (programs) that our system would want.
+    # Also, Homebrew adopts this convetion so things installed via Homebrew
+    # get symlinked into /usr/local
+
 # assigning it its variables here
-
 PATH="/Users/zzzbra/.rbenv/shims:/usr/local/heroku/bin:/usr/local/share/npm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin"
-
 
 # =================
 # rbenv
