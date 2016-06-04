@@ -109,7 +109,7 @@ alias reload="clear; source ~/.bash_profile"
 bind 'set completion-ignore-case on'
 # make completions appear immediately after pressing TAB once
 bind 'set show-all-if-ambiguous on'
-bind 'TAB: menu-complete'
+# bind 'TAB: menu-complete'
 # Prefer US English
 export LC_ALL="en_US.UTF-8"
 # use UTF-8
@@ -179,7 +179,7 @@ if tput setaf 1 &> /dev/null; then
     CYAN=$(tput setaf 6)
     WHITE=$(tput setaf 7)
     ORANGE=$(tput setaf 172)
-    # GREEN=$(tput setaf 190)
+    GREEN=$(tput setaf 190)
     PURPLE=$(tput setaf 141)
     BG_BLACK=$(tput setab 0)
     BG_RED=$(tput setab 1)
@@ -428,8 +428,7 @@ alias bb="cd ~/dev/wondersauce/outback-bloomin-brands"
 alias outback="cd ~/dev/wondersauce/outback"
 alias cig="cd ~/dev/wondersauce/carrabbas"
 alias reskin="cd ~/dev/wondersauce/cig-reskin"
-alias lively="cd ~/dev/wondersauce/lively"
-alias lively-splash="cd ~/dev/wondersauce/lively-splash"
+alias lively="cd ~/dev/wondersauce/lively-repos/lively"
 alias bfg="cd ~/dev/wondersauce/bonefish-grill"
 alias ecole="cd ~/dev/wondersauce/ecole"
 alias splash="cd ~/dev/wondersauce/ecole-splash"
@@ -497,3 +496,6 @@ fi
 export NVM_DIR="/Users/zzzbra/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 source /usr/local/opt/nvm/nvm.sh
+
+# gruvbox color pallete
+source "$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh"

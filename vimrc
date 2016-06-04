@@ -1,11 +1,3 @@
-" URL: http://vim.wikia.com/wiki/Example_vimrc
-" Authors: http://vim.wikia.com/wiki/Vim_on_Freenode
-" Description: A minimal, but feature rich, example .vimrc. If you are a
-"              newbie, basing your first .vimrc on this file is a good choice.
-"              If you're a more advanced user, building your own .vimrc based
-"              on this file is still a good idea.
-
-"------------------------------------------------------------
 " Features {{{1
 "
 " These options and commands enable some very useful features in Vim, that
@@ -168,6 +160,7 @@ nnoremap <C-L> :nohl<CR><C-L>
 execute pathogen#infect()
 
 colorscheme monokai
+" set background=dark
 
 " Set relative number instead (according to Thought Bot's tutorial)
 set relativenumber
@@ -280,7 +273,7 @@ nnoremap <C-l> <C-w>l
 
 
 " Quicker Escaping
-inoremap jj <ESC>
+" inoremap jj <ESC>
 
 " Move a line at a time even on linewrapped lines
 :nmap j gj
@@ -314,3 +307,12 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 " Ctrl P settings
 " ============================================================================
 let g:ctrlp_custom_ignore = '\v[\/]\theme$'
+
+" ============================================================================
+" Experimenting with color 
+" ============================================================================
+:hi TabLineFill term=bold cterm=bold ctermbg=0
+" let &colorcolumn=join(range(81,999),",")
+
+" Fix vim bg color issues with TMUX & Terminal color
+:set t_ut=
