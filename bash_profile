@@ -122,21 +122,12 @@ alias ip?="ifconfig en0 | grep 'inet'"
 # API_Keys
 # =================
 
-# GA Era
-# =================
-# export FEDEX_LOGIN="118621971"
-# export FEDEX_PW="9QZkz3z7ichcHoSHBEBsWDw1i"
-# export FEDEX_KEY="m587dwdlIYGY9nte"
-# export FEDEX_ACCOUNT_NUMBER="510087488"
-
 # For jSequencr Amazon Web Services
-# export AWS_ACCESS_KEY_ID="AKIAI735S2XFLYSLIWPA"
-# export AWS_SECRET_ACCESS_KEY="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"
+export AWS_ACCESS_KEY_ID="AKIAI735S2XFLYSLIWPA"
+export AWS_SECRET_ACCESS_KEY="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"
 
-# Post-GA
-# =================
-
-# TODO: Evernote, etc.
+# SportsRadar
+export NASCAR_KEY="umkxk4fxdx9kf836u8nz253h"
 
 # =================
 # History
@@ -217,19 +208,18 @@ fi
 # Print Stats on terminal load
 # ---------------------
 # GA General Assembly Webdevelopment Immersive
-echo ${BG_WHITE}${BLUE} ROCKIN IN THE FREE WORLD ${RESET}
-echo ${BG_RED}${WHITE} zzzbra ${RESET}${WHITE}${BG_BLACK} Wondersauce ${RESET}${BG_YELLOW}${BLACK} Digital Design Agency ${RESET}
+echo ${BG_RED}${WHITE} zzzbra ${RESET}${WHITE}${BG_BLACK} Creative Technologist ${RESET}${BG_YELLOW}${BLACK} Vita brevis, ars long ${RESET}
 echo "------------------------------------------"
 echo $(ruby -v)
 echo $(rails -v)
 echo $(git --version)
 # echo $(heroku --version)
-echo $(psql --version)
+# echo $(psql --version)
 echo $(brew -v)
 echo "npm " $(npm -v)
-echo "Is the internet on fire? " $(dig +short -t txt istheinternetonfire.com)
+# echo "Security: " $(dig +short -t txt istheinternetonfire.com)
 echo "TIL: " $(taocl)
-echo "Fortune: " $(fortune)
+# echo "Fortune: " $(fortune)
 echo "------------------------------------------"
 # figlet -f $font "lean" Hi world.
 # say "Zach you are such a good programmer!"
@@ -298,8 +288,6 @@ export EDITOR="vim"
 # -----------------
 # Aliases
 # -----------------
-# Alias for hub http://hub.github.com/
-# alias git='hub'
 # Undo a git push
 alias undopush="git push -f origin HEAD^:master"
 # undo a commit
@@ -439,6 +427,7 @@ alias moneta="cd ~/dev/wdi/moneta"
 alias G="gulp; gulp watch;"
 alias GD="gulp; gulp desktop"
 alias GM="gulp; gulp mobile"
+alias weather="curl -4 wttr.in"
 
 
 # MySQL Aliases

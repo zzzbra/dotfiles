@@ -271,10 +271,6 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-
-" Quicker Escaping
-" inoremap jj <ESC>
-
 " Move a line at a time even on linewrapped lines
 :nmap j gj
 :nmap k gk
