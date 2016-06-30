@@ -419,6 +419,7 @@ alias reskin="cd ~/dev/wondersauce/cig-reskin"
 alias lively="cd ~/dev/wondersauce/lively-repos/lively"
 alias bfg="cd ~/dev/wondersauce/bonefish-grill"
 alias ecole="cd ~/dev/wondersauce/ecole"
+alias moog="cd /Users/zzzbra/dev/wondersauce/moog-repos"
 alias splash="cd ~/dev/wondersauce/ecole-splash"
 alias ws="cd ~/dev/wondersauce/wondersauce-site"
 alias moneta="cd ~/dev/wdi/moneta"
@@ -436,16 +437,15 @@ alias mysql_start='mysql.server start'
 alias mysql_stop='mysql.server stop'
 alias mysql_restart='mysql.server restart'
 
-# Virtual Host
-alias hosts='vim /etc/hosts'
-alias vhosts='vim /etc/apache2/extra/httpd-vhosts.conf'
-# Make sublime our editor of choice
+# Edit Virtual Host or Host Files
+alias hosts='sudo vim /etc/hosts'
+alias vhosts='sudo vim /etc/apache2/extra/httpd-vhosts.conf'
 
 # Apache Services
 alias apache_start='sudo apachectl start'
 alias apache_restart='sudo apachectl restart'
 alias apache_stop='sudo apachectl stop'
-alias httpd_config='vim /etc/apache2/httpd.conf'
+alias httpd_config='sudo vim /etc/apache2/httpd.conf'
 
 # Open this file
 alias bp="vim ~/.bash_profile"
