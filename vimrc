@@ -283,7 +283,7 @@ set nobackup
 set nowritebackup
 
 " ============================================================================
-" NERDTree stuff I've stolen from vcavalo
+" NERDTree
 " ============================================================================
 
 " map 'tt' to open up NERDTree "
@@ -298,6 +298,8 @@ set nowritebackup
 " close vim if NERDTree is the only window left "
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
+" Show dotfiles
+let NERDTreeShowHidden=1
 
 " ============================================================================
 " Ctrl P settings
