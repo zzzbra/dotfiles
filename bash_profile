@@ -122,12 +122,6 @@ alias ip?="ifconfig en0 | grep 'inet'"
 # API_Keys
 # =================
 
-# For jSequencr Amazon Web Services
-export AWS_ACCESS_KEY_ID="AKIAI735S2XFLYSLIWPA"
-export AWS_SECRET_ACCESS_KEY="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"
-
-# SportsRadar
-export NASCAR_KEY="umkxk4fxdx9kf836u8nz253h"
 
 # =================
 # History
