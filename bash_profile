@@ -373,7 +373,7 @@ function taocl() {
 # Students can add a shortcut to quickly access their GA folder
 # example: alias wdi="cd ~/Documents/GA/WDI4"
 
-alias wdi="cd ~/dev/wdi/WDI_NYC_12/"
+alias wdi="cd /Users/zzzbra/dev/general_assembly/wdi"
 cdhwfunc() {
   # takes three args: the week, the day
   # and an optional third for the user
