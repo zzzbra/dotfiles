@@ -403,6 +403,7 @@ alias scratch="cd ~/dev/scratch"
 alias sites="cd ~/dev/sites"
 alias bewd="cd ~/dev/BEWD-NYC"
 alias dotfiles="cd ~/dotfiles"
+alias rc="cd ~/dev/recurse_center"
 
 # Projects
 alias ob="cd ~/dev/wondersauce/outback"
