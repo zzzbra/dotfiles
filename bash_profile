@@ -37,12 +37,14 @@
 #  8. Git
 #  9. Rails
 # 10. rbenv
+# TODO:
+# 11. nvm
 # --------------------
 # Other Settings
 # --------------------
-# 11. Shortcuts
-# 12. Source Files
-# 13. Reserved
+# 12. Shortcuts
+# 13. Source Files
+# 14. Reserved
 
 
 # SYSTEM SETTINGS
@@ -53,37 +55,37 @@
 # This is a list of all directories in which to look for commands, scripts and programs
 # ==================
 
-# Load RVM into a shell session *as a function*
-#[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # PJ: using rbenv now...
-# Add RVM to PATH for scripting
-# PATH=$PATH:$HOME/.rvm/bin # PJ: using rbenv now...
 # Home brew directories
 # PATH="/usr/local/bin:$PATH"
 # Node Package Manager
 # PATH="/usr/local/share/npm/bin:$PATH"
-# Make sure we're pointing to the Postgres App's psql
-# PATH="/Applications/Postgres.app/Contents/MacOS/bin:$PATH" # PJ: off
 # Heroku Toolbelt
 # PATH="/usr/local/heroku/bin:$PATH"
+#  _   _  ___ _____ _____
+# | \ | |/ _ \_   _| ____|  _
+# |  \| | | | || | |  _|   (_)
+# | |\  | |_| || | | |___   _
+# |_| \_|\___/ |_| |_____| (_)
+
+# A bit about the /usr directory (stole this from
+# https://github.com/vcavallo/dotfiles/blob/master/darwin_bashrc.sh, should
+# rebuild my path using some of this knowledge
+    # The /usr directory is a convention from linux that creates a common place to put
+    # files and executables that the entire system needs access too. It tries to be user
+    # independent, so whichever user is logged in should have permissions to the /usr directory.
+    # We call that /usr/local. Within /usr/local, there is a bin directory for actually
+    # storing the binaries (programs) that our system would want.
+    # Also, Homebrew adopts this convetion so things installed via Homebrew
+    # get symlinked into /usr/local
+
+# assigning it its variables here
+PATH="/Users/zzzbra/.rbenv/shims:/usr/local/heroku/bin:/usr/local/share/npm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin"
 
 # =================
 # rbenv
 # =================
 # start rbenv (our Ruby environment and version manager) on open
 # eval "$(rbenv init -)"
-
-
-#  _   _  ___ _____ _____
-# | \ | |/ _ \_   _| ____|  _
-# |  \| | | | || | |  _|   (_)
-# | |\  | |_| || | | |___   _
-# |_| \_|\___/ |_| |_____| (_)
-# previously above formula (excepy RVM scripts) were used to dynamically update the PATH but that
-# caused a curious issue where the PATH itself would come to have the same directories needlessly
-# appended to it on every session reload. This made reading the PATH cumberson so I cam now statically
-# assigning it its variables here
-
-PATH="/Users/zzzbra/.rbenv/shims:/usr/local/heroku/bin:/usr/local/share/npm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin"
 
 
 # ====================
@@ -107,7 +109,7 @@ alias reload="clear; source ~/.bash_profile"
 bind 'set completion-ignore-case on'
 # make completions appear immediately after pressing TAB once
 bind 'set show-all-if-ambiguous on'
-bind 'TAB: menu-complete'
+# bind 'TAB: menu-complete'
 # Prefer US English
 export LC_ALL="en_US.UTF-8"
 # use UTF-8
@@ -120,21 +122,6 @@ alias ip?="ifconfig en0 | grep 'inet'"
 # API_Keys
 # =================
 
-# GA Era
-# =================
-# export FEDEX_LOGIN="118621971"
-# export FEDEX_PW="9QZkz3z7ichcHoSHBEBsWDw1i"
-# export FEDEX_KEY="m587dwdlIYGY9nte"
-# export FEDEX_ACCOUNT_NUMBER="510087488"
-
-# For jSequencr Amazon Web Services
-# export AWS_ACCESS_KEY_ID="AKIAI735S2XFLYSLIWPA"
-# export AWS_SECRET_ACCESS_KEY="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"
-
-# Post-GA
-# =================
-
-# TODO: Evernote, etc.
 
 # =================
 # History
@@ -177,7 +164,7 @@ if tput setaf 1 &> /dev/null; then
     CYAN=$(tput setaf 6)
     WHITE=$(tput setaf 7)
     ORANGE=$(tput setaf 172)
-    # GREEN=$(tput setaf 190)
+    GREEN=$(tput setaf 190)
     PURPLE=$(tput setaf 141)
     BG_BLACK=$(tput setab 0)
     BG_RED=$(tput setab 1)
@@ -215,18 +202,18 @@ fi
 # Print Stats on terminal load
 # ---------------------
 # GA General Assembly Webdevelopment Immersive
-echo ${BG_WHITE}${BLUE} ROCKIN IN THE FREE WORLD ${RESET}
-echo ${BG_RED}${WHITE} zzzbra ${RESET}${WHITE}${BG_BLACK} Wondersauce ${RESET}${BG_YELLOW}${BLACK} Digital Design Agency ${RESET}
+echo ${BG_RED}${WHITE} zzzbra ${RESET}${WHITE}${BG_BLACK} Creative Technologist ${RESET}${BG_YELLOW}${BLACK} Vita brevis, ars long ${RESET}
 echo "------------------------------------------"
 echo $(ruby -v)
 echo $(rails -v)
 echo $(git --version)
-echo $(heroku --version)
-echo $(psql --version)
+# echo $(heroku --version)
+# echo $(psql --version)
 echo $(brew -v)
 echo "npm " $(npm -v)
-echo "Is the internet on fire? " $(dig +short -t txt istheinternetonfire.com)
+# echo "Security: " $(dig +short -t txt istheinternetonfire.com)
 echo "TIL: " $(taocl)
+# echo "Fortune: " $(fortune)
 echo "------------------------------------------"
 # figlet -f $font "lean" Hi world.
 # say "Zach you are such a good programmer!"
@@ -295,8 +282,6 @@ export EDITOR="vim"
 # -----------------
 # Aliases
 # -----------------
-# Alias for hub http://hub.github.com/
-# alias git='hub'
 # Undo a git push
 alias undopush="git push -f origin HEAD^:master"
 # undo a commit
@@ -352,6 +337,13 @@ prompt_git() {
     printf "${WHITE} on ${style_branch}${git_info}"
 }
 
+# Branch Autocompletion 
+# http://code-worrier.com/blog/autocomplete-git/
+if [ -f ~/.git-completion.bash ]; then
+. ~/.git-completion.bash
+fi
+
+
 # =================
 # Rails
 # =================
@@ -375,7 +367,7 @@ function taocl() {
 # Students can add a shortcut to quickly access their GA folder
 # example: alias wdi="cd ~/Documents/GA/WDI4"
 
-alias wdi="cd ~/dev/wdi/WDI_NYC_12/"
+alias wdi="cd /Users/zzzbra/dev/general_assembly/wdi"
 cdhwfunc() {
   # takes three args: the week, the day
   # and an optional third for the user
@@ -389,6 +381,16 @@ cdhwfunc() {
 alias cdhw=cdhwfunc
 alias b="cd .."
 
+# copy syntax highlighted version code to clipboard 
+function light() {
+  if [ -z "$2" ]
+    then src="pbpaste"
+  else
+    src="cat $2"
+  fi
+  $src | highlight -O rtf --syntax $1 --line-numbers --font Inconsolata --style solarized-dark --font-size 24 | pbcopy
+}
+
 # Directories
 alias dev="cd ~/dev"
 alias work="cd ~/dev/wondersauce"
@@ -401,6 +403,7 @@ alias scratch="cd ~/dev/scratch"
 alias sites="cd ~/dev/sites"
 alias bewd="cd ~/dev/BEWD-NYC"
 alias dotfiles="cd ~/dotfiles"
+alias rc="cd ~/dev/recurse_center"
 
 # Projects
 alias ob="cd ~/dev/wondersauce/outback"
@@ -408,10 +411,10 @@ alias bb="cd ~/dev/wondersauce/outback-bloomin-brands"
 alias outback="cd ~/dev/wondersauce/outback"
 alias cig="cd ~/dev/wondersauce/carrabbas"
 alias reskin="cd ~/dev/wondersauce/cig-reskin"
-alias lively="cd ~/dev/wondersauce/lively"
-alias lively-splash="cd ~/dev/wondersauce/lively-splash"
+alias lively="cd ~/dev/wondersauce/lively-repos/lively"
 alias bfg="cd ~/dev/wondersauce/bonefish-grill"
 alias ecole="cd ~/dev/wondersauce/ecole"
+alias moog="cd /Users/zzzbra/dev/wondersauce/moog-repos"
 alias splash="cd ~/dev/wondersauce/ecole-splash"
 alias ws="cd ~/dev/wondersauce/wondersauce-site"
 alias moneta="cd ~/dev/wdi/moneta"
@@ -420,6 +423,7 @@ alias moneta="cd ~/dev/wdi/moneta"
 alias G="gulp; gulp watch;"
 alias GD="gulp; gulp desktop"
 alias GM="gulp; gulp mobile"
+alias weather="curl -4 wttr.in"
 
 
 # MySQL Aliases
@@ -428,16 +432,15 @@ alias mysql_start='mysql.server start'
 alias mysql_stop='mysql.server stop'
 alias mysql_restart='mysql.server restart'
 
-# Virtual Host
-alias hosts='vim /etc/hosts'
-alias vhosts='vim /etc/apache2/extra/httpd-vhosts.conf'
-# Make sublime our editor of choice
+# Edit Virtual Host or Host Files
+alias hosts='sudo vim /etc/hosts'
+alias vhosts='sudo vim /etc/apache2/extra/httpd-vhosts.conf'
 
 # Apache Services
 alias apache_start='sudo apachectl start'
 alias apache_restart='sudo apachectl restart'
 alias apache_stop='sudo apachectl stop'
-alias httpd_config='vim /etc/apache2/httpd.conf'
+alias httpd_config='sudo vim /etc/apache2/httpd.conf'
 
 # Open this file
 alias bp="vim ~/.bash_profile"
@@ -477,3 +480,6 @@ fi
 export NVM_DIR="/Users/zzzbra/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 source /usr/local/opt/nvm/nvm.sh
+
+# gruvbox color pallete
+source "$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh"

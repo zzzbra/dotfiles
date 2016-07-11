@@ -1,11 +1,3 @@
-" URL: http://vim.wikia.com/wiki/Example_vimrc
-" Authors: http://vim.wikia.com/wiki/Vim_on_Freenode
-" Description: A minimal, but feature rich, example .vimrc. If you are a
-"              newbie, basing your first .vimrc on this file is a good choice.
-"              If you're a more advanced user, building your own .vimrc based
-"              on this file is still a good idea.
-
-"------------------------------------------------------------
 " Features {{{1
 "
 " These options and commands enable some very useful features in Vim, that
@@ -88,7 +80,7 @@ set autoindent
 " Stop certain movements from always going to the first character of a line.
 " While this behaviour deviates from that of Vi, it does what most users
 " coming from other editors would expect.
-set nostartofline
+" set nostartofline
 
 " Display the cursor position on the last line of the screen or in the status
 " line of a window
@@ -168,6 +160,7 @@ nnoremap <C-L> :nohl<CR><C-L>
 execute pathogen#infect()
 
 colorscheme monokai
+" set background=dark
 
 " Set relative number instead (according to Thought Bot's tutorial)
 set relativenumber
@@ -278,10 +271,6 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-
-" Quicker Escaping
-inoremap jj <ESC>
-
 " Move a line at a time even on linewrapped lines
 :nmap j gj
 :nmap k gk
@@ -294,11 +283,12 @@ set nobackup
 set nowritebackup
 
 " ============================================================================
-" NERDTree stuff I've stolen from vcavalo
+" NERDTree
 " ============================================================================
 
 " map 'tt' to open up NERDTree "
-:map tt :NERDTreeToggle
+" :map tt :NERDTreeToggle
+:map tt <plug>NERDTreeTabsToggle<CR>
 
 " open NERDTree automatically when vim starts "
 " if has("gui")
@@ -308,8 +298,19 @@ set nowritebackup
 " close vim if NERDTree is the only window left "
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
+" Show dotfiles
+let NERDTreeShowHidden=1
 
 " ============================================================================
 " Ctrl P settings
 " ============================================================================
 let g:ctrlp_custom_ignore = '\v[\/]\theme$'
+
+" ============================================================================
+" Experimenting with color 
+" ============================================================================
+:hi TabLineFill term=bold cterm=bold ctermbg=0
+" let &colorcolumn=join(range(81,999),",")
+
+" Fix vim bg color issues with TMUX & Terminal color
+:set t_ut=

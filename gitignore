@@ -44,3 +44,7 @@ Thumbs.db
 .extra
 *.un~
 *.swp
+*.swo
+
+# API credentials
+api_keys
