@@ -81,12 +81,6 @@
 # assigning it its variables here
 PATH="/Users/zzzbra/.rbenv/shims:/usr/local/heroku/bin:/usr/local/share/npm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin"
 
-# =================
-# rbenv
-# =================
-# start rbenv (our Ruby environment and version manager) on open
-# eval "$(rbenv init -)"
-
 
 # ====================
 # File Navigation
@@ -99,13 +93,12 @@ alias ll='ls -la'
 export CLICOLOR=1
 # http://geoff.greer.fm/lscolors/
 # Describes what color to use for which attribute (files, folders etc.)
-export LSCOLORS=faexcxdxbxegedabagacad # PJ: turned off
+export LSCOLORS=faexcxdxbxegedabagacad 
 # go back one directory
 alias b='cd ..'
 # If we make a change to our bash profile we need to reload it
 alias reload="clear; source ~/.bash_profile"
 ## Tab improvements
-## Might not need?
 bind 'set completion-ignore-case on'
 # make completions appear immediately after pressing TAB once
 bind 'set show-all-if-ambiguous on'
@@ -116,11 +109,6 @@ export LC_ALL="en_US.UTF-8"
 export LANG="en_US"
 # get ip address
 alias ip?="ifconfig en0 | grep 'inet'"
-
-
-# =================
-# API_Keys
-# =================
 
 
 # =================
