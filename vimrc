@@ -299,7 +299,7 @@ set nowritebackup
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 " Show dotfiles
-let NERDTreeShowHidden=1
+" let NERDTreeShowHidden=1
 
 " ============================================================================
 " Ctrl P settings
