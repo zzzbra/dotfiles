@@ -125,7 +125,7 @@ export HISTCONTROL=ignoredups
 # ignore same sucessive entries.
 export HISTCONTROL=ignoreboth
 # Make some commands not show up in history
-# export HISTIGNORE="h:ls:ls *:ll:ll *:"
+export HISTIGNORE="h:ls:ls *:ll:ll *:"
 
 # =================
 # Bash Prompt
@@ -189,7 +189,6 @@ fi
 # ---------------------
 # Print Stats on terminal load
 # ---------------------
-# GA General Assembly Webdevelopment Immersive
 echo ${BG_RED}${WHITE} zzzbra ${RESET}${WHITE}${BG_BLACK} Creative Technologist ${RESET}${BG_YELLOW}${BLACK} Vita brevis, ars long ${RESET}
 echo "------------------------------------------"
 echo $(ruby -v)
@@ -199,21 +198,17 @@ echo $(git --version)
 # echo $(psql --version)
 echo $(brew -v)
 echo "npm " $(npm -v)
-# echo "Security: " $(dig +short -t txt istheinternetonfire.com)
 echo "TIL: " $(taocl)
-# echo "Fortune: " $(fortune)
 echo "------------------------------------------"
-# figlet -f $font "lean" Hi world.
-# say "Zach you are such a good programmer!"
 # ---------------------
-# style the prompt
+# style the git prompt
 # ---------------------
 style_user="\[${RESET}${WHITE}\]"
 style_path="\[${RESET}${CYAN}\]"
 style_chars="\[${RESET}${WHITE}\]"
 style_branch="${RED}"
 # ---------------------
-# Build the prompt
+# Build the git prompt
 # ---------------------
 # Example with committed changes: username ~/documents/GA/wdi on master[+]
 PS1="${style_user}\u"                    # Username
@@ -231,9 +226,6 @@ alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && k
 # Hide/show hidden files in Finder
 alias hidefiles="defaults write com.apple.finder AppleShowAllFiles FALSE && killall Finder"
 alias showfiles="defaults write com.apple.finder AppleShowAllFiles TRUE && killall Finder"
-# Switch between dark mode and light mode
-alias darkmode="sudo defaults write /Library/Preferences/.GlobalPreferences AppleInterfaceTheme Dark"
-alias lightmode="sudo defaults write /Library/Preferences/.GlobalPreferences AppleInterfaceTheme Light"
 # Start an HTTP server from a directory, optionally specifying the port
 function server() {
   local port="${1:-8000}"
@@ -252,9 +244,7 @@ alias rogue='lsof -i TCP:3000'
 # ================
 # Application Aliases
 # ================
-alias subl='open -a "Sublime Text"'
 alias slack='open /Applications/Slack.app'
-alias atom='open -a Atom'
 alias mou='open -a /Applications/Mou.app'
 
 # ================
@@ -262,7 +252,6 @@ alias mou='open -a /Applications/Mou.app'
 # ================
 # Make vim our editor of choice
 export EDITOR="vim"
-# export EDITOR=/usr/bin/vim
 
 # =================
 # Git
@@ -352,23 +341,6 @@ function taocl() {
 # =================
 # Shortcuts
 # =================
-# Students can add a shortcut to quickly access their GA folder
-# example: alias wdi="cd ~/Documents/GA/WDI4"
-
-alias wdi="cd /Users/zzzbra/dev/general_assembly/wdi"
-cdhwfunc() {
-  # takes three args: the week, the day
-  # and an optional third for the user
-  if [ $1 -lt 10 ]
-  then
-    cd ~/dev/wdi/WDI_NYC_12/w0$1/d0$2/${3:-Zach_Brady}
-  else
-    cd ~/dev/wdi/WDI_NYC_12/w$1/d0$2/${3:-Zach_Brady}
-  fi
-}
-alias cdhw=cdhwfunc
-alias b="cd .."
-
 # copy syntax highlighted version code to clipboard 
 function light() {
   if [ -z "$2" ]
@@ -381,37 +353,18 @@ function light() {
 
 # Directories
 alias dev="cd ~/dev"
-alias work="cd ~/dev/wondersauce"
-alias practice="cd ~/dev/tutorial_practice"
+alias ws="cd ~/dev/wondersauce"
 alias storage="cd ~/dev/libraries"
-alias ecole_ass="open ~/Dropbox\ \(Wondersauce\)/Ecole/"
 alias installs="cd /usr/local/bin"
 alias cellar="cd /usr/local/Cellar"
 alias scratch="cd ~/dev/scratch"
 alias sites="cd ~/dev/sites"
-alias bewd="cd ~/dev/BEWD-NYC"
 alias dotfiles="cd ~/dotfiles"
 alias rc="cd ~/dev/recurse_center"
 
 # Projects
-alias ob="cd ~/dev/wondersauce/outback"
-alias bb="cd ~/dev/wondersauce/outback-bloomin-brands"
-alias outback="cd ~/dev/wondersauce/outback"
-alias cig="cd ~/dev/wondersauce/carrabbas"
-alias reskin="cd ~/dev/wondersauce/cig-reskin"
-alias lively="cd ~/dev/wondersauce/lively-repos/lively"
-alias bfg="cd ~/dev/wondersauce/bonefish-grill"
-alias ecole="cd ~/dev/wondersauce/ecole"
-alias moog="cd /Users/zzzbra/dev/wondersauce/moog-repos"
-alias splash="cd ~/dev/wondersauce/ecole-splash"
-alias ws="cd ~/dev/wondersauce/wondersauce-site"
+alias moog="cd /Users/zzzbra/dev/wondersauce/moog-repos/MOOG-brackets"
 alias moneta="cd ~/dev/wdi/moneta"
-
-# CL shortcuts
-alias G="gulp; gulp watch;"
-alias GD="gulp; gulp desktop"
-alias GM="gulp; gulp mobile"
-alias weather="curl -4 wttr.in"
 
 
 # MySQL Aliases
@@ -469,5 +422,3 @@ export NVM_DIR="/Users/zzzbra/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 source /usr/local/opt/nvm/nvm.sh
 
-# gruvbox color pallete
-source "$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh"
