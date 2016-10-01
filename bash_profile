@@ -364,7 +364,7 @@ alias rc="cd ~/dev/recurse_center"
 
 # Projects
 alias moog="cd /Users/zzzbra/dev/wondersauce/moog-repos/MOOG-brackets"
-alias moneta="cd ~/dev/wdi/moneta"
+alias moneta="cd ~/dev/moneta"
 
 
 # MySQL Aliases
