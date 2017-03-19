@@ -4,12 +4,6 @@
 # | |_) | (_| \__ \ | | | | |_) | | | (_) |  _| | |  __/
 # |_.__/ \__,_|___/_| |_| | .__/|_|  \___/|_| |_|_|\___|
 #                         |_|
-# When Bash starts, it executes the commands in this script
-# http://en.wikipedia.org/wiki/Bash_(Unix_shell)
-#
-# Written by Philip Lamplugh, Instructor General Assembly (2013)
-#   Updated by PJ Hughes, Instructor General Assembly (2013)
-
 # =====================
 # Resources
 # =====================
@@ -19,7 +13,7 @@
 # http://sage.ucsc.edu/xtal/iterm_tab_customization.html
 
 # ====================
-# TOC
+# Table of Contents
 # ====================
 # --------------------
 # System Settings
@@ -47,15 +41,14 @@
 # 14. Reserved
 
 
+# =====================
 # SYSTEM SETTINGS
-##########################################################################
+# =====================
 
-# ==================
+# =====================
 # Path
-# This is a list of all directories in which to look for commands, scripts and programs
-# ==================
-
-# Home brew directories
+# =====================
+# Homebrew directories
 # PATH="/usr/local/bin:$PATH"
 # Node Package Manager
 # PATH="/usr/local/share/npm/bin:$PATH"
@@ -127,9 +120,9 @@ export HISTCONTROL=ignoreboth
 # Make some commands not show up in history
 export HISTIGNORE="h:ls:ls *:ll:ll *:"
 
-# =================
+# ==================
 # Bash Prompt
-# =================
+# ==================
 # --------------------
 # Colors for the prompt
 # --------------------
@@ -189,7 +182,7 @@ fi
 # ---------------------
 # Print Stats on terminal load
 # ---------------------
-echo ${BG_RED}${WHITE} zzzbra ${RESET}${WHITE}${BG_BLACK} Creative Technologist ${RESET}${BG_YELLOW}${BLACK} Vita brevis, ars long ${RESET}
+echo ${BG_RED}${WHITE} zzzbra ${RESET}${WHITE}${BG_BLACK} Creative Technologist ${RESET}${BG_YELLOW}${BLACK} Ars longa, vita brevis ${RESET}
 echo "------------------------------------------"
 echo $(ruby -v)
 echo $(rails -v)
@@ -215,17 +208,11 @@ PS1="${style_user}\u"                    # Username
 PS1+="${style_path} \w"                  # Working directory
 PS1+="\$(prompt_git)"                    # Git details
 PS1+="\n"                                # Newline
-PS1+="⫸  \[${RESET}\]"                  # $ (and reset color) ######### THIS IS THE OLD CODE: ${style_chars}\$
+PS1+="⫸  \[${RESET}\]"                   # $ (and reset color) ######### THIS IS THE OLD CODE: ${style_chars}\$
 
 # =================
 # Other System Settings
 # =================
-# Hide/show all desktop icons (useful when presenting)
-alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
-alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
-# Hide/show hidden files in Finder
-alias hidefiles="defaults write com.apple.finder AppleShowAllFiles FALSE && killall Finder"
-alias showfiles="defaults write com.apple.finder AppleShowAllFiles TRUE && killall Finder"
 # Start an HTTP server from a directory, optionally specifying the port
 function server() {
   local port="${1:-8000}"
@@ -238,19 +225,19 @@ function server() {
 # http://www.akadia.com/services/lsof_intro.html
 alias rogue='lsof -i TCP:3000'
 
+# =====================
 # APPLICATION SETTINGS
-##########################################################################
+# =====================
 
-# ================
+# =====================
 # Application Aliases
-# ================
+# =====================
 alias slack='open /Applications/Slack.app'
 alias mou='open -a /Applications/Mou.app'
 
 # ================
-# Sublime
+# Editor
 # ================
-# Make vim our editor of choice
 export EDITOR="vim"
 
 # =================
@@ -335,9 +322,6 @@ function taocl() {
     xmlstarlet unesc | fmt -80
 }
 
-# Other Settings
-##########################################################################
-
 # =================
 # Shortcuts
 # =================
@@ -351,9 +335,11 @@ function light() {
   $src | highlight -O rtf --syntax $1 --line-numbers --font Inconsolata --style solarized-dark --font-size 24 | pbcopy
 }
 
+# =================
+# Aliases
+# =================
 # Directories
 alias dev="cd ~/dev"
-alias ws="cd ~/dev/wondersauce"
 alias storage="cd ~/dev/libraries"
 alias installs="cd /usr/local/bin"
 alias cellar="cd /usr/local/Cellar"
@@ -363,9 +349,7 @@ alias dotfiles="cd ~/dotfiles"
 alias rc="cd ~/dev/recurse_center"
 
 # Projects
-alias moog="cd /Users/zzzbra/dev/wondersauce/moog-repos/MOOG-brackets"
 alias moneta="cd ~/dev/moneta"
-
 
 # MySQL Aliases
 alias mysql_kill='killall -9 mysqld'
@@ -403,9 +387,11 @@ if [ -f ~/.bash_prompt ]; then
   source ~/.bash_prompt
 fi
 
+# =================
+# Miscellany 
+# =================
 # Below here is an area for other commands added by outside programs or
 # commands. Attempt to reserve this area for their use!
-##########################################################################
 
 # exercism autocompletion utility
 if [ -f ~/.config/exercism/exercism_completion.bash ]; then
