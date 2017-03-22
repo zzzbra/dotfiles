@@ -72,7 +72,8 @@
     # get symlinked into /usr/local
 
 # assigning it its variables here
-PATH="/Users/guest_admin/.rbenv/shims:/usr/local/heroku/bin:/usr/local/share/npm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin"
+PATH="/Users/zzzbra/.rbenv/shims:/usr/local/heroku/bin:/usr/local/share/npm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/usr/local/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin"
+# TODO dynamically build PATH with USER env variable
 
 
 # ====================
@@ -82,6 +83,8 @@ PATH="/Users/guest_admin/.rbenv/shims:/usr/local/heroku/bin:/usr/local/share/npm
 alias ls='ls -F'
 # long list format including hidden files
 alias ll='ls -la'
+# Because my brain is all fucked from having to use a windows all day
+alias dir='ls -la'
 # Adds colors to LS
 export CLICOLOR=1
 # http://geoff.greer.fm/lscolors/
@@ -107,8 +110,6 @@ alias ip?="ifconfig en0 | grep 'inet'"
 # =================
 # History
 # =================
-# History lists your previously entered commands
-alias h='history'
 # http://jorge.fbarr.net/2011/03/24/making-your-bash-history-more-efficient/
 # Larger bash history (allow 32³ entries; default is 500)
 export HISTSIZE=32768
@@ -188,7 +189,7 @@ echo $(ruby -v)
 echo $(rails -v)
 echo $(git --version)
 # echo $(heroku --version)
-# echo $(psql --version)
+echo $(psql --version)
 echo $(brew -v)
 echo "npm " $(npm -v)
 echo "TIL: " $(taocl)

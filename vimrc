@@ -1,4 +1,4 @@
-" Features {{{1
+" Features 
 "
 " These options and commands enable some very useful features in Vim, that
 " no user should have to live without.
@@ -17,7 +17,7 @@ syntax on
 
 
 "------------------------------------------------------------
-" Must have options {{{1
+" Must have options 
 "
 " These are highly recommended options.
 
@@ -59,7 +59,7 @@ set nomodeline
 
 
 "------------------------------------------------------------
-" Usability options {{{1
+" Usability options 
 "
 " These are options that users frequently set in their .vimrc. Some of them
 " change Vim's behaviour in ways which deviate from the true Vi way, but
@@ -115,28 +115,19 @@ set pastetoggle=<F11>
 
 
 "------------------------------------------------------------
-" Indentation options {{{1
+" Indentation options 
 "
 " Indentation settings according to personal preference.
 
-" Indentation settings for using 4 spaces instead of tabs.
-" Do not change 'tabstop' from its default value of 8 with this setup.
-" ACTUALLY I am gonna change 'tabstop' because it's what this guy
-" recommened: http://stevelosh.com/blog/2010/09/coming-home-to-vim/
-" TODO figure out why they originally didn't 
+" http://stevelosh.com/blog/2010/09/coming-home-to-vim/
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set expandtab
 
-" Indentation settings for using hard tabs for indent. Display tabs as
-" four characters wide.
-"set shiftwidth=4
-"set tabstop=4
-
 
 "------------------------------------------------------------
-" Mappings {{{1
+" Mappings 
 "
 " Useful mappings
 
@@ -155,8 +146,8 @@ nnoremap <C-L> :nohl<CR><C-L>
 " Installing Pathogen for managing vim runtimepath / installing shit
 execute pathogen#infect()
 
-colorscheme gruvbox
-set background=dark
+colorscheme tomorrow-night
+" set background=dark
 
 " Set relative number instead (according to Thought Bot's tutorial)
 set relativenumber
@@ -278,9 +269,9 @@ set breakindent
 set nobackup
 set nowritebackup
 
-" ============================================================================
+
+"------------------------------------------------------------
 " NERDTree
-" ============================================================================
 
 " map 'tt' to open up NERDTree "
 " :map tt :NERDTreeToggle
@@ -292,20 +283,17 @@ set nowritebackup
 " endif
 
 " close vim if NERDTree is the only window left "
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 " Show dotfiles
 " let NERDTreeShowHidden=1
 
-" ============================================================================
 " Ctrl P settings
-" ============================================================================
 let g:ctrlp_custom_ignore = '\v[\/]\theme$'
 
-" ============================================================================
-" Experimenting with color 
-" ============================================================================
-:hi TabLineFill term=bold cterm=bold ctermbg=0
+
+"------------------------------------------------------------
+" Set different bg color for space past 80th col
 " let &colorcolumn=join(range(81,999),",")
 
 " Fix vim bg color issues with TMUX & Terminal color
