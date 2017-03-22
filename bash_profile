@@ -72,7 +72,7 @@
     # get symlinked into /usr/local
 
 # assigning it its variables here
-PATH="/Users/zzzbra/.rbenv/shims:/usr/local/heroku/bin:/usr/local/share/npm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin"
+PATH="/Users/guest_admin/.rbenv/shims:/usr/local/heroku/bin:/usr/local/share/npm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin"
 
 
 # ====================

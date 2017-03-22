@@ -8,3 +8,7 @@ script, like so:
 `cd ~/dotfiles
 chmod +x makesymlinks.sh
 ./makesymlinks.sh`
+
+## TODO
+* add vim color theme
+* add session exit script
