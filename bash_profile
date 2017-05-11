@@ -120,9 +120,9 @@ export HISTCONTROL=ignoreboth
 # Make some commands not show up in history
 export HISTIGNORE="h:ls:ls *:ll:ll *:"
 
-# ==================
+# ====================
 # Bash Prompt
-# ==================
+# ====================
 # --------------------
 # Colors for the prompt
 # --------------------
@@ -372,6 +372,10 @@ alias bp="vim ~/.bash_profile"
 
 # Set Logout Message
 alias exit='sh ~/seeyouspacecowboy.sh; sleep 2; exit'
+
+# Hide or show hidden . files in MacOS
+alias showFiles="defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app"
+alias hideFiles="defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app"
 
 # =================
 # Source Files
