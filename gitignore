@@ -47,4 +47,10 @@ Thumbs.db
 *.swo
 
 # API credentials
+#####################################
 api_keys
+
+# Project Files
+#####################################
+node_modules/
+
