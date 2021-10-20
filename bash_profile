@@ -61,8 +61,7 @@
 # |_| \_|\___/ |_| |_____| (_)
 
 # A bit about the /usr directory (stole this from
-# https://github.com/vcavallo/dotfiles/blob/master/darwin_bashrc.sh, should
-# rebuild my path using some of this knowledge
+# https://github.com/vcavallo/dotfiles/blob/master/darwin_bashrc.sh
     # The /usr directory is a convention from linux that creates a common place to put
     # files and executables that the entire system needs access too. It tries to be user
     # independent, so whichever user is logged in should have permissions to the /usr directory.
@@ -89,7 +88,7 @@ alias dir='ls -la'
 export CLICOLOR=1
 # http://geoff.greer.fm/lscolors/
 # Describes what color to use for which attribute (files, folders etc.)
-export LSCOLORS=faexcxdxbxegedabagacad 
+# export LSCOLORS=faexcxdxbxegedabagacad 
 # go back one directory
 alias b='cd ..'
 # If we make a change to our bash profile we need to reload it
@@ -111,28 +110,9 @@ alias ip?="ifconfig en0 | grep 'inet'"
 # History
 # =================
 # http://jorge.fbarr.net/2011/03/24/making-your-bash-history-more-efficient/
-# Larger bash history (allow 32³ entries; default is 500)
-export HISTSIZE=32768
-export HISTFILESIZE=$HISTSIZE
-# don't put duplicate lines in the history.
-export HISTCONTROL=ignoredups
-# ignore same sucessive entries.
-export HISTCONTROL=ignoreboth
-# Make some commands not show up in history
-export HISTIGNORE="h:ls:ls *:ll:ll *:"
-
-# ====================
-# Bash Prompt
-# ====================
-# --------------------
-# Colors for the prompt
-# --------------------
-# Set the TERM var to xterm-256color
-if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
-  export TERM=gnome-256color
-elif infocmp xterm-256color >/dev/null 2>&1; then
-  export TERM=xterm-256color
-fi
+# elif infocmp xterm-256color >/dev/null 2>&1; then
+#   export TERM=xterm-256color
+# fi
 if tput setaf 1 &> /dev/null; then
   tput sgr0
   if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
@@ -180,6 +160,7 @@ else
   BOLD=""
   RESET="\033[m"
 fi
+
 # ---------------------
 # Print Stats on terminal load
 # ---------------------
@@ -192,8 +173,11 @@ echo $(git --version)
 echo $(psql --version)
 echo $(brew -v)
 echo "npm " $(npm -v)
-echo "TIL: " $(taocl)
+# if internet connection
+# echo "TIL: " $(taocl)
+# fi
 echo "------------------------------------------"
+
 # ---------------------
 # style the git prompt
 # ---------------------
@@ -201,6 +185,7 @@ style_user="\[${RESET}${WHITE}\]"
 style_path="\[${RESET}${CYAN}\]"
 style_chars="\[${RESET}${WHITE}\]"
 style_branch="${RED}"
+
 # ---------------------
 # Build the git prompt
 # ---------------------
@@ -209,7 +194,8 @@ PS1="${style_user}\u"                    # Username
 PS1+="${style_path} \w"                  # Working directory
 PS1+="\$(prompt_git)"                    # Git details
 PS1+="\n"                                # Newline
-PS1+="⫸  \[${RESET}\]"                   # $ (and reset color) ######### THIS IS THE OLD CODE: ${style_chars}\$
+# PS1+="⫸  \[${RESET}\]"                 # $ (and reset color) ######### THIS IS THE OLD CODE: ${style_chars}\$
+PS1+="${style_chars}\$ \[${RESET}\]"     # $ (and reset color) 
 
 # =================
 # Other System Settings
@@ -251,6 +237,7 @@ export EDITOR="vim"
 alias undopush="git push -f origin HEAD^:master"
 # undo a commit
 alias uncommit="git reset --soft HEAD^"
+
 # -----------------
 # For the prompt
 # -----------------
@@ -258,9 +245,11 @@ alias uncommit="git reset --soft HEAD^"
 is_git_repo() {
     $(git rev-parse --is-inside-work-tree &> /dev/null)
 }
+
 is_git_dir() {
     $(git rev-parse --is-inside-git-dir 2> /dev/null)
 }
+
 get_git_branch() {
     local branch_name
     # Get the short symbolic ref
@@ -271,6 +260,7 @@ get_git_branch() {
     branch_name="(unknown)"
     printf $branch_name
 }
+
 # Git status information
 prompt_git() {
     local git_info git_state uc us ut st
@@ -345,6 +335,16 @@ alias storage="cd ~/dev/libraries"
 alias installs="cd /usr/local/bin"
 alias cellar="cd /usr/local/Cellar"
 alias scratch="cd ~/dev/scratch"
+alias sites="cd ~/dev/sites"
+alias dotfiles="cd ~/dotfiles"
+alias rc="cd ~/dev/recurse_center"
+
+# Projects
+alias moneta="cd ~/dev/moneta"
+
+# MySQL Aliases
+alias sites="cd ~/dev/sites"
+alias sites="cd ~/dev/sites"
 alias sites="cd ~/dev/sites"
 alias dotfiles="cd ~/dotfiles"
 alias rc="cd ~/dev/recurse_center"
