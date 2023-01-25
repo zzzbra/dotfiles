@@ -1,5 +1,4 @@
 # dotfiles
-Place for me to store all my biz, let me get situated on new pooters REAL fast
 
 Once the repository has been cloned to our home directory, simply change to the
 dotfiles directory, make the makesymlinks.sh script executable, and run the
@@ -10,5 +9,7 @@ chmod +x makesymlinks.sh
 ./makesymlinks.sh`
 
 ## TODO
-* add vim color theme
-* add session exit script
+[] add session exit script
+[] follow .config/ directory convention
+[] replace vim with neovim config
+[] replace bash with zsh config
