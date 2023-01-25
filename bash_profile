@@ -4,42 +4,6 @@
 # | |_) | (_| \__ \ | | | | |_) | | | (_) |  _| | |  __/
 # |_.__/ \__,_|___/_| |_| | .__/|_|  \___/|_| |_|_|\___|
 #                         |_|
-# =====================
-# Resources
-# =====================
-# http://cli.learncodethehardway.org/bash_cheat_sheet.pdf
-# http://ss64.com/bash/syntax-prompt.html
-# https://dougbarton.us/Bash/Bash-prompts.html
-# http://sage.ucsc.edu/xtal/iterm_tab_customization.html
-
-# ====================
-# Table of Contents
-# ====================
-# --------------------
-# System Settings
-# --------------------
-#  1. Path List
-#  2. File Navigation
-#  3. History
-#  4. Bash Prompt
-#  5. Other System Settings
-# --------------------
-# Application Settings
-# --------------------
-#  6. Application Aliases
-#  7. Sublime
-#  8. Git
-#  9. Rails
-# 10. rbenv
-# TODO:
-# 11. nvm
-# --------------------
-# Other Settings
-# --------------------
-# 12. Shortcuts
-# 13. Source Files
-# 14. Reserved
-
 
 # =====================
 # SYSTEM SETTINGS
@@ -54,26 +18,14 @@
 # PATH="/usr/local/share/npm/bin:$PATH"
 # Heroku Toolbelt
 # PATH="/usr/local/heroku/bin:$PATH"
-#  _   _  ___ _____ _____
-# | \ | |/ _ \_   _| ____|  _
-# |  \| | | | || | |  _|   (_)
-# | |\  | |_| || | | |___   _
-# |_| \_|\___/ |_| |_____| (_)
-
-# A bit about the /usr directory (stole this from
-# https://github.com/vcavallo/dotfiles/blob/master/darwin_bashrc.sh
-    # The /usr directory is a convention from linux that creates a common place to put
-    # files and executables that the entire system needs access too. It tries to be user
-    # independent, so whichever user is logged in should have permissions to the /usr directory.
-    # We call that /usr/local. Within /usr/local, there is a bin directory for actually
-    # storing the binaries (programs) that our system would want.
-    # Also, Homebrew adopts this convetion so things installed via Homebrew
-    # get symlinked into /usr/local
 
 # assigning it its variables here
-PATH="/Users/zzzbra/.rbenv/shims:/usr/local/heroku/bin:/usr/local/share/npm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/usr/local/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin"
-# TODO dynamically build PATH with USER env variable
+PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/usr/local/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin"
+PATH="/usr/local/share/npm/bin:$PATH"
+PATH="/usr/local/heroku/bin:$PATH"
+PATH="/Users/zzzbra/.rbenv/shims:$PATH"
 
+# TODO dynamically build PATH with USER env variable
 
 # ====================
 # File Navigation
@@ -197,30 +149,9 @@ PS1+="\n"                                # Newline
 # PS1+="⫸  \[${RESET}\]"                 # $ (and reset color) ######### THIS IS THE OLD CODE: ${style_chars}\$
 PS1+="${style_chars}\$ \[${RESET}\]"     # $ (and reset color) 
 
-# =================
-# Other System Settings
-# =================
-# Start an HTTP server from a directory, optionally specifying the port
-function server() {
-  local port="${1:-8000}"
-  open "http://localhost:${port}/"
-  # Set the default Content-Type to `text/plain` instead of `application/octet-stream`
-  # And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
-  python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port"
-}
-# List any open internet sockets on port 3000. Useful if a rogue server is running
-# http://www.akadia.com/services/lsof_intro.html
-alias rogue='lsof -i TCP:3000'
-
 # =====================
 # APPLICATION SETTINGS
 # =====================
-
-# =====================
-# Application Aliases
-# =====================
-alias slack='open /Applications/Slack.app'
-alias mou='open -a /Applications/Mou.app'
 
 # ================
 # Editor
@@ -298,33 +229,9 @@ if [ -f ~/.git-completion.bash ]; then
 . ~/.git-completion.bash
 fi
 
-
-# =================
-# Rails
-# =================
-# Migrate Dev and Test databases and annotate models
-alias migrate='rake db:migrate; rake db:migrate RAILS_ENV=test; annotate'
-
-function taocl() {
-    curl -s https://raw.githubusercontent.com/jlevy/the-art-of-command-line/master/README.md |
-    pandoc -f markdown -t html |
-    xmlstarlet fo --html --dropdtd |
-    xmlstarlet sel -t -v "(html/body/ul/li[count(p)>0])[$RANDOM mod last()+1]" |
-    xmlstarlet unesc | fmt -80
-}
-
 # =================
 # Shortcuts
 # =================
-# copy syntax highlighted version code to clipboard 
-function light() {
-  if [ -z "$2" ]
-    then src="pbpaste"
-  else
-    src="cat $2"
-  fi
-  $src | highlight -O rtf --syntax $1 --line-numbers --font Inconsolata --style solarized-dark --font-size 24 | pbcopy
-}
 
 # =================
 # Aliases
@@ -337,26 +244,6 @@ alias cellar="cd /usr/local/Cellar"
 alias scratch="cd ~/dev/scratch"
 alias sites="cd ~/dev/sites"
 alias dotfiles="cd ~/dotfiles"
-alias rc="cd ~/dev/recurse_center"
-
-# Projects
-alias moneta="cd ~/dev/moneta"
-
-# MySQL Aliases
-alias sites="cd ~/dev/sites"
-alias sites="cd ~/dev/sites"
-alias sites="cd ~/dev/sites"
-alias dotfiles="cd ~/dotfiles"
-alias rc="cd ~/dev/recurse_center"
-
-# Projects
-alias moneta="cd ~/dev/moneta"
-
-# MySQL Aliases
-alias mysql_kill='killall -9 mysqld'
-alias mysql_start='mysql.server start'
-alias mysql_stop='mysql.server stop'
-alias mysql_restart='mysql.server restart'
 
 # Edit Virtual Host or Host Files
 alias hosts='sudo vim /etc/hosts'
@@ -398,11 +285,6 @@ fi
 # Below here is an area for other commands added by outside programs or
 # commands. Attempt to reserve this area for their use!
 
-# exercism autocompletion utility
-if [ -f ~/.config/exercism/exercism_completion.bash ]; then
-  . ~/.config/exercism/exercism_completion.bash
-fi
-
 # Add GHC 7.8.3 to the PATH, via http://ghcformacosx.github.io/
 export GHC_DOT_APP="/Applications/ghc-7.8.3.app"
 if [ -d "$GHC_DOT_APP" ]; then
@@ -413,3 +295,9 @@ export NVM_DIR="/Users/zzzbra/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 source /usr/local/opt/nvm/nvm.sh
 
+
+
+# =================
+# Python 
+# =================
+export PYENV_ROOT="$HOME/.pyenv"

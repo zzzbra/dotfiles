@@ -57,7 +57,6 @@ set hlsearch
 " script, <http://www.vim.org/scripts/script.php?script_id=1876>.
 set nomodeline
 
-
 "------------------------------------------------------------
 " Usability options 
 "
@@ -147,7 +146,7 @@ nnoremap <C-L> :nohl<CR><C-L>
 execute pathogen#infect()
 
 " colorscheme tomorrow-night
-" set background=dark
+set background=dark
 
 " Set relative number instead (according to Thought Bot's tutorial)
 set relativenumber
@@ -159,7 +158,7 @@ set splitright
 
 " Some more stuff from the guy who 'Switched Back to Vim':
 " http://stevelosh.com/blog/2010/09/coming-home-to-vim/
-set encoding=utf-8
+" set encoding=utf-8
 set scrolloff=3
 set showmode
 set wildmenu
@@ -170,6 +169,31 @@ set ttyfast
 " set undofile
 
 " let mapleader="\"
+
+" Airline Settings
+
+" Note: You must define the dictionary first before setting values.
+" Also, it's a good idea to check whether it exists as to avoid 
+" accidentally overwriting its contents.
+
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+" powerline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.dirty='⚡'
+
+" If you only see boxes here it may be because your system doesn't have
+" the correct fonts. Try it in vim first and if that fails see the help 
+" pages for vim-airline :help airline-troubleshooting
 
 
 " Searching / Moving

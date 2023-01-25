@@ -4,10 +4,12 @@
 	excludesfile = /Users/zzzbra/.gitignore
 [user]
 	name = Zach Brady
-	email = zacbra@gmail.com
+	email = 3282673+zzzbra@users.noreply.github.com
 [filter "lfs"]
 	clean = git lfs clean %f
 	smudge = git lfs smudge %f
 	required = true
 [init]
 	templateDir = /Users/zzzbra/.git_template
+[push]
+	autoSetupRemote = true
