@@ -11,5 +11,5 @@ chmod +x makesymlinks.sh
 ## TODO
 - [ ] add session exit script
 - [ ] follow .config/ directory convention
-- [ ] replace vim with neovim config
-- [ ] replace bash with zsh config
+- [x] replace vim with neovim config
+- [x] replace bash with zsh config
