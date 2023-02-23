@@ -1,6 +1,6 @@
-makesymlinks.sh
 *~
 *.swp
 *.swo
 vim/.netrwhist
 node_modules
+backups/
