@@ -3,7 +3,7 @@
 	helper = 
 	helper = /usr/local/share/gcm-core/git-credential-manager
 [core]
-	excludesfile = /Users/zzzbra/.gitignore
+	excludesfile = ~/.gitignore
 [user]
 	name = Zach Brady
 	email = 3282673+zzzbra@users.noreply.github.com
@@ -12,7 +12,7 @@
 	smudge = git lfs smudge %f
 	required = true
 [init]
-	templateDir = /Users/zzzbra/.git_template
+	templateDir = ~/.git_template
 	defaultBranch = main
 [push]
 	autoSetupRemote = true
