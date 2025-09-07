@@ -26,8 +26,6 @@ INFO="ℹ"
 dir=~/dotfiles                              
 # old dotfiles backup directory; use timestamp so we don't overwrite second oldest
 old_dir=~/dotfiles/backups/$(date +%s)                       
-# list of files/folders to symlink in homedir
-files="zshrc tmux.conf config/nvim"         
 
 # VS Code config directory (macOS specific)
 vscode_dir="$HOME/Library/Application Support/Code/User"
@@ -53,41 +51,47 @@ cd $dir
 echo -e "${GREEN}   ${CHECK} Done${RESET}"
 echo ""
 
-# move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks
-echo -e "${BOLD}${CYAN}Setting up dotfile symlinks:${RESET}"
+# Process symlinks from configuration file
+echo -e "${BOLD}${CYAN}Setting up symlinks from configuration:${RESET}"
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}"
 
-for file in $files; do
-    echo -e "\n${YELLOW}Processing: ${BOLD}$file${RESET}"
+# Read symlinks.conf and process each mapping
+while IFS= read -r line; do
+    # Skip comments and empty lines
+    [[ "$line" =~ ^#.*$ ]] && continue
+    [[ -z "$line" ]] && continue
     
-    if [ -e ~/.$file ] || [ -L ~/.$file ]; then
-        echo -e "   ${WARNING} Found existing ~/.$file"
-        mv ~/.$file "$old_dir/" 2>/dev/null
-        echo -e "   ${ARROW} Backed up to $old_dir/"
+    # Parse the mapping (source -> destination)
+    if [[ "$line" =~ ^(.+)[[:space:]]-\>[[:space:]](.+)$ ]]; then
+        source_path="${BASH_REMATCH[1]// /}"  # Trim spaces
+        dest_path="${BASH_REMATCH[2]// /}"    # Trim spaces
+        
+        # Expand tilde in destination path
+        dest_path="${dest_path/#\~/$HOME}"
+        
+        # Get just the filename for display
+        dest_name=$(basename "$dest_path")
+        
+        echo -e "\n${YELLOW}Processing: ${BOLD}$source_path${RESET}"
+        
+        # Check if destination exists and backup if needed
+        if [ -e "$dest_path" ] || [ -L "$dest_path" ]; then
+            echo -e "   ${WARNING} Found existing $dest_path"
+            # Create parent directory in backup location if needed
+            backup_parent="$old_dir/$(dirname "${dest_path#$HOME/}")"
+            mkdir -p "$backup_parent"
+            mv "$dest_path" "$backup_parent/" 2>/dev/null
+            echo -e "   ${ARROW} Backed up to $backup_parent/"
+        fi
+        
+        # Create parent directory if it doesn't exist
+        mkdir -p "$(dirname "$dest_path")"
+        
+        # Create symlink
+        ln -s "$dir/$source_path" "$dest_path"
+        echo -e "   ${GREEN}${CHECK} Created symlink: $dest_path ${ARROW} $dir/$source_path${RESET}"
     fi
-    
-    ln -s $dir/$file ~/.$file
-    echo -e "   ${GREEN}${CHECK} Created symlink: ~/.$file ${ARROW} $dir/$file${RESET}"
-done
-
-echo ""
-
-# Handle Git configuration
-echo -e "${BOLD}${CYAN}Setting up Git configuration:${RESET}"
-echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}"
-
-for gitfile in config ignore gitmessage; do
-    echo -e "\n${YELLOW}Processing: ${BOLD}git/$gitfile${RESET}"
-    
-    if [ -e ~/.git$gitfile ] || [ -L ~/.git$gitfile ]; then
-        echo -e "   ${WARNING} Found existing ~/.git$gitfile"
-        mv ~/.git$gitfile "$old_dir/" 2>/dev/null
-        echo -e "   ${ARROW} Backed up to $old_dir/"
-    fi
-    
-    ln -s $dir/git/$gitfile ~/.git$gitfile
-    echo -e "   ${GREEN}${CHECK} Created symlink: ~/.git$gitfile ${ARROW} $dir/git/$gitfile${RESET}"
-done
+done < "$dir/symlinks.conf"
 
 echo ""
 
