@@ -23,7 +23,7 @@
 PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/usr/local/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin"
 PATH="/usr/local/share/npm/bin:$PATH"
 PATH="/usr/local/heroku/bin:$PATH"
-PATH="/Users/zzzbra/.rbenv/shims:$PATH"
+PATH="$HOME/.rbenv/shims:$PATH"
 
 # TODO dynamically build PATH with USER env variable
 
@@ -291,7 +291,7 @@ if [ -d "$GHC_DOT_APP" ]; then
     export PATH="${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
 fi
 
-export NVM_DIR="/Users/zzzbra/.nvm"
+export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 source /usr/local/opt/nvm/nvm.sh
 
