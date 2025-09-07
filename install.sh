@@ -26,8 +26,8 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Helper functions
 print_header() {
     echo ""
-    echo -e "${BOLD}${BLUE}===========================================🚀${RESET}"
-    echo -e "${BOLD}${BLUE}     $1${RESET}"
+    echo -e "${BOLD}${BLUE}===========================================${RESET}"
+    echo -e "${BOLD}${BLUE}🚀   $1${RESET}"
     echo -e "${BOLD}${BLUE}===========================================${RESET}"
     echo ""
 }
@@ -112,14 +112,16 @@ fi
 print_section "Step 2: Dotfiles Configuration"
 
 print_step "Creating symlinks..."
-"$SCRIPT_DIR/makesymlinks.sh"
-
-# Source the new configuration
-print_step "Loading shell configuration..."
-if [[ -f "$HOME/.zshrc" ]]; then
-    source "$HOME/.zshrc"
-    print_success "Shell configuration loaded"
+"$SCRIPT_DIR/makesymlinks.sh" > /dev/null 2>&1
+if [[ $? -eq 0 ]]; then
+    print_success "Symlinks created successfully"
+else
+    print_error "Failed to create symlinks"
+    exit 1
 fi
+
+# Configuration is ready (user needs to source it in zsh)
+print_success "Dotfiles configured successfully"
 
 # Step 4: Install additional tools
 print_section "Step 3: Development Tools"
