@@ -1,9 +1,8 @@
 # dotfiles
 
-## Prerequisites
+## Installation
 
-### macOS Setup
-Before using these dotfiles, install the following:
+### Step 1: Install Core Dependencies
 
 1. **Homebrew** (package manager):
    ```bash
@@ -15,7 +14,23 @@ Before using these dotfiles, install the following:
    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
    ```
 
-3. **Additional Zsh plugins** (referenced in zshrc):
+### Step 2: Clone and Run Dotfiles Setup
+
+```bash
+git clone https://github.com/zzzbra/dotfiles.git ~/dotfiles
+cd ~/dotfiles && chmod +x makesymlinks.sh && ./makesymlinks.sh
+```
+
+After running the script, restart your terminal or run:
+```bash
+source ~/.zshrc
+```
+
+### Step 3: Install Additional Tools
+
+With Homebrew now in your PATH, install the remaining tools:
+
+1. **Zsh plugins**:
    ```bash
    # Install zsh-autosuggestions
    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
@@ -24,28 +39,17 @@ Before using these dotfiles, install the following:
    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
    ```
 
-4. **Neovim** (if using nvim config):
+2. **Development tools**:
    ```bash
    brew install neovim
-   ```
-
-5. **nvm** (Node version management):
-   ```bash
+   brew install pyenv
    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
    ```
 
-6. **pyenv** (Python version management):
+3. **Final step** - Source your shell to make all tools available:
    ```bash
-   brew install pyenv
+   source ~/.zshrc
    ```
-
-## Installation
-
-Once prerequisites are installed and the repository has been cloned to your home directory, run:
-
-```bash
-cd ~/dotfiles && chmod +x makesymlinks.sh && ./makesymlinks.sh
-```
 
 ## Project Structure & Conventions
 
