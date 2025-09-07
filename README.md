@@ -41,6 +41,7 @@ With Homebrew now in your PATH, install the remaining tools:
 
 2. **Development tools**:
    ```bash
+   brew install --cask git-credential-manager
    brew install neovim
    brew install pyenv
    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
