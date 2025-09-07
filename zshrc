@@ -65,16 +65,44 @@ plugins=(
 
 # User configuration
 
-DEFAULT_PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin"
-NPM_PATH="/usr/local/share/npm/bin"
-HEROKU_PATH="/usr/local/heroku/bin"
-RBENV_PATH="/Users/zzzbra/.rbenv/shims"
-GHC_PATH="/Applications/ghc-7.8.3.app/Contents/bin"
-CABAL_PATH="/Users/zzzbra/.cabal/bin"
-RUST_PATH="/Users/zzzbra/.cargo/bin"
-PYTHON_PATH="$(pyenv root)/shims"
+# Start with system defaults
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
-export PATH="$RUST_PATH:$CABAL_PATH:$PYTHON_PATH:$RBENV_PATH:$GHC_PATH:$HEROKU_PATH:$NPM_PATH:$DEFAULT_PATH"
+# Add Homebrew (works for both Intel and Apple Silicon)
+if [[ -f /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -f /usr/local/bin/brew ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# Add tools conditionally - only if they exist
+[[ -d "$HOME/.cargo/bin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
+[[ -d "$HOME/.cabal/bin" ]] && export PATH="$HOME/.cabal/bin:$PATH"
+[[ -d "$HOME/.rbenv/shims" ]] && export PATH="$HOME/.rbenv/shims:$PATH"
+[[ -d "/opt/X11/bin" ]] && export PATH="/opt/X11/bin:$PATH"
+
+# Pyenv (if installed)
+if command -v pyenv >/dev/null 2>&1; then
+    export PATH="$(pyenv root)/shims:$PATH"
+fi
+
+# NPM/Node handling
+# If using nvm, it will add its paths when sourced below
+# This is a fallback for system npm if nvm isn't being used
+if [[ ! -d "$HOME/.nvm" ]] && [[ -d "/usr/local/share/npm/bin" ]]; then
+    export PATH="/usr/local/share/npm/bin:$PATH"
+fi
+
+# NVM (Node Version Manager) - adds node/npm to PATH
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Heroku CLI (could be installed standalone or via Homebrew)
+[[ -d "/usr/local/heroku/bin" ]] && export PATH="/usr/local/heroku/bin:$PATH"
+
+# Legacy paths (kept for compatibility)
+[[ -d "/Applications/ghc-7.8.3.app/Contents/bin" ]] && export PATH="/Applications/ghc-7.8.3.app/Contents/bin:$PATH"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 source $ZSH/oh-my-zsh.sh
