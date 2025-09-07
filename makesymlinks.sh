@@ -76,7 +76,7 @@ echo ""
 echo -e "${BOLD}${CYAN}Setting up Git configuration:${RESET}"
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}"
 
-for gitfile in config ignore template; do
+for gitfile in config ignore gitmessage; do
     echo -e "\n${YELLOW}Processing: ${BOLD}git/$gitfile${RESET}"
     
     if [ -e ~/.git$gitfile ] || [ -L ~/.git$gitfile ]; then

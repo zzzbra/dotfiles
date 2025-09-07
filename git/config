@@ -12,13 +12,12 @@
 	smudge = git lfs smudge %f
 	required = true
 [init]
-	templateDir = ~/.git_template
 	defaultBranch = main
 [push]
 	autoSetupRemote = true
 [credential "https://dev.azure.com"]
 	useHttpPath = true
 [commit]
-	template = ~/.git_template
+	template = ~/.gitmessage
 [credential "https://git.mdbootstrap.com"]
 	provider = generic
