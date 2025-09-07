@@ -1,10 +1,41 @@
 # dotfiles
 
-Once the repository has been cloned to our home directory, simply change to the
-dotfiles directory, make the makesymlinks.sh script executable, and run the
-script, like so:
+## Prerequisites
 
-`cd ~/dotfiles && chmod +x makesymlinks.sh && ./makesymlinks.sh`
+### macOS Setup
+Before using these dotfiles, install the following:
+
+1. **Homebrew** (package manager):
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+
+2. **Oh My Zsh** (Zsh framework):
+   ```bash
+   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+   ```
+
+3. **Additional Zsh plugins** (referenced in zshrc):
+   ```bash
+   # Install zsh-autosuggestions
+   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+   
+   # Install zsh-syntax-highlighting
+   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+   ```
+
+4. **Neovim** (if using nvim config):
+   ```bash
+   brew install neovim
+   ```
+
+## Installation
+
+Once prerequisites are installed and the repository has been cloned to your home directory, run:
+
+```bash
+cd ~/dotfiles && chmod +x makesymlinks.sh && ./makesymlinks.sh
+```
 
 ## Project Structure & Conventions
 
