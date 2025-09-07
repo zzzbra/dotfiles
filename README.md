@@ -1,6 +1,13 @@
 # dotfiles
 
-## Installation
+## Quick Start
+
+```bash
+git clone https://github.com/zzzbra/dotfiles.git ~/dotfiles
+cd ~/dotfiles && ./install.sh
+```
+
+## Manual Installation
 
 ### Step 1: Install Core Dependencies
 
