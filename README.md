@@ -30,8 +30,11 @@ source ~/.zshrc
 
 With Homebrew now in your PATH, install the remaining tools:
 
-1. **Zsh plugins**:
+1. **Zsh theme and plugins**:
    ```bash
+   # Install Powerlevel10k theme
+   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+   
    # Install zsh-autosuggestions
    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
    
