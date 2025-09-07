@@ -1,0 +1,162 @@
+{
+  "editor.detectIndentation": false,
+  "editor.fontFamily": "Hack",
+  // "editor.fontFamily": "Berkeley Mono",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 12,
+  "editor.suggestSelection": "first",
+  "editor.linkedEditing": true,
+  "editor.rulers": [80],
+  "editor.tabSize": 2,
+  "editor.wrappingIndent": "none",
+  // "editor.codeActionsOnSave": {
+  //   "source.fixAll.eslint": "explicit"
+  // },
+
+  "gitlens.keymap": "chorded",
+  "gitlens.advanced.messages": {
+    "suppressGitDisabledWarning": true
+  },
+
+  // "terminal.integrated.fontFamily": "Hack",
+  // "terminal.integrated.fontFamily": "Berkeley Mono",
+  "terminal.integrated.fontFamily": "MesloLGS NF", // only one that renders powerline fonts well
+  "terminal.integrated.profiles.osx": {
+    "zsh": {
+      "path": "/usr/local/bin/zsh",
+      "args": []
+    }
+  },
+  "terminal.integrated.defaultProfile.osx": "bash",
+  "terminal.integrated.drawBoldTextInBrightColors": false,
+  "terminal.integrated.fontSize": 12,
+
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+
+  "window.autoDetectColorScheme": true,
+
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.startupEditor": "welcomePage",
+
+  "files.associations": {
+    "*.env.*": "env"
+  },
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "security.workspace.trust.untrustedFiles": "open",
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+    "yaml": false
+  },
+  "GitHooks.hooksDirectory": "/Users/zachbrady/dev/mobile-dashboard/.git/hooks",
+
+  // Language specific
+
+  "[javascript]": {
+    // "editor.defaultFormatter": "vscode.typescript-language-features",
+    // "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "eslint.alwaysShowStatus": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "npm.keybindingsChangedWarningShown": true,
+  "vsicons.dontShowNewVersionMessage": true,
+  "[rust]": {
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true
+  },
+  // Flutter Dart
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.rulers": [80],
+    "editor.selectionHighlight": false,
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": "off"
+  },
+  "dart.runPubGetOnPubspecChanges": "prompt",
+  "dart.flutterSdkPath": "/Users/zachbrady/fvm/default",
+  // "dart.flutterSdkPath": ".fvm/flutter_sdk,
+  // "dart.debugExternalPackageLibraries": true,
+  // "dart.debugSdkLibraries": true,
+  "dart.showInspectorNotificationsForWidgetErrors": false,
+  "dart.previewCommitCharacters": false,
+  "dart.debugExternalPackageLibraries": false,
+  "dart.debugSdkLibraries": false,
+
+  // Remove .fvm files from search
+  "search.exclude": {
+    "**/.fvm": true
+  },
+  // Remove from file watching
+  "files.watcherExclude": {
+    "**/.fvm": true
+  },
+
+  // Python
+  "[python]": {
+    "editor.formatOnType": true
+  },
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter-notebook"
+  },
+  "notebook.cellToolbarLocation": {
+    "default": "right",
+    "jupyter-notebook": "left"
+  },
+
+  "[java]": {
+    "editor.tabSize": 4,
+    "editor.rulers": [120],
+    "java.compile.nullAnalysis.mode": "disabled"
+  },
+
+  // C/C++
+  // "C_Cpp.commentContinuationPatterns": ["//", "/**"],
+  // "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 0 }",
+
+  // json
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+
+  // CSS
+  "stylelint.configFile": "./.stylelintrc.js",
+  "editor.lineNumbers": "relative",
+
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // Prisma
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  },
+  "prisma.fileWatcher": true,
+
+  "svelte.enable-ts-plugin": true,
+  "editor.inlineSuggest.enabled": true,
+  "workbench.iconTheme": "vscode-icons",
+  "workbench.editor.enablePreview": false,
+  "editor.guides.bracketPairs": true,
+  "githubPullRequests.pullBranch": "never",
+  "dart.openDevTools": "flutter",
+  "git.openRepositoryInParentFolders": "always",
+  "workbench.colorTheme": "Default Light Modern",
+  "github.copilot.editor.enableAutoCompletions": true,
+  "workbench.preferredLightColorTheme": "GitHub Light",
+}
