@@ -29,14 +29,14 @@ Before using these dotfiles, install the following:
    brew install neovim
    ```
 
-5. **pyenv** (Python version management):
-   ```bash
-   brew install pyenv
-   ```
-
-6. **nvm** (Node version management):
+5. **nvm** (Node version management):
    ```bash
    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+   ```
+
+6. **pyenv** (Python version management):
+   ```bash
+   brew install pyenv
    ```
 
 ## Installation
