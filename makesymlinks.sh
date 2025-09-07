@@ -131,15 +131,16 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     # Create VS Code CLI command symlink
     echo -e "\n${YELLOW}Creating VS Code CLI command...${RESET}"
     if [ -f "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" ]; then
-        # Check if /usr/local/bin exists, create if needed
-        if [ ! -d "/usr/local/bin" ]; then
-            echo -e "   ${WARNING} Creating /usr/local/bin directory...${RESET}"
-            sudo mkdir -p "/usr/local/bin"
+        # Check if ~/.local/bin exists, create if needed
+        if [ ! -d "$HOME/.local/bin" ]; then
+            echo -e "   ${INFO} Creating $HOME/.local/bin directory...${RESET}"
+            mkdir -p "$HOME/.local/bin"
         fi
         
-        # Create the symlink
-        if sudo ln -sf "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" "/usr/local/bin/code"; then
-            echo -e "   ${GREEN}${CHECK} VS Code CLI command installed: /usr/local/bin/code${RESET}"
+        # Create the symlink (no sudo needed for user directory)
+        if ln -sf "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" "$HOME/.local/bin/code"; then
+            echo -e "   ${GREEN}${CHECK} VS Code CLI command installed: $HOME/.local/bin/code${RESET}"
+            echo -e "   ${INFO} Make sure $HOME/.local/bin is in your PATH${RESET}"
         else
             echo -e "   ${RED}✗ Failed to create VS Code CLI symlink${RESET}"
         fi
