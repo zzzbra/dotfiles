@@ -160,13 +160,30 @@ fi
 # Development tools via Homebrew
 print_step "Installing development tools..."
 
-# Neovim
+# Neovim and dependencies
 if command_exists nvim; then
     print_success "Neovim is already installed"
 else
     print_step "Installing Neovim..."
     brew install neovim
     print_success "Neovim installed"
+fi
+
+# Neovim dependencies
+if command_exists rg; then
+    print_success "ripgrep is already installed"
+else
+    print_step "Installing ripgrep (for telescope)..."
+    brew install ripgrep
+    print_success "ripgrep installed"
+fi
+
+if command_exists cmake; then
+    print_success "cmake is already installed"
+else
+    print_step "Installing cmake (for telescope-fzf)..."
+    brew install cmake
+    print_success "cmake installed"
 fi
 
 # pyenv
