@@ -4,3 +4,6 @@
 vim/.netrwhist
 node_modules
 backups/
+
+# Neovim generated files
+packer_compiled.lua
