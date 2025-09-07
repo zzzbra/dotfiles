@@ -1,0 +1,46 @@
+# <type>: <subject> (50 chars or less)
+# Example: fix: resolve authentication error on login
+
+# <body> (Wrap at 72 chars)
+# Explain *what* changed and *why* (not how - the code shows that)
+
+
+# <footer>
+# Include any issue references, breaking changes, or co-authors
+
+
+# ──────────────────────────────────────────────────────────────────
+# Type can be:
+#   feat     - New feature
+#   fix      - Bug fix
+#   docs     - Documentation changes
+#   style    - Code style changes (formatting, semicolons, etc)
+#   refactor - Code refactoring (no functional changes)
+#   perf     - Performance improvements
+#   test     - Adding or updating tests
+#   build    - Build system or dependency changes
+#   ci       - CI/CD configuration changes
+#   chore    - Other changes that don't modify src or test files
+#
+# Best Practices:
+# - Use imperative mood ("add" not "added" or "adds")
+# - Don't end subject line with a period
+# - Separate subject from body with a blank line
+# - Focus on the "why" not the "what" in the body
+# - Reference issues and PRs in the footer
+#
+# Example commit message:
+# ──────────────────────────────────────────────────────────────────
+# feat: add user authentication with OAuth 2.0
+#
+# Implement OAuth 2.0 authentication to improve security and enable
+# single sign-on capabilities. This replaces the previous basic auth
+# system which had security limitations.
+#
+# The implementation uses the industry-standard oauth2 library and
+# supports Google, GitHub, and Microsoft providers.
+#
+# BREAKING CHANGE: Basic auth endpoints have been removed
+# Closes #123
+# Co-authored-by: Jane Doe <jane@example.com>
+# ──────────────────────────────────────────────────────────────────

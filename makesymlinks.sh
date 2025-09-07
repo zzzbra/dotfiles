@@ -27,7 +27,7 @@ dir=~/dotfiles
 # old dotfiles backup directory; use timestamp so we don't overwrite second oldest
 old_dir=~/dotfiles/backups/$(date +%s)                       
 # list of files/folders to symlink in homedir
-files="zshrc tmux.conf config/nvim gitconfig gitignore"         
+files="zshrc tmux.conf config/nvim"         
 
 # VS Code config directory (macOS specific)
 vscode_dir="$HOME/Library/Application Support/Code/User"
@@ -68,6 +68,25 @@ for file in $files; do
     
     ln -s $dir/$file ~/.$file
     echo -e "   ${GREEN}${CHECK} Created symlink: ~/.$file ${ARROW} $dir/$file${RESET}"
+done
+
+echo ""
+
+# Handle Git configuration
+echo -e "${BOLD}${CYAN}Setting up Git configuration:${RESET}"
+echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}"
+
+for gitfile in config ignore template; do
+    echo -e "\n${YELLOW}Processing: ${BOLD}git/$gitfile${RESET}"
+    
+    if [ -e ~/.git$gitfile ] || [ -L ~/.git$gitfile ]; then
+        echo -e "   ${WARNING} Found existing ~/.git$gitfile"
+        mv ~/.git$gitfile "$old_dir/" 2>/dev/null
+        echo -e "   ${ARROW} Backed up to $old_dir/"
+    fi
+    
+    ln -s $dir/git/$gitfile ~/.git$gitfile
+    echo -e "   ${GREEN}${CHECK} Created symlink: ~/.git$gitfile ${ARROW} $dir/git/$gitfile${RESET}"
 done
 
 echo ""
