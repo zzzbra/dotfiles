@@ -82,6 +82,14 @@ fi
 [[ -d "$HOME/.rbenv/shims" ]] && export PATH="$HOME/.rbenv/shims:$PATH"
 [[ -d "/opt/X11/bin" ]] && export PATH="/opt/X11/bin:$PATH"
 
+# Java/OpenJDK (checks for any installed version)
+for dir in /opt/homebrew/opt/openjdk*/bin(N) /usr/local/opt/openjdk*/bin(N); do
+    if [[ -d "$dir" ]]; then
+        export PATH="$dir:$PATH"
+        break
+    fi
+done
+
 # Pyenv (if installed)
 if command -v pyenv >/dev/null 2>&1; then
     export PATH="$(pyenv root)/shims:$PATH"
@@ -103,8 +111,11 @@ export NVM_DIR="$HOME/.nvm"
 [[ -d "/usr/local/heroku/bin" ]] && export PATH="/usr/local/heroku/bin:$PATH"
 
 # FVM (Flutter Version Manager)
-export PATH="$HOME/fvm/default/bin:$PATH"
-export PATH="$HOME/.pub-cache/bin:$PATH"
+[[ -d "$HOME/fvm/default/bin" ]] && export PATH="$HOME/fvm/default/bin:$PATH"
+[[ -d "$HOME/.pub-cache/bin" ]] && export PATH="$HOME/.pub-cache/bin:$PATH"
+
+# Maestro (Mobile UI testing)
+[[ -d "$HOME/.maestro/bin" ]] && export PATH="$HOME/.maestro/bin:$PATH"
 
 # Legacy paths (kept for compatibility)
 [[ -d "/Applications/ghc-7.8.3.app/Contents/bin" ]] && export PATH="/Applications/ghc-7.8.3.app/Contents/bin:$PATH"
@@ -158,7 +169,8 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+## [Completion]
+## Completion scripts setup. Remove the following line to uninstall
+[[ -f /Users/zachbrady/.dart-cli-completion/zsh-config.zsh ]] && . /Users/zachbrady/.dart-cli-completion/zsh-config.zsh || true
+## [/Completion]
 

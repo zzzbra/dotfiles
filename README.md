@@ -55,6 +55,10 @@ With Homebrew now in your PATH, install the remaining tools:
    brew install neovim
    brew install pyenv
    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+   
+   # Java/OpenJDK - install any version (PATH auto-configured)
+   brew install openjdk@17  # or openjdk@11, openjdk@21, openjdk (latest)
+   # To switch versions: brew unlink openjdk@17 && brew link openjdk@21
    ```
 
 3. **Final step** - Source your shell to make all tools available:
