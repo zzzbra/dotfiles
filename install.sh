@@ -214,6 +214,18 @@ else
     print_success "fvm installed"
 fi
 
+# Set up Flutter via FVM
+if [[ -L "$HOME/fvm/default" ]]; then
+    print_success "Flutter default version is already configured"
+else
+    print_step "Setting up Flutter via FVM..."
+    # Install stable Flutter version
+    fvm install stable
+    # Set it as the global default (creates the ~/fvm/default symlink)
+    fvm global stable
+    print_success "Flutter configured with stable version"
+fi
+
 # Final message
 print_header "Installation Complete!"
 
