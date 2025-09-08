@@ -101,6 +101,10 @@ export NVM_DIR="$HOME/.nvm"
 # Heroku CLI (could be installed standalone or via Homebrew)
 [[ -d "/usr/local/heroku/bin" ]] && export PATH="/usr/local/heroku/bin:$PATH"
 
+# FVM (Flutter Version Manager)
+export PATH="$HOME/fvm/default/bin:$PATH"
+export PATH="$HOME/.pub-cache/bin:$PATH"
+
 # Legacy paths (kept for compatibility)
 [[ -d "/Applications/ghc-7.8.3.app/Contents/bin" ]] && export PATH="/Applications/ghc-7.8.3.app/Contents/bin:$PATH"
 
