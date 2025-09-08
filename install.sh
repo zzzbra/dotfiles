@@ -204,6 +204,16 @@ else
     print_success "nvm installed"
 fi
 
+# fvm (Flutter Version Manager)
+if command_exists fvm; then
+    print_success "fvm is already installed"
+else
+    print_step "Installing fvm (Flutter Version Manager)..."
+    brew tap leoafarias/fvm
+    brew install fvm
+    print_success "fvm installed"
+fi
+
 # Final message
 print_header "Installation Complete!"
 
@@ -212,6 +222,7 @@ echo "  1. Restart your terminal or run: source ~/.zshrc"
 echo "  2. Configure Powerlevel10k by running: p10k configure"
 echo "  3. Install a Node.js version with: nvm install node"
 echo "  4. Install a Python version with: pyenv install 3.11"
+echo "  5. Install Flutter with: fvm install stable && fvm global stable"
 echo ""
 print_success "Your development environment is ready!"
 echo ""
