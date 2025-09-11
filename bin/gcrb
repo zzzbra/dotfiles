@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+# gcrb - Git Checkout Recent Branch
+# Interactively select and checkout one of your recently used git branches
+
+# Check if we're in a git repository
+if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+    echo "Error: Not in a git repository" >&2
+    exit 1
+fi
+
+# Check if fzf is installed
+if ! command -v fzf &>/dev/null; then
+    echo "Error: fzf is not installed. Please install it first:" >&2
+    echo "  brew install fzf" >&2
+    exit 1
+fi
+
+# Get the current branch name
+current_branch=$(git branch --show-current)
+
+# Get recent branches (excluding current branch)
+# Using git for-each-ref to get branches sorted by committer date
+recent_branches=$(git for-each-ref --count=10 --sort=-committerdate refs/heads/ \
+    --format='%(refname:short) %(committerdate:relative) %(subject)' | \
+    grep -v "^${current_branch} " | \
+    column -t -s $'\t')
+
+# If no other branches found
+if [ -z "$recent_branches" ]; then
+    echo "No other branches found" >&2
+    exit 1
+fi
+
+# Use fzf to select a branch
+selected=$(echo "$recent_branches" | \
+    fzf --height=40% \
+        --reverse \
+        --header="Select a branch to checkout (current: $current_branch)" \
+        --preview="git log --oneline --graph --max-count=20 {1}" \
+        --preview-window=right:50%:wrap | \
+    awk '{print $1}')
+
+# If a branch was selected, check it out
+if [ -n "$selected" ]; then
+    echo "Switching to branch: $selected"
+    git checkout "$selected"
+else
+    echo "No branch selected"
+fi
