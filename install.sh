@@ -178,6 +178,15 @@ else
     print_success "ripgrep installed"
 fi
 
+# fzf - fuzzy finder (required for gcrb script)
+if command_exists fzf; then
+    print_success "fzf is already installed"
+else
+    print_step "Installing fzf (fuzzy finder)..."
+    brew install fzf
+    print_success "fzf installed"
+fi
+
 if command_exists cmake; then
     print_success "cmake is already installed"
 else
