@@ -15,6 +15,16 @@
 	defaultBranch = main
 [push]
 	autoSetupRemote = true
+# Pull configuration for managing dotfiles across multiple computers
+# Using rebase instead of merge keeps a clean, linear history
+# This is especially useful for personal repos like dotfiles where:
+# - You're often the only contributor
+# - You make quick updates from different machines
+# - You want to avoid unnecessary merge commits cluttering the history
+# With this setting, 'git pull' automatically rebases your local changes
+# on top of the remote changes, keeping everything tidy
+[pull]
+	rebase = true
 [credential "https://dev.azure.com"]
 	useHttpPath = true
 [commit]
