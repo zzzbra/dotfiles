@@ -165,6 +165,9 @@ alias reload="source ~/.zshrc && clear"
 # places
 alias scratch="cd ~/dev/scratch"
 
+# Tailscale helper
+alias ts="~/dotfiles/scripts/tailscale-setup.sh"
+
 # pyenv
 eval "$(pyenv init -)"
 
