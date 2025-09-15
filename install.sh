@@ -204,6 +204,15 @@ else
     print_success "pyenv installed"
 fi
 
+# rbenv
+if command_exists rbenv; then
+    print_success "rbenv is already installed"
+else
+    print_step "Installing rbenv..."
+    brew install rbenv
+    print_success "rbenv installed"
+fi
+
 # nvm
 if [[ -d "$HOME/.nvm" ]]; then
     print_success "nvm is already installed"
@@ -243,7 +252,8 @@ echo "  1. Restart your terminal or run: source ~/.zshrc"
 echo "  2. Configure Powerlevel10k by running: p10k configure"
 echo "  3. Install a Node.js version with: nvm install node"
 echo "  4. Install a Python version with: pyenv install 3.11"
-echo "  5. Install Flutter with: fvm install stable && fvm global stable"
+echo "  5. Install a Ruby version with: rbenv install 3.2.2"
+echo "  6. Install Flutter with: fvm install stable && fvm global stable"
 echo ""
 print_success "Your development environment is ready!"
 echo ""
