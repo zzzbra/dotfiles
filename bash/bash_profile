@@ -298,6 +298,13 @@ source /usr/local/opt/nvm/nvm.sh
 
 
 # =================
-# Python 
+# Python
 # =================
 export PYENV_ROOT="$HOME/.pyenv"
+
+# =================
+# Ruby
+# =================
+if command -v rbenv >/dev/null 2>&1; then
+    eval "$(rbenv init -)"
+fi
