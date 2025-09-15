@@ -223,6 +223,18 @@ else
     print_success "fvm installed"
 fi
 
+# Tailscale
+if command_exists tailscale; then
+    print_success "Tailscale is already installed"
+else
+    print_step "Installing Tailscale..."
+    brew install tailscale
+    print_success "Tailscale installed"
+    print_info "Starting Tailscale service..."
+    brew services start tailscale
+    print_warning "Run 'sudo tailscale up' to authenticate with Tailscale"
+fi
+
 # Set up Flutter via FVM
 if [[ -L "$HOME/fvm/default" ]]; then
     print_success "Flutter default version is already configured"
@@ -244,6 +256,7 @@ echo "  2. Configure Powerlevel10k by running: p10k configure"
 echo "  3. Install a Node.js version with: nvm install node"
 echo "  4. Install a Python version with: pyenv install 3.11"
 echo "  5. Install Flutter with: fvm install stable && fvm global stable"
+echo "  6. Authenticate with Tailscale: sudo tailscale up"
 echo ""
 print_success "Your development environment is ready!"
 echo ""
