@@ -1,12 +1,15 @@
--- Load plugins first
-require("aslan.plugins")
+-- Set leader key BEFORE loading plugins
+vim.g.mapleader = " "
+
+-- Load plugins (using lazy.nvim)
+require("aslan.lazy")
 
 ---------------------------------------------------------------------
 --------------------------- OPTIONS ---------------------------------
 ---------------------------------------------------------------------
 -- disable netrw at the very start of your init.lua (strongly advised)
--- vim.g.loaded_netrw = 1
--- vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 -- set termguicolors to enable highlight groups
 vim.opt.termguicolors = true
@@ -31,8 +34,8 @@ vim.opt.incsearch = true
 
 vim.opt.clipboard = "unnamedplus"
 
--- set leader
-vim.g.mapleader = " "
+-- Increase timeout for leader key combinations
+vim.opt.timeoutlen = 500
 
 -- copilot
 vim.g.copilot_assume_mapped = true

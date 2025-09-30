@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/zachbrady/.local/share/nvim/**)",
+      "Bash(nvim:*)",
+      "Bash(git describe:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

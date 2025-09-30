@@ -97,9 +97,9 @@ When running `makesymlinks.sh`, existing configurations are automatically backed
 - [ ] follow .config/ directory convention
 - [ ] explore yadm for dotfiles management
 - [ ] investigate mise/asdf for runtime version management
-- [ ] fix neovim issues
+- [x] fix neovim issues (migrated to lazy.nvim, updated deprecated plugins)
 - [ ] make entirety of dotfiles work on Linux machines
-- [ ] investigate https://www.lazyvim.org/ for Neovim configuration
+- [x] investigate https://www.lazyvim.org/ for Neovim configuration (investigated LazyVim, opted to modernize existing config with lazy.nvim instead)
 - [x] replace vim with neovim config
 - [x] replace bash with zsh config
 - [x] add VS Code configuration support
