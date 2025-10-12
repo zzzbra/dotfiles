@@ -54,6 +54,7 @@ With Homebrew now in your PATH, install the remaining tools:
    brew install --cask git-credential-manager
    brew install neovim
    brew install pyenv
+   brew install rbenv
    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
