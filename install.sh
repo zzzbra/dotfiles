@@ -63,6 +63,74 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
+# Install a brew package if not already installed
+install_brew_package() {
+    local package="$1"
+    local name="${2:-$package}"  # Use package name as display name if not provided
+
+    if command_exists "$package"; then
+        print_success "$name is already installed"
+    else
+        print_step "Installing $name..."
+        brew install "$package"
+        if command_exists "$package"; then
+            print_success "$name installed"
+        else
+            print_warning "Failed to verify $name installation"
+        fi
+    fi
+}
+
+# Install a brew cask if not already installed
+install_brew_cask() {
+    local cask="$1"
+    local name="${2:-$cask}"  # Use cask name as display name if not provided
+
+    if brew list --cask "$cask" &>/dev/null; then
+        print_success "$name is already installed"
+    else
+        print_step "Installing $name..."
+        brew install --cask "$cask"
+        print_success "$name installed"
+    fi
+}
+
+# Install a brew tap package if not already installed
+install_brew_tap_package() {
+    local tap="$1"
+    local package="$2"
+    local name="${3:-$package}"  # Use package name as display name if not provided
+
+    if command_exists "$package"; then
+        print_success "$name is already installed"
+    else
+        print_step "Installing $name..."
+        brew tap "$tap"
+        brew install "$package"
+        if command_exists "$package"; then
+            print_success "$name installed"
+        else
+            print_warning "Failed to verify $name installation"
+        fi
+    fi
+}
+
+# Clone a git repository if not already present
+clone_git_repo() {
+    local repo_url="$1"
+    local target_dir="$2"
+    local name="$3"
+    local clone_args="${4:-}"  # Optional additional clone arguments
+
+    if [[ -d "$target_dir" ]]; then
+        print_success "$name is already installed"
+    else
+        print_step "Installing $name..."
+        git clone $clone_args "$repo_url" "$target_dir"
+        print_success "$name installed"
+    fi
+}
+
 # Main installation flow
 print_header "Dotfiles Installation"
 
@@ -91,13 +159,7 @@ else
 fi
 
 # Install Git Credential Manager
-if brew list --cask git-credential-manager &>/dev/null; then
-    print_success "Git Credential Manager is already installed"
-else
-    print_step "Installing Git Credential Manager..."
-    brew install --cask git-credential-manager
-    print_success "Git Credential Manager installed"
-fi
+install_brew_cask "git-credential-manager" "Git Credential Manager"
 
 # Step 2: Install Oh My Zsh
 if [[ -d "$HOME/.oh-my-zsh" ]]; then
@@ -130,88 +192,34 @@ print_section "Step 3: Development Tools"
 print_step "Installing Zsh customizations..."
 
 # Powerlevel10k
-if [[ -d "$HOME/powerlevel10k" ]]; then
-    print_success "Powerlevel10k is already installed"
-else
-    print_step "Installing Powerlevel10k theme..."
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-    print_success "Powerlevel10k installed"
-fi
+clone_git_repo "https://github.com/romkatv/powerlevel10k.git" "$HOME/powerlevel10k" "Powerlevel10k" "--depth=1"
 
 # Zsh plugins
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
-if [[ -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]]; then
-    print_success "zsh-autosuggestions is already installed"
-else
-    print_step "Installing zsh-autosuggestions..."
-    git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
-    print_success "zsh-autosuggestions installed"
-fi
+clone_git_repo "https://github.com/zsh-users/zsh-autosuggestions" "$ZSH_CUSTOM/plugins/zsh-autosuggestions" "zsh-autosuggestions"
 
-if [[ -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]]; then
-    print_success "zsh-syntax-highlighting is already installed"
-else
-    print_step "Installing zsh-syntax-highlighting..."
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
-    print_success "zsh-syntax-highlighting installed"
-fi
+clone_git_repo "https://github.com/zsh-users/zsh-syntax-highlighting.git" "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" "zsh-syntax-highlighting"
 
 # Development tools via Homebrew
 print_step "Installing development tools..."
 
 # Neovim and dependencies
-if command_exists nvim; then
-    print_success "Neovim is already installed"
-else
-    print_step "Installing Neovim..."
-    brew install neovim
-    print_success "Neovim installed"
-fi
+install_brew_package "neovim" "Neovim"
 
 # Neovim dependencies
-if command_exists rg; then
-    print_success "ripgrep is already installed"
-else
-    print_step "Installing ripgrep (for telescope)..."
-    brew install ripgrep
-    print_success "ripgrep installed"
-fi
+install_brew_package "ripgrep" "ripgrep"
 
 # fzf - fuzzy finder (required for gcrb script)
-if command_exists fzf; then
-    print_success "fzf is already installed"
-else
-    print_step "Installing fzf (fuzzy finder)..."
-    brew install fzf
-    print_success "fzf installed"
-fi
+install_brew_package "fzf" "fzf (fuzzy finder)"
 
-if command_exists cmake; then
-    print_success "cmake is already installed"
-else
-    print_step "Installing cmake (for telescope-fzf)..."
-    brew install cmake
-    print_success "cmake installed"
-fi
+install_brew_package "cmake" "cmake (for telescope-fzf)"
 
 # pyenv
-if command_exists pyenv; then
-    print_success "pyenv is already installed"
-else
-    print_step "Installing pyenv..."
-    brew install pyenv
-    print_success "pyenv installed"
-fi
+install_brew_package "pyenv" "pyenv"
 
 # rbenv
-if command_exists rbenv; then
-    print_success "rbenv is already installed"
-else
-    print_step "Installing rbenv..."
-    brew install rbenv
-    print_success "rbenv installed"
-fi
+install_brew_package "rbenv" "rbenv"
 
 # rustup
 if command_exists rustup; then
@@ -232,14 +240,7 @@ else
 fi
 
 # fvm (Flutter Version Manager)
-if command_exists fvm; then
-    print_success "fvm is already installed"
-else
-    print_step "Installing fvm (Flutter Version Manager)..."
-    brew tap leoafarias/fvm
-    brew install fvm
-    print_success "fvm installed"
-fi
+install_brew_tap_package "leoafarias/fvm" "fvm" "fvm (Flutter Version Manager)"
 
 # Set up Flutter via FVM
 if [[ -L "$HOME/fvm/default" ]]; then
