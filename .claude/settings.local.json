@@ -3,7 +3,11 @@
     "allow": [
       "Read(//Users/zachbrady/.local/share/nvim/**)",
       "Bash(nvim:*)",
-      "Bash(git describe:*)"
+      "Bash(git describe:*)",
+      "Bash(rustup --version)",
+      "Bash(rustc --version)",
+      "Bash(brew list:*)",
+      "Bash(rustup --help)"
     ],
     "deny": [],
     "ask": []
