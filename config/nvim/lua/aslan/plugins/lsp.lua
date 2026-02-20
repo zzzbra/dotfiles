@@ -1,17 +1,4 @@
 return {
-  -- LSP Zero
-  {
-    'VonHeikemen/lsp-zero.nvim',
-    branch = 'v3.x',
-    lazy = true,
-    config = false,
-    init = function()
-      -- Disable automatic setup, we are doing it manually
-      vim.g.lsp_zero_extend_cmp = 0
-      vim.g.lsp_zero_extend_lspconfig = 0
-    end,
-  },
-
   -- Autocompletion
   {
     'hrsh7th/nvim-cmp',
@@ -26,11 +13,8 @@ return {
       { 'rafamadriz/friendly-snippets' },
     },
     config = function()
-      local lsp_zero = require('lsp-zero')
-      lsp_zero.extend_cmp()
-
       local cmp = require('cmp')
-      local cmp_action = lsp_zero.cmp_action()
+      local luasnip = require('luasnip')
 
       require('luasnip.loaders.from_vscode').lazy_load()
 
@@ -46,8 +30,12 @@ return {
           ['<C-Space>'] = cmp.mapping.complete(),
           ['<C-u>'] = cmp.mapping.scroll_docs(-4),
           ['<C-d>'] = cmp.mapping.scroll_docs(4),
-          ['<C-f>'] = cmp_action.luasnip_jump_forward(),
-          ['<C-b>'] = cmp_action.luasnip_jump_backward(),
+          ['<C-f>'] = function(fallback)
+            if luasnip.jumpable(1) then luasnip.jump(1) else fallback() end
+          end,
+          ['<C-b>'] = function(fallback)
+            if luasnip.jumpable(-1) then luasnip.jump(-1) else fallback() end
+          end,
         }),
         snippet = {
           expand = function(args)
@@ -61,73 +49,43 @@ return {
   -- LSP
   {
     'neovim/nvim-lspconfig',
-    cmd = { 'LspInfo', 'LspInstall', 'LspStart' },
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       { 'hrsh7th/cmp-nvim-lsp' },
       { 'williamboman/mason-lspconfig.nvim' },
     },
     config = function()
-      local lsp_zero = require('lsp-zero')
-      lsp_zero.extend_lspconfig()
+      -- Apply nvim-cmp capabilities to all servers
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+      vim.lsp.config('*', { capabilities = capabilities })
 
-      lsp_zero.on_attach(function(client, bufnr)
-        -- lsp_zero.default_keymaps({ buffer = bufnr })
-      end)
-
-      require('mason-lspconfig').setup({
-        ensure_installed = {
-          'ts_ls',        -- Updated from tsserver
-          'rust_analyzer',
-          'pyright',
-          'jsonls',
-          'lua_ls',
+      -- Lua LSP
+      vim.lsp.config('lua_ls', {
+        settings = {
+          Lua = {
+            runtime = { version = 'LuaJIT' },
+            diagnostics = { globals = { 'vim' } },
+            workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+            telemetry = { enable = false },
+          },
         },
-        handlers = {
-          lsp_zero.default_setup,
-
-          -- Lua LSP custom config
-          lua_ls = function()
-            require('lspconfig').lua_ls.setup({
-              settings = {
-                Lua = {
-                  runtime = {
-                    version = 'LuaJIT',
-                  },
-                  diagnostics = {
-                    globals = { 'vim' },
-                  },
-                  workspace = {
-                    library = vim.api.nvim_get_runtime_file("", true),
-                  },
-                  telemetry = {
-                    enable = false,
-                  },
-                },
-              },
-            })
-          end,
-
-          -- Python LSP custom config
-          pyright = function()
-            require('lspconfig').pyright.setup({
-              settings = {
-                python = {
-                  analysis = {
-                    autoImportCompletions = true,
-                    diagnosticMode = "openFilesOnly",
-                    typeCheckingMode = "off",
-                    autoSearchPaths = true,
-                    useLibraryCodeForTypes = true,
-                  },
-                },
-              },
-            })
-          end,
-        }
       })
 
-      -- Diagnostic config
+      -- Python LSP
+      vim.lsp.config('pyright', {
+        settings = {
+          python = {
+            analysis = {
+              autoImportCompletions = true,
+              diagnosticMode = "openFilesOnly",
+              typeCheckingMode = "off",
+              autoSearchPaths = true,
+              useLibraryCodeForTypes = true,
+            },
+          },
+        },
+      })
+
       vim.diagnostic.config({
         virtual_text = true,
         signs = true,
@@ -149,10 +107,19 @@ return {
     end,
   },
 
-  -- Mason LSP config
+  -- Mason LSP config (v2+: uses vim.lsp.enable, requires Nvim 0.11+)
   {
     'williamboman/mason-lspconfig.nvim',
     lazy = true,
+    opts = {
+      ensure_installed = {
+        'ts_ls',
+        'rust_analyzer',
+        'pyright',
+        'jsonls',
+        'lua_ls',
+      },
+    },
   },
 
   -- None-ls (null-ls replacement)
@@ -164,11 +131,10 @@ return {
     },
     config = function()
       local null_ls = require("null-ls")
-
       null_ls.setup({
         sources = {
-          null_ls.builtins.formatting.black, -- python code formatting
-          null_ls.builtins.formatting.isort, -- python import sorting
+          null_ls.builtins.formatting.black,
+          null_ls.builtins.formatting.isort,
         }
       })
     end,
