@@ -133,7 +133,7 @@ return {
 
   -- Leap motion plugin
   {
-    "ggandor/leap.nvim",
+    url = "https://codeberg.org/andyg/leap.nvim",
     event = "VeryLazy",
     config = function()
       require("leap").set_default_keymaps()
