@@ -160,7 +160,7 @@ fi
 # Development tools via Homebrew
 print_step "Installing development tools..."
 
-# Neovim and dependencies
+# Neovim and dependencies (requires >= 0.11 for mason-lspconfig v2+ and nvim-lspconfig v3+)
 if command_exists nvim; then
     print_success "Neovim is already installed"
 else
