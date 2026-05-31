@@ -184,3 +184,6 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 [[ -f /Users/zachbrady/.dart-cli-completion/zsh-config.zsh ]] && . /Users/zachbrady/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
 
+# Local secrets (not version controlled)
+[[ -f ~/.secrets ]] && source ~/.secrets
+

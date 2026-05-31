@@ -49,6 +49,7 @@ Thumbs.db
 # API credentials
 #####################################
 api_keys
+.secrets
 
 # Project Files
 #####################################
