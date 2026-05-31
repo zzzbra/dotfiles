@@ -123,6 +123,17 @@ fi
 # Configuration is ready (user needs to source it in zsh)
 print_success "Dotfiles configured successfully"
 
+# Load LaunchAgents (macOS only)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    print_step "Loading LaunchAgents..."
+    OLLAMA_ENV_PLIST="$HOME/Library/LaunchAgents/com.user.ollama-env.plist"
+    if [[ -f "$OLLAMA_ENV_PLIST" ]]; then
+        launchctl unload "$OLLAMA_ENV_PLIST" 2>/dev/null
+        launchctl load "$OLLAMA_ENV_PLIST"
+        print_success "LaunchAgents loaded"
+    fi
+fi
+
 # Step 4: Install additional tools
 print_section "Step 3: Development Tools"
 

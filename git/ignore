@@ -54,3 +54,5 @@ api_keys
 #####################################
 node_modules/
 
+
+**/.claude/settings.local.json
