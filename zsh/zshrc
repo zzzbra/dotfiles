@@ -187,3 +187,5 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 # Local secrets (not version controlled)
 [[ -f ~/.secrets ]] && source ~/.secrets
 
+# opencode
+export PATH="$HOME/.opencode/bin:$PATH"
