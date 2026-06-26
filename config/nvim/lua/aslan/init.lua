@@ -60,9 +60,10 @@ vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
--- insert line below without entering insert mode
-vim.keymap.set("n","<C-j>", "o<Esc>")
-vim.keymap.set("n", "<C-k>", "O<Esc>")
+-- insert blank line below/above without entering insert mode
+-- (rehomed from <C-j>/<C-k>, owned by vim-tmux-navigator for split/pane nav)
+vim.keymap.set("n", "<leader>o", "o<Esc>", { desc = "Blank line below" })
+vim.keymap.set("n", "<leader>O", "O<Esc>", { desc = "Blank line above" })
 
 -- toggle absolute line numbers
 vim.keymap.set("n", "<leader>l", ":set rnu!<CR>")
@@ -82,22 +83,9 @@ vim.keymap.set("n", "<C-s>", ":w<CR>")
 -- disable Q
 vim.keymap.set("n", "Q", "<nop>")
 
--- split/join
-vim.keymap.set("n", "gs", "<cmd>lua require('treesj').toggle()<CR>")
-
--- harpoon
-vim.keymap.set("n", "<leader>0", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>")
-vim.keymap.set("n", "<leader>`", "<cmd>lua require('harpoon.mark').add_file()<CR>")
-vim.keymap.set("n", "<leader>1", "<cmd>lua require('harpoon.ui').nav_file(1)<CR>")
-vim.keymap.set("n", "<leader>2", "<cmd>lua require('harpoon.ui').nav_file(2)<CR>")
-vim.keymap.set("n", "<leader>3", "<cmd>lua require('harpoon.ui').nav_file(3)<CR>")
-vim.keymap.set("n", "<leader>4", "<cmd>lua require('harpoon.ui').nav_file(4)<CR>")
-vim.keymap.set("n", "<leader>5", "<cmd>lua require('harpoon.ui').nav_file(5)<CR>")
-
--- nvimtree
--- vim.keymap.set("n", "<leader>e", vim.cmd.Ex) -- netrw disabled
-vim.keymap.set("n", "<leader>e", "<cmd>:NvimTreeFindFile<CR>zz")
-vim.keymap.set("n", "<C-n>", "<cmd>:NvimTreeToggle<CR>")
+-- NOTE: treesj (gs), harpoon (<leader>0/`/1-5), and nvim-tree (<leader>e, <C-n>)
+-- keymaps now live in their plugin specs under lua/aslan/plugins/ via `keys = {}`.
+-- Defining them here too shadowed the specs and blocked lazy-loading.
 
 -- lazygit open in new window
 vim.keymap.set("n", "<leader>gg", ":!tmux new-window -c " .. vim.fn.getcwd() .. " -- lazygit <CR><CR>", { silent = true })
@@ -105,21 +93,16 @@ vim.keymap.set("n", "<leader>gg", ":!tmux new-window -c " .. vim.fn.getcwd() .. 
 -- github copilot
 vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
 
--- lsp
-vim.keymap.set("n", "gd", "<cmd>:lua vim.lsp.buf.definition()<CR>")
-vim.keymap.set("n", "gr", "<cmd>:lua vim.lsp.buf.references()<CR>")
+-- lsp (gd/gr live in the telescope spec: lsp_definitions / lsp_references)
 vim.keymap.set("n", "<leader>f", "<cmd>:lua vim.lsp.buf.format({ timeout_ms = 5000 })<CR>")
 vim.keymap.set("n", "<leader>.", "<cmd>:lua vim.lsp.buf.code_action()<CR>")
 vim.keymap.set("v", "<leader>.", "<cmd>:lua vim.lsp.buf.range_code_action()<CR>")
 vim.keymap.set("n", "<leader>d", "<cmd>:lua vim.diagnostic.open_float()<CR>")
 
--- diffview
-vim.keymap.set("n", "<leader>dv", "<cmd>:DiffviewOpen<CR>")
+-- diffview keymap (<leader>gv) lives in the diffview.nvim spec
 vim.keymap.set("n", "<leader><Esc>", "<cmd>:tabclose<CR>")
 
--- Flutter
-vim.keymap.set("n", "<leader>Fr", "<cmd>:FlutterRun --flavor dev<CR>")
-vim.keymap.set("n", "<leader>Fo", "<cmd>:FlutterOutlineToggle<CR>")
+-- Flutter keymaps (<leader>Fr/<leader>Fo) live in the flutter-tools spec.
 
 ---------------------------------------------------------------------
 --------------------------- AUTOCOMMANDS ----------------------------
