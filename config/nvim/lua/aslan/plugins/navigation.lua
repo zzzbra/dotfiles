@@ -34,10 +34,10 @@ return {
       require("telescope").setup({
         pickers = {
           find_files = {
+            -- show dotfiles (.github, .env.example, ...) but still respect
+            -- .gitignore so node_modules/build artifacts stay out of results
             hidden = true,
             follow = true,
-            no_ignore = true,
-            no_ignore_parent = true,
           },
           git_files = {
             hidden = true,
