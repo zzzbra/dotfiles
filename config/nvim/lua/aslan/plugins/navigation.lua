@@ -71,26 +71,23 @@ return {
     end,
   },
 
-  -- Harpoon for quick file navigation
+  -- Harpoon (v2) for quick file navigation
   {
     "ThePrimeagen/harpoon",
+    branch = "harpoon2",
     dependencies = { "nvim-lua/plenary.nvim" },
     keys = {
-      { "<leader>0", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>", desc = "Harpoon menu" },
-      { "<leader>`", "<cmd>lua require('harpoon.mark').add_file()<cr>", desc = "Harpoon mark file" },
-      { "<leader>1", "<cmd>lua require('harpoon.ui').nav_file(1)<cr>", desc = "Harpoon file 1" },
-      { "<leader>2", "<cmd>lua require('harpoon.ui').nav_file(2)<cr>", desc = "Harpoon file 2" },
-      { "<leader>3", "<cmd>lua require('harpoon.ui').nav_file(3)<cr>", desc = "Harpoon file 3" },
-      { "<leader>4", "<cmd>lua require('harpoon.ui').nav_file(4)<cr>", desc = "Harpoon file 4" },
-      { "<leader>5", "<cmd>lua require('harpoon.ui').nav_file(5)<cr>", desc = "Harpoon file 5" },
+      { "<leader>`", function() require("harpoon"):list():add() end, desc = "Harpoon mark file" },
+      { "<leader>0", function() local h = require("harpoon"); h.ui:toggle_quick_menu(h:list()) end, desc = "Harpoon menu" },
+      { "<leader>1", function() require("harpoon"):list():select(1) end, desc = "Harpoon file 1" },
+      { "<leader>2", function() require("harpoon"):list():select(2) end, desc = "Harpoon file 2" },
+      { "<leader>3", function() require("harpoon"):list():select(3) end, desc = "Harpoon file 3" },
+      { "<leader>4", function() require("harpoon"):list():select(4) end, desc = "Harpoon file 4" },
+      { "<leader>5", function() require("harpoon"):list():select(5) end, desc = "Harpoon file 5" },
     },
     config = function()
-      local w = math.floor(vim.api.nvim_win_get_width(0) * 0.65)
-      require("harpoon").setup({
-        menu = {
-          width = w,
-        }
-      })
+      -- v2 default menu width ratio (~0.63) matches the old 0.65; no override needed
+      require("harpoon"):setup()
     end,
   },
 
