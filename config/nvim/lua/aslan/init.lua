@@ -94,7 +94,8 @@ vim.keymap.set("n", "<leader>gg", ":!tmux new-window -c " .. vim.fn.getcwd() .. 
 vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
 
 -- lsp (gd/gr live in the telescope spec: lsp_definitions / lsp_references)
-vim.keymap.set("n", "<leader>f", "<cmd>:lua vim.lsp.buf.format({ timeout_ms = 5000 })<CR>")
+-- <leader>f (format) now lives in the conform spec (plugins/formatting.lua):
+-- it dispatches per-project and falls back to LSP formatting when uncfg'd.
 vim.keymap.set("n", "<leader>.", "<cmd>:lua vim.lsp.buf.code_action()<CR>")
 vim.keymap.set("v", "<leader>.", "<cmd>:lua vim.lsp.buf.range_code_action()<CR>")
 vim.keymap.set("n", "<leader>d", "<cmd>:lua vim.diagnostic.open_float()<CR>")

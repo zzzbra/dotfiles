@@ -122,20 +122,22 @@ return {
     },
   },
 
-  -- None-ls (null-ls replacement)
+  -- Mason tool installer: declaratively ensure non-LSP binaries (formatters,
+  -- linters) are installed, so the dotfiles fully describe the toolchain.
+  -- Formatting itself is dispatched by conform (see plugins/formatting.lua),
+  -- which honors each project's committed config. none-ls was retired here:
+  -- it ran black/isort unconditionally as a fake LSP; conform gates them.
   {
-    "nvimtools/none-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = { "williamboman/mason.nvim" },
     config = function()
-      local null_ls = require("null-ls")
-      null_ls.setup({
-        sources = {
-          null_ls.builtins.formatting.black,
-          null_ls.builtins.formatting.isort,
-        }
+      require("mason-tool-installer").setup({
+        ensure_installed = {
+          "ruff",      -- python: format + organize-imports (black/isort superset)
+          "black",     -- python: honored when a project commits [tool.black]
+          "isort",     -- python: honored alongside black
+          "prettierd", -- js/ts/json/css/html: honored when a project commits prettier
+        },
       })
     end,
   },
