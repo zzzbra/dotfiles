@@ -1,0 +1,11 @@
+# ~/.zlogout — runs when a login shell exits.
+# Picks a random farewell banner from ~/.config/shell-logout/ (a symlink to
+# dotfiles/zsh/logout). Drop more executable *.sh banners in there to grow
+# the rotation. See you, space cowboy...
+_logout_dir="$HOME/.config/shell-logout"
+_banner="$(ls "$_logout_dir"/*.sh 2>/dev/null | sort -R | head -n1)"
+if [ -n "$_banner" ] && [ -x "$_banner" ]; then
+  "$_banner"
+  sleep 1
+fi
+unset _logout_dir _banner
