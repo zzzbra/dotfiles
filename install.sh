@@ -206,6 +206,25 @@ else
     print_success "cmake installed"
 fi
 
+# git-lfs (needed for repos with LFS-tracked media)
+if command_exists git-lfs; then
+    print_success "git-lfs is already installed"
+else
+    print_step "Installing git-lfs..."
+    brew install git-lfs
+    git lfs install
+    print_success "git-lfs installed"
+fi
+
+# google-cloud-sdk (gcloud CLI; PATH/completion sourced in zshrc)
+if brew list --cask gcloud-cli &>/dev/null; then
+    print_success "gcloud CLI is already installed"
+else
+    print_step "Installing gcloud CLI..."
+    brew install --cask gcloud-cli
+    print_success "gcloud CLI installed"
+fi
+
 # pyenv
 if command_exists pyenv; then
     print_success "pyenv is already installed"
