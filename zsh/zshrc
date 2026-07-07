@@ -189,3 +189,7 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 # opencode
 export PATH="$HOME/.opencode/bin:$PATH"
+
+# google-cloud-sdk (brew cask gcloud-cli)
+[[ -f /usr/local/share/google-cloud-sdk/path.zsh.inc ]] && source /usr/local/share/google-cloud-sdk/path.zsh.inc
+[[ -f /usr/local/share/google-cloud-sdk/completion.zsh.inc ]] && source /usr/local/share/google-cloud-sdk/completion.zsh.inc
