@@ -283,6 +283,20 @@ else
     print_success "Flutter configured with stable version"
 fi
 
+# Claude Code MCP servers
+if command_exists claude; then
+    if claude mcp get notion &>/dev/null; then
+        print_success "Notion MCP server is already configured"
+    else
+        print_step "Adding Notion MCP server to Claude Code (user scope)..."
+        claude mcp add --transport http --scope user notion https://mcp.notion.com/mcp
+        print_success "Notion MCP server added"
+        print_info "OAuth tokens live in the keychain, not dotfiles — run /mcp inside Claude Code to sign in to Notion"
+    fi
+else
+    print_warning "Claude Code not installed — skipping Notion MCP setup"
+fi
+
 # Final message
 print_header "Installation Complete!"
 
@@ -294,6 +308,7 @@ echo "  4. Install a Python version with: pyenv install 3.11"
 echo "  5. Install a Ruby version with: rbenv install 3.2.2"
 echo "  6. Install Rust stable toolchain with: rustup default stable"
 echo "  7. Install Flutter with: fvm install stable && fvm global stable"
+echo "  8. Authenticate MCP servers: open Claude Code and run /mcp, then sign in to each server"
 echo ""
 print_success "Your development environment is ready!"
 echo ""
