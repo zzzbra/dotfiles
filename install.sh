@@ -234,6 +234,16 @@ else
     print_success "pyenv installed"
 fi
 
+# Python policy (docs/python-policy.md): brew pythons are dependency plumbing
+# only — keep them unlinked so they never shadow pyenv as `python3`.
+for formula in $(brew list --formula 2>/dev/null | grep -E '^python@'); do
+    if [[ -e "$(brew --prefix)/bin/python3" ]] || ls "$(brew --prefix)"/bin/python3.[0-9]* &>/dev/null; then
+        print_step "Unlinking $formula (python policy)..."
+        brew unlink "$formula" &>/dev/null || true
+    fi
+done
+print_success "Brew pythons unlinked per python policy"
+
 # rbenv
 if command_exists rbenv; then
     print_success "rbenv is already installed"
@@ -304,7 +314,7 @@ print_info "Next steps:"
 echo "  1. Restart your terminal or run: source ~/.zshrc"
 echo "  2. Configure Powerlevel10k by running: p10k configure"
 echo "  3. Install a Node.js version with: nvm install node"
-echo "  4. Install a Python version with: pyenv install 3.11"
+echo "  4. Install a Python version with: pyenv install 3.13 (policy: docs/python-policy.md, verify: python-doctor)"
 echo "  5. Install a Ruby version with: rbenv install 3.2.2"
 echo "  6. Install Rust stable toolchain with: rustup default stable"
 echo "  7. Install Flutter with: fvm install stable && fvm global stable"

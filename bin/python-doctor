@@ -1,0 +1,88 @@
+#!/bin/bash
+# python-doctor — verify this machine's Python layering policy.
+# Policy: docs/python-policy.md in the dotfiles repo.
+# Exit 0 = healthy, 1 = at least one policy violation.
+
+set -u
+
+ok()   { printf '  \033[32m✓\033[0m %s\n' "$1"; }
+warn() { printf '  \033[31m✗\033[0m %s\n' "$1"; PROBLEMS=$((PROBLEMS + 1)); }
+info() { printf '  · %s\n' "$1"; }
+PROBLEMS=0
+
+echo "python-doctor — $(date '+%Y-%m-%d %H:%M')"
+echo
+echo "Resolution:"
+for cmd in python3 python pip3; do
+    target="$(command -v "$cmd" 2>/dev/null)"
+    if [[ -n "$target" ]]; then
+        info "$cmd → $target"
+    else
+        info "$cmd → (not found)"
+    fi
+done
+real="$(python3 -c 'import sys; print(sys.executable)' 2>/dev/null)"
+info "python3 executable → ${real:-UNKNOWN}"
+info "python3 version    → $(python3 --version 2>&1)"
+info "arch               → $(python3 -c 'import platform; print(platform.machine())' 2>/dev/null)"
+
+echo
+echo "Layer checks:"
+
+# 1. python3 must resolve through pyenv shims.
+if [[ "$(command -v python3)" == "$HOME/.pyenv/shims/python3" ]]; then
+    ok "python3 resolves through pyenv shims"
+else
+    warn "python3 does NOT resolve through pyenv shims (got: $(command -v python3))"
+fi
+
+# 2. pyenv global / local
+if command -v pyenv >/dev/null 2>&1; then
+    info "pyenv global: $(pyenv global 2>/dev/null), active: $(pyenv version-name 2>/dev/null)"
+else
+    warn "pyenv not installed"
+fi
+
+# 3. Active venv
+if [[ -n "${VIRTUAL_ENV:-}" ]]; then
+    info "active venv: $VIRTUAL_ENV"
+else
+    info "no venv active (fine outside a project)"
+fi
+
+# 4. Brew pythons must stay unlinked (brew upgrade can silently relink them).
+brew_prefix="$(brew --prefix 2>/dev/null || echo /usr/local)"
+if [[ -e "$brew_prefix/bin/python3" ]]; then
+    warn "brew relinked a python: $brew_prefix/bin/python3 exists — run: brew unlink python@X.Y"
+else
+    ok "no brew python3 in $brew_prefix/bin"
+fi
+stray="$(ls "$brew_prefix"/bin/python3.[0-9]* 2>/dev/null | tr '\n' ' ')"
+if [[ -n "$stray" ]]; then
+    warn "stray versioned brew pythons linked: $stray"
+else
+    ok "no versioned brew pythons in $brew_prefix/bin"
+fi
+
+# 5. Duplicate shim dirs in PATH cause confusing resolution.
+dupes="$(printf '%s' "$PATH" | tr ':' '\n' | sort | uniq -d | grep -E 'shims' || true)"
+if [[ -n "$dupes" ]]; then
+    warn "duplicate shim entries in PATH: $(echo "$dupes" | tr '\n' ' ')"
+else
+    ok "no duplicate shim entries in PATH"
+fi
+
+# 6. Stdlib sanity — catches the 2026-07 pyexpat/libexpat class of breakage.
+if python3 -c 'import ssl, sqlite3, plistlib, pyexpat' 2>/dev/null; then
+    ok "stdlib sanity (ssl, sqlite3, plistlib, pyexpat) imports clean"
+else
+    warn "stdlib sanity import FAILED for $(command -v python3)"
+fi
+
+echo
+if [[ "$PROBLEMS" -eq 0 ]]; then
+    echo "Healthy: python layering matches docs/python-policy.md"
+else
+    echo "$PROBLEMS problem(s) found — see docs/python-policy.md for the policy"
+    exit 1
+fi

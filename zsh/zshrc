@@ -79,7 +79,6 @@ fi
 [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
 [[ -d "$HOME/.cargo/bin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
 [[ -d "$HOME/.cabal/bin" ]] && export PATH="$HOME/.cabal/bin:$PATH"
-[[ -d "$HOME/.rbenv/shims" ]] && export PATH="$HOME/.rbenv/shims:$PATH"
 [[ -d "/opt/X11/bin" ]] && export PATH="/opt/X11/bin:$PATH"
 
 # Java/OpenJDK (checks for any installed version)
@@ -89,11 +88,6 @@ for dir in /opt/homebrew/opt/openjdk*/bin(N) /usr/local/opt/openjdk*/bin(N); do
         break
     fi
 done
-
-# Pyenv (if installed)
-if command -v pyenv >/dev/null 2>&1; then
-    export PATH="$(pyenv root)/shims:$PATH"
-fi
 
 # NPM/Node handling
 # If using nvm, it will add its paths when sourced below
@@ -165,8 +159,12 @@ alias reload="source ~/.zshrc && clear"
 # places
 alias scratch="cd ~/dev/scratch"
 
-# pyenv
-eval "$(pyenv init -)"
+# pyenv — sole owner of what `python3` means in a shell.
+# Policy: docs/python-policy.md (pyenv interpreters + per-project venvs;
+# brew pythons stay unlinked; system python untouched). Check: python-doctor
+if command -v pyenv >/dev/null 2>&1; then
+    eval "$(pyenv init -)"
+fi
 
 # rbenv
 if command -v rbenv >/dev/null 2>&1; then
