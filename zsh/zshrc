@@ -159,6 +159,25 @@ alias reload="source ~/.zshrc && clear"
 # places
 alias scratch="cd ~/dev/scratch"
 
+# ssh: announce a universally-present terminal to remotes.
+# Inside tmux, $TERM is "tmux-256color". SSH copies the local $TERM into the
+# remote pty request, so the remote host is told its terminal is tmux-256color.
+# Minimal/embedded boxes (e.g. the NAS) ship a sparse terminfo DB without that
+# entry, so readline/editors there can't look up key capabilities (kbs =
+# Backspace, kdch1 = Delete) and those keys break. We downgrade *only the
+# outgoing* TERM to screen-256color: it's in essentially every terminfo DB, and
+# it's the correct match because keys flow through tmux, whose terminal model is
+# screen-derived. Local tmux/nvim keep tmux-256color (italics/undercurl/truecolor
+# untouched). Non-tmux shells already report a universal TERM, so we leave them
+# alone. Set-once policy: every bootstrapped machine inherits this; no per-remote
+# `tic` provisioning required. See commit for full rationale.
+ssh() {
+  case "$TERM" in
+    tmux*) TERM=screen-256color command ssh "$@" ;;
+    *)     command ssh "$@" ;;
+  esac
+}
+
 # pyenv — sole owner of what `python3` means in a shell.
 # Policy: docs/python-policy.md (pyenv interpreters + per-project venvs;
 # brew pythons stay unlinked; system python untouched). Check: python-doctor
