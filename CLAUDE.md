@@ -43,6 +43,11 @@ conventions below.
   scripts in `bin/` symlink into `~/.local/bin`).
 - `install.sh` is the from-zero machine bootstrap; keep it idempotent. Any
   new tool/policy must land here, not just in live shell state.
+- **Claude Code global config** lives in `claude/` (`CLAUDE.md` instructions,
+  `settings.json` preferences), symlinked into `~/.claude/` via
+  `symlinks.conf`. The instructions load in every Claude Code session on this
+  machine. `~/.claude/settings.local.json` stays machine-local and untracked. Note the repo-root `CLAUDE.md` (this file) is
+  repo-scoped, and `.claude/` here is this repo's local settings, not global.
 - Python policy (settled 2026-07-09): `docs/python-policy.md` — pyenv owns
   interpreters, venvs own project packages, brew pythons stay **unlinked**
   (dependency plumbing only), system python untouched. Verify with
