@@ -135,6 +135,20 @@ return {
     end,
   },
 
+  -- In-buffer markdown rendering (headings, bullets, code blocks, tables).
+  -- ft-gated so it only loads for markdown buffers. Needs the `markdown` and
+  -- `markdown_inline` treesitter parsers (declared in editor.lua ensure_installed).
+  -- Toggle at runtime with :RenderMarkdown toggle.
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown" },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = {},
+  },
+
   -- Noice UI improvements
   {
     "folke/noice.nvim",

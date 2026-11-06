@@ -9,7 +9,7 @@ return {
     },
     config = function()
       require('nvim-treesitter.configs').setup({
-        ensure_installed = { "javascript", "python", "typescript", "c", "lua", "bash", "toml", "json" },
+        ensure_installed = { "javascript", "python", "typescript", "c", "lua", "bash", "toml", "json", "markdown", "markdown_inline" },
         sync_install = false,
         auto_install = true,
         highlight = {
