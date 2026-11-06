@@ -46,8 +46,15 @@ conventions below.
 - **Claude Code global config** lives in `claude/` (`CLAUDE.md` instructions,
   `settings.json` preferences), symlinked into `~/.claude/` via
   `symlinks.conf`. The instructions load in every Claude Code session on this
-  machine. `~/.claude/settings.local.json` stays machine-local and untracked. Note the repo-root `CLAUDE.md` (this file) is
-  repo-scoped, and `.claude/` here is this repo's local settings, not global.
+  machine. Claude Code has **no machine-local user settings file**: it reads
+  only `~/.claude/settings.json` user-wide. `settings.local.json` is a
+  per-project file (`<project>/.claude/`, where "don't ask again" approvals
+  land); `~/.claude/settings.local.json` only applies when Claude is launched
+  from `~`. Tools that write settings.json in place (e.g. iTerm's Claude Code
+  integration, 2026-11) replace the symlink with a plain file — check for that
+  before running `makesymlinks.sh`, and review what they added before
+  adopting it. Note the repo-root `CLAUDE.md` (this file) is repo-scoped, and
+  `.claude/` here is this repo's local settings, not global.
 - Python policy (settled 2026-07-09): `docs/python-policy.md` — pyenv owns
   interpreters, venvs own project packages, brew pythons stay **unlinked**
   (dependency plumbing only), system python untouched. Verify with
