@@ -156,7 +156,8 @@
   "githubPullRequests.pullBranch": "never",
   "dart.openDevTools": "flutter",
   "git.openRepositoryInParentFolders": "always",
-  "workbench.colorTheme": "Default Light Modern",
+  "workbench.colorTheme": "Light Modern",
   "github.copilot.editor.enableAutoCompletions": true,
   "workbench.preferredLightColorTheme": "GitHub Light",
+  "prettier.useEditorConfig": false,
 }
