@@ -1,25 +1,37 @@
 #!/bin/sh
-# tmux-workspaces — create the standard tmux sessions if they don't exist.
+# tmux-workspaces — create the standard tmux session and windows if missing.
 #
+# One session ("main") with three windows:
 #   ping  — runs `ping google.com` (connectivity monitor)
 #   Life  — personal projects  (~/dev/projects)
 #   Work  — client work        (~/dev/orgs)
 #
 # Usage:
-#   tmux-workspaces            create any missing sessions, then attach to Life
-#   tmux-workspaces --detached create any missing sessions only (used at login
+#   tmux-workspaces            create anything missing, then attach on Life
+#   tmux-workspaces --detached create anything missing only (used at login
 #                              by launchagents/com.zzzbra.tmux-workspaces.plist)
 #
-# Idempotent: existing sessions are left untouched.
+# Idempotent: existing session/windows are left untouched; a missing window
+# (e.g. one you closed) is recreated.
 
 TMUX_BIN="$(command -v tmux || echo /usr/local/bin/tmux)"
+SESSION=main
+
+has_window() { # name
+  "$TMUX_BIN" list-windows -t "=$SESSION" -F '#{window_name}' 2>/dev/null \
+    | grep -qx "$1"
+}
 
 ensure() { # name dir [command]
-  "$TMUX_BIN" has-session -t "=$1" 2>/dev/null && return
-  "$TMUX_BIN" new-session -d -s "$1" -c "$2"
-  # send-keys (not a session command) so Ctrl-C drops you back to a shell
+  has_window "$1" && return
+  if "$TMUX_BIN" has-session -t "=$SESSION" 2>/dev/null; then
+    "$TMUX_BIN" new-window -d -t "=$SESSION:" -n "$1" -c "$2"
+  else
+    "$TMUX_BIN" new-session -d -s "$SESSION" -n "$1" -c "$2"
+  fi
+  # send-keys (not a window command) so Ctrl-C drops you back to a shell
   # instead of closing the window.
-  [ -n "$3" ] && "$TMUX_BIN" send-keys -t "=$1:" "$3" Enter
+  [ -n "$3" ] && "$TMUX_BIN" send-keys -t "=$SESSION:$1" "$3" Enter
 }
 
 ensure ping "$HOME"               "ping google.com"
@@ -28,8 +40,9 @@ ensure Work "$HOME/dev/orgs"
 
 [ "$1" = "--detached" ] && exit 0
 
+"$TMUX_BIN" select-window -t "=$SESSION:Life"
 if [ -n "$TMUX" ]; then
-  "$TMUX_BIN" switch-client -t "=Life"
+  "$TMUX_BIN" switch-client -t "=$SESSION"
 else
-  exec "$TMUX_BIN" attach-session -t "=Life"
+  exec "$TMUX_BIN" attach-session -t "=$SESSION"
 fi
