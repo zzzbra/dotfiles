@@ -1,0 +1,35 @@
+#!/bin/sh
+# tmux-workspaces — create the standard tmux sessions if they don't exist.
+#
+#   ping  — runs `ping google.com` (connectivity monitor)
+#   Life  — personal projects  (~/dev/projects)
+#   Work  — client work        (~/dev/orgs)
+#
+# Usage:
+#   tmux-workspaces            create any missing sessions, then attach to Life
+#   tmux-workspaces --detached create any missing sessions only (used at login
+#                              by launchagents/com.zzzbra.tmux-workspaces.plist)
+#
+# Idempotent: existing sessions are left untouched.
+
+TMUX_BIN="$(command -v tmux || echo /usr/local/bin/tmux)"
+
+ensure() { # name dir [command]
+  "$TMUX_BIN" has-session -t "=$1" 2>/dev/null && return
+  "$TMUX_BIN" new-session -d -s "$1" -c "$2"
+  # send-keys (not a session command) so Ctrl-C drops you back to a shell
+  # instead of closing the window.
+  [ -n "$3" ] && "$TMUX_BIN" send-keys -t "=$1:" "$3" Enter
+}
+
+ensure ping "$HOME"               "ping google.com"
+ensure Life "$HOME/dev/projects"
+ensure Work "$HOME/dev/orgs"
+
+[ "$1" = "--detached" ] && exit 0
+
+if [ -n "$TMUX" ]; then
+  "$TMUX_BIN" switch-client -t "=Life"
+else
+  exec "$TMUX_BIN" attach-session -t "=Life"
+fi

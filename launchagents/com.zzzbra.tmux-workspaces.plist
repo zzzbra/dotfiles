@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Start the standard tmux sessions (ping / Life / Work) at login.
+     Attach afterwards with `tmux-workspaces` or `tmux a`. -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.zzzbra.tmux-workspaces</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/zzzbra/.local/bin/tmux-workspaces</string>
+        <string>--detached</string>
+    </array>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>SHELL</key>
+        <string>/bin/zsh</string>
+        <key>LANG</key>
+        <string>en_US.UTF-8</string>
+    </dict>
+    <key>RunAtLoad</key>
+    <true/>
+    <!-- The script exits right after starting tmux; don't let launchd clean
+         up (kill) the tmux server it leaves behind. -->
+    <key>AbandonProcessGroup</key>
+    <true/>
+    <key>StandardErrorPath</key>
+    <string>/tmp/tmux-workspaces.err</string>
+</dict>
+</plist>
