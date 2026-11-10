@@ -20,7 +20,7 @@ brew "pstree"
 brew "procs"
 brew "duf"
 brew "gping"
-brew "tldr"
+brew "tlrc"              # official tldr client; the "tldr" formula is gone
 brew "speedtest-cli"
 brew "lf"
 brew "bat"
@@ -33,7 +33,7 @@ brew "blueutil"
 
 # --- Editor ---
 brew "neovim"
-brew "tree-sitter"       # nvim-treesitter compiles parsers natively with this toolchain
+brew "tree-sitter-cli"   # nvim-treesitter builds parsers with it (formula "tree-sitter" is only the library)
 brew "ripgrep"           # telescope live_grep (install.sh installs it)
 brew "fd"                # telescope find_files
 
