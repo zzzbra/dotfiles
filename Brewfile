@@ -60,7 +60,7 @@ brew "heroku/brew/heroku"
 # node is deliberately absent: nvm (later mise) owns Node.
 
 # --- Data & services ---
-brew "postgresql@14"
+brew "postgresql@17"     # fresh cluster in /opt/homebrew/var/postgresql@17; old Intel data left in /usr/local/var
 brew "redis"
 
 # --- Media & documents ---
@@ -94,7 +94,7 @@ cask "wireshark-app"
 cask "blackhole-16ch"
 
 # Dropped from the snapshot (2026-11-09):
-#   obsolete:  youtube-dl, exa, node, postgresql@9.6, postgresql@13, reattach-to-user-namespace,
+#   obsolete:  youtube-dl, exa, node, postgresql@9.6, postgresql@13, postgresql@14 (disabled 2026-11-12), reattach-to-user-namespace,
 #              taps homebrew/cask-fonts, homebrew/cask-versions, homebrew/services, thoughtbot/formulae
 #   unused:    openvino, php, brew-php-switcher, elixir, zork, irssi, exercism, minikube (formula+cask),
 #              mysql, wxwidgets@3.2, innoextract, vim (nvim covers it), sphinx-doc, docutils, wireshark (old cask name)
