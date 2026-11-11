@@ -1,0 +1,171 @@
+#!/bin/bash
+# env-doctor — is this Mac running native arm64 end to end?
+# Companion to python-doctor. Tracks the Notion task "Get off Rosetta and the
+# legacy Intel dependencies hidden in my setup": every ✗ below is a straggler,
+# and a clean run (exit 0) is that task's acceptance check.
+# Run it from a fresh shell; old shells keep their old PATH.
+# Exit 0 = healthy, 1 = at least one problem.
+
+set -u
+
+ok()   { printf '  \033[32m✓\033[0m %s\n' "$1"; }
+warn() { printf '  \033[31m✗\033[0m %s\n' "$1"; PROBLEMS=$((PROBLEMS + 1)); }
+info() { printf '  · %s\n' "$1"; }
+PROBLEMS=0
+
+# arm64 | universal | x86_64 | script | missing
+arch_of() {
+    [[ -e "$1" ]] || { echo missing; return; }
+    local f; f="$(file -bL "$1")"
+    case "$f" in
+        *Mach-O*universal*) [[ "$f" == *arm64* ]] && echo universal || echo x86_64 ;;
+        *Mach-O*arm64*)     echo arm64 ;;
+        *Mach-O*x86_64*)    echo x86_64 ;;
+        *)                  echo script ;;
+    esac
+}
+
+echo "env-doctor — $(date '+%Y-%m-%d %H:%M')"
+
+# --- Shell -----------------------------------------------------------------
+echo
+echo "Shell:"
+if [[ "$(uname -m)" == arm64 ]]; then ok "uname -m → arm64"; else warn "uname -m → $(uname -m) (shell runs under Rosetta)"; fi
+if [[ "$(sysctl -n sysctl.proc_translated 2>/dev/null)" == 1 ]]; then
+    warn "this process is translated by Rosetta"
+else
+    ok "not translated"
+fi
+if [[ -n "${TMUX:-}" ]]; then
+    tmux_bin="$(ps -o comm= -p "$(tmux display -p '#{pid}' 2>/dev/null)" 2>/dev/null)"
+    a="$(arch_of "$tmux_bin")"
+    if [[ "$a" == x86_64 ]]; then warn "tmux server is x86_64 ($tmux_bin)"; else ok "tmux server is $a ($tmux_bin)"; fi
+fi
+
+# --- Homebrew --------------------------------------------------------------
+echo
+echo "Homebrew:"
+if [[ "$(brew --prefix 2>/dev/null)" == /opt/homebrew ]]; then ok "brew --prefix → /opt/homebrew"; else warn "brew --prefix → $(brew --prefix 2>/dev/null)"; fi
+path_pos() { printf '%s' "$PATH" | tr ':' '\n' | grep -nx "$1" | head -1 | cut -d: -f1; }
+p_arm="$(path_pos /opt/homebrew/bin)"; p_intel="$(path_pos /usr/local/bin)"
+if [[ -n "$p_arm" && ( -z "$p_intel" || "$p_arm" -lt "$p_intel" ) ]]; then
+    ok "/opt/homebrew/bin comes before /usr/local/bin on PATH"
+else
+    warn "/usr/local/bin wins over /opt/homebrew/bin on PATH"
+fi
+if [[ -d /usr/local/Homebrew ]]; then
+    info "Intel Homebrew still installed ($(/usr/local/bin/brew list --formula 2>/dev/null | wc -l | tr -d ' ') formulae); retire it in phase 6"
+else
+    ok "Intel Homebrew retired"
+fi
+
+# --- Daily tools: what wins on PATH, and is it native? -----------------------
+echo
+echo "Daily tools (first on PATH):"
+TOOLS=(tmux nvim git gh rg fd bat jq fzf tree-sitter duti node npm cargo rustc python3 gcloud redis-server psql claude)
+for t in "${TOOLS[@]}"; do
+    p="$(command -v "$t" 2>/dev/null)" || { info "$t → (not installed)"; continue; }
+    real="$p"
+    # Resolve version-manager shims to the real interpreter.
+    if [[ "$p" == */.pyenv/shims/* ]] && command -v pyenv >/dev/null; then real="$(pyenv which "$t" 2>/dev/null || echo "$p")"; fi
+    a="$(arch_of "$real")"
+    label="$t → $p"; [[ "$real" != "$p" ]] && label="$label ⇒ $real"
+    if [[ "$a" == x86_64 ]]; then
+        warn "$label [x86_64]"
+    elif [[ "$p" == /usr/local/* ]]; then
+        warn "$label [$a, but from the Intel prefix]"
+    else
+        ok "$label [$a]"
+    fi
+done
+
+# Other Intel copies still on PATH behind the winner (e.g. /usr/local/bin/node).
+shadowed=""
+for t in "${TOOLS[@]}"; do
+    while read -r p; do
+        [[ "$p" == /usr/local/* || "$(arch_of "$p")" == x86_64 ]] && shadowed+=" $p"
+    done < <(which -a "$t" 2>/dev/null | tail -n +2)
+done
+if [[ -n "$shadowed" ]]; then info "shadowed Intel copies (harmless until retirement):$shadowed"; fi
+
+# --- Toolchains ---------------------------------------------------------------
+echo
+echo "Toolchains:"
+if command -v rustup >/dev/null; then
+    host="$(rustup show 2>/dev/null | awk '/Default host/ {print $3}')"
+    if [[ "$host" == aarch64-apple-darwin ]]; then ok "rustup default host → $host"; else warn "rustup default host → $host (cargo builds Intel)"; fi
+fi
+gcm="$(git config --global --get credential.helper 2>/dev/null | awk '{print $1}')"
+if [[ "$gcm" == /* ]]; then
+    a="$(arch_of "$gcm")"
+    if [[ "$a" == x86_64 ]]; then warn "git credential helper is x86_64 ($gcm)"; else ok "git credential helper is $a ($gcm)"; fi
+fi
+# Compiled modules nvim loads: treesitter parsers, plugin builds (fzf-native),
+# Mason packages. Plugin test fixtures are never loaded, so they're skipped.
+NVIM_DATA="$HOME/.local/share/nvim"
+total=0; declare -a bad_groups=()
+while read -r so; do
+    [[ -z "$so" ]] && continue
+    total=$((total + 1))
+    if [[ "$(arch_of "$so")" == x86_64 ]]; then
+        rel="${so#"$NVIM_DATA"/}"
+        bad_groups+=("$(echo "$rel" | cut -d/ -f1-3)")
+    fi
+done < <(find "$NVIM_DATA" -name '*.so' -not -path '*/tests/*' 2>/dev/null)
+if [[ "${#bad_groups[@]}" -eq 0 ]]; then
+    ok "all $total nvim native modules are arm64"
+else
+    while read -r n g; do
+        case "$g" in
+            lazy/nvim-treesitter/*) hint="rebuild: :TSInstall! <lang>" ;;
+            lazy/*)                 hint="rebuild the plugin (:Lazy build $(echo "$g" | cut -d/ -f2))" ;;
+            mason/packages/*)       hint="reinstall: :MasonInstall --force $(echo "$g" | cut -d/ -f3)" ;;
+            site/pack/packer*)      hint="packer leftovers, nothing loads them: delete $NVIM_DATA/site/pack/packer" ;;
+            *)                      hint="" ;;
+        esac
+        warn "$n x86_64 module(s) in $g${hint:+ ($hint)}"
+    done < <(printf '%s\n' "${bad_groups[@]}" | sed -E 's|^(site/pack/packer).*|\1|' | sort | uniq -c)
+fi
+
+# --- Background services ------------------------------------------------------
+echo
+echo "LaunchAgents:"
+found=0
+for plist in "$HOME"/Library/LaunchAgents/*.plist; do
+    [[ -e "$plist" ]] || continue
+    # Paths into /usr/local, ignoring PATH-style lists (a trailing
+    # /usr/local/bin fallback after /opt/homebrew/bin is fine).
+    refs="$(grep -oE '[^<>[:space:]]*/usr/local/[^<>[:space:]]*' "$plist" | grep -v ':' | sort -u | tr '\n' ' ')"
+    if [[ -n "$refs" ]]; then
+        found=1
+        label="$(basename "$plist" .plist)"
+        state="not loaded"; launchctl list "$label" >/dev/null 2>&1 && state="loaded"
+        warn "$label ($state) → $refs"
+    fi
+done
+[[ "$found" -eq 0 ]] && ok "no LaunchAgent points into /usr/local"
+
+# --- Anything else running translated --------------------------------------------
+echo
+echo "Running under Rosetta:"
+translated=""
+while read -r comm; do
+    [[ -z "$comm" ]] && continue
+    # Apple ships a few deliberate x86 helpers (e.g. Music's VisualizerService_x86).
+    [[ "$comm" == /System/* ]] && continue
+    [[ "$(arch_of "$comm")" == x86_64 ]] && translated+="$comm"$'\n'
+done < <(ps -axo comm= | sort -u)
+if [[ -n "$translated" ]]; then
+    # Collapse helpers to their outermost .app bundle.
+    while read -r c; do [[ -n "$c" ]] && warn "$c"; done < <(printf '%s' "$translated" | sed -E 's|(\.app)/.*|\1|' | sort -u)
+else
+    ok "no translated processes"
+fi
+
+echo
+if [[ "$PROBLEMS" -eq 0 ]]; then
+    echo "Healthy: native arm64 end to end"
+else
+    echo "$PROBLEMS problem(s) found"
+    exit 1
+fi
