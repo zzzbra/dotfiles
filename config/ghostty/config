@@ -1,0 +1,25 @@
+# Ghostty config: https://ghostty.org/docs/config/reference
+# Symlinked to ~/.config/ghostty by symlinks.conf. Reload in-app: Cmd+Shift+,
+
+# Font
+font-family = Hack Nerd Font Mono
+font-size = 14
+
+# Colours: follow macOS light/dark. Themes live in ./themes and share their
+# palette with tmux.conf's light-theme-*/dark-theme-* (miramare + warm paper).
+theme = light:miramare-light,dark:miramare-dark
+window-theme = auto
+
+# Window
+window-padding-x = 6
+window-padding-y = 4
+window-padding-balance = true
+window-save-state = always
+macos-titlebar-style = tabs
+
+# Behaviour
+macos-option-as-alt = left
+copy-on-select = clipboard
+mouse-hide-while-typing = true
+confirm-close-surface = false
+shell-integration-features = no-cursor,sudo,title
