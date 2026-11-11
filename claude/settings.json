@@ -6,5 +6,6 @@
   },
   "alwaysThinkingEnabled": true,
   "tui": "fullscreen",
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "theme": "auto"
 }
