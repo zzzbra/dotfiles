@@ -1,0 +1,23 @@
+# miramare (dark): matches nvim's colorscheme and tmux's dark-theme-* palette
+background = #2a2426
+foreground = #e6d6ac
+cursor-color = #e6d6ac
+cursor-text = #2a2426
+selection-background = #4a4240
+selection-foreground = #e6d6ac
+palette = 0=#242021
+palette = 1=#e68183
+palette = 2=#87af87
+palette = 3=#d9bb80
+palette = 4=#89beba
+palette = 5=#d3a0bc
+palette = 6=#87c095
+palette = 7=#d8caac
+palette = 8=#7c7266
+palette = 9=#e39b7b
+palette = 10=#a3c99a
+palette = 11=#e8cc95
+palette = 12=#a2d2cd
+palette = 13=#e0b6cf
+palette = 14=#a0d3ad
+palette = 15=#f2e6c4

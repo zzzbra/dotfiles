@@ -92,6 +92,7 @@ cask "gcloud-cli"
 cask "signal"
 cask "wireshark-app"
 cask "blackhole-16ch"
+cask "ghostty"
 
 # Dropped from the snapshot (2026-11-09):
 #   obsolete:  youtube-dl, exa, node, postgresql@9.6, postgresql@13, postgresql@14 (disabled 2026-11-12), reattach-to-user-namespace,
