@@ -3,7 +3,7 @@
 # Dependencies are not listed; brew pulls them in. Drop something by deleting its line.
 
 tap "heroku/brew"        # heroku CLI (zshrc sets it up)
-tap "leoafarias/fvm"     # Flutter version manager (flutter-tools in nvim)
+tap "btwld/fvm"          # Flutter version manager (flutter-tools in nvim)
 
 # --- Shell & terminal ---
 brew "bash"
@@ -56,7 +56,7 @@ brew "rbenv"
 brew "pipx"
 brew "pnpm"
 brew "openjdk"
-brew "leoafarias/fvm/fvm"
+brew "btwld/fvm/fvm"
 brew "heroku/brew/heroku"
 # node is deliberately absent: nvm (later mise) owns Node.
 
