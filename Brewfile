@@ -61,7 +61,7 @@ brew "heroku/brew/heroku"
 # node is deliberately absent: nvm (later mise) owns Node.
 
 # --- Data & services ---
-brew "postgresql@17"     # fresh cluster in /opt/homebrew/var/postgresql@17; old Intel data left in /usr/local/var
+brew "postgresql@17", link: true  # keg-only; linked so psql is on PATH. Fresh cluster in /opt/homebrew/var/postgresql@17; old Intel data left in /usr/local/var
 brew "redis"
 
 # --- Media & documents ---
