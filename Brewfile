@@ -13,6 +13,7 @@ brew "zsh-syntax-highlighting"
 brew "autojump"
 brew "fzf"
 brew "coreutils"
+brew "duti"                 # default apps per file type, from duti/defaults.duti
 brew "findutils"
 brew "watch"
 brew "tree"
