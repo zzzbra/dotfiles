@@ -14,7 +14,7 @@
 # Idempotent: existing session/windows are left untouched; a missing window
 # (e.g. one you closed) is recreated.
 
-TMUX_BIN="$(command -v tmux || echo /usr/local/bin/tmux)"
+TMUX_BIN="$(command -v tmux || echo /opt/homebrew/bin/tmux)"
 SESSION=main
 
 has_window() { # name
