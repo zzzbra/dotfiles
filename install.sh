@@ -134,6 +134,16 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     fi
 fi
 
+# Default apps per file type (macOS only; duti comes from the Brewfile)
+if [[ "$OSTYPE" == "darwin"* ]] && command_exists duti; then
+    print_step "Setting default apps..."
+    if duti "$SCRIPT_DIR/duti/defaults.duti"; then
+        print_success "Default apps set from duti/defaults.duti"
+    else
+        print_warning "Some default apps could not be set (see duti output above)"
+    fi
+fi
+
 # Step 4: Install additional tools
 print_section "Step 3: Development Tools"
 
