@@ -80,6 +80,11 @@ fi
 [[ -d "$HOME/.cargo/bin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
 [[ -d "$HOME/.cabal/bin" ]] && export PATH="$HOME/.cabal/bin:$PATH"
 [[ -d "/opt/X11/bin" ]] && export PATH="/opt/X11/bin:$PATH"
+# Ghostty's CLI (`ghostty +list-themes` etc.) lives inside the app bundle. Ghostty
+# adds it to PATH itself, but the PATH reset above discards that, and shells in
+# the LaunchAgent-started tmux never had it, so add it explicitly (last: it's a
+# convenience, nothing should be shadowed by it).
+[[ -x "/Applications/Ghostty.app/Contents/MacOS/ghostty" ]] && export PATH="$PATH:/Applications/Ghostty.app/Contents/MacOS"
 
 # Java/OpenJDK (checks for any installed version)
 for dir in /opt/homebrew/opt/openjdk*/bin(N) /usr/local/opt/openjdk*/bin(N); do
