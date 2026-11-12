@@ -65,20 +65,52 @@ plugins=(
 
 # User configuration
 
-# Start with system defaults
+# ---------------------------------------------------------------------------
+# PATH
+# ---------------------------------------------------------------------------
+# How to read this section:
+# - `PATH="X:$PATH"` puts X at the FRONT, so for those lines the one further
+#   down wins. `PATH="$PATH:X"` puts X at the BACK (a fallback that never
+#   shadows anything).
+# - Each entry says why it's here and when it can go. When removing one,
+#   check `which -a <tool>` first; most are guarded by [[ -d ]], so a missing
+#   dir is a no-op, not an error.
+# - Only interactive shells read .zshrc. Scripts and LaunchAgents get the bare
+#   system PATH (the tmux LaunchAgent sets its own). A proposal to move PATH
+#   into .zprofile lives on the Notion task "Make dotfiles Mac + Linux
+#   operable (portable tool layer)".
+# - Not everything is here: further down, `pyenv init` and `rbenv init`
+#   prepend their shims, and opencode prepends its dir, so they beat all of
+#   the entries below.
+
+# Reset to a known base so re-sourcing (`reload`) and nested shells don't
+# pile up duplicates. Side effect: discards anything the terminal added
+# (see the Ghostty entry below).
+# /usr/local/bin first is Intel-Homebrew-era. It must stay on PATH (Docker
+# Desktop, VS Code's `code`, VirtualBox, Parallels, ollama install there),
+# but moves to the END once Intel Homebrew is uninstalled. Until then its perl,
+# vim, rsync, openssl etc. beat /usr/bin. Tracked: dotfiles PR #5, phase 6.
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
-# Add Homebrew (works for both Intel and Apple Silicon)
+# Homebrew. shellenv prepends its bin/sbin, so native brew wins over
+# /usr/local/bin. The elif is for Intel Macs; delete it if none are left.
 if [[ -f /opt/homebrew/bin/brew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [[ -f /usr/local/bin/brew ]]; then
     eval "$(/usr/local/bin/brew shellenv)"
 fi
 
-# Add tools conditionally - only if they exist
+# ~/.local/bin: personal scripts (symlinked from dotfiles/bin via
+# symlinks.conf) and self-updating standalone installs (claude, poetry).
 [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
+# ~/.cargo/bin: rustup's toolchain and `cargo install`ed tools. It's ahead of
+# brew, so its x86_64 rg/fd shadow brew's until `cargo uninstall ripgrep
+# fd-find` (Rosetta task, phase 5).
 [[ -d "$HOME/.cargo/bin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
+# ~/.cabal/bin: Haskell's cabal-installed tools. No longer exists on this
+# Mac (2026-11); removal candidate.
 [[ -d "$HOME/.cabal/bin" ]] && export PATH="$HOME/.cabal/bin:$PATH"
+# /opt/X11/bin: XQuartz (X11 apps on macOS). Remove with XQuartz.
 [[ -d "/opt/X11/bin" ]] && export PATH="/opt/X11/bin:$PATH"
 # Ghostty's CLI (`ghostty +list-themes` etc.) lives inside the app bundle. Ghostty
 # adds it to PATH itself, but the PATH reset above discards that, and shells in
@@ -86,7 +118,9 @@ fi
 # convenience, nothing should be shadowed by it).
 [[ -x "/Applications/Ghostty.app/Contents/MacOS/ghostty" ]] && export PATH="$PATH:/Applications/Ghostty.app/Contents/MacOS"
 
-# Java/OpenJDK (checks for any installed version)
+# Java: the first openjdk found. Brew's openjdk is keg-only (not linked into
+# brew's bin), so it needs adding by hand. The /usr/local globs match only
+# Intel brew's JDKs and go when it's retired.
 for dir in /opt/homebrew/opt/openjdk*/bin(N) /usr/local/opt/openjdk*/bin(N); do
     if [[ -d "$dir" ]]; then
         export PATH="$dir:$PATH"
@@ -94,34 +128,41 @@ for dir in /opt/homebrew/opt/openjdk*/bin(N) /usr/local/opt/openjdk*/bin(N); do
     fi
 done
 
-# NPM/Node handling
-# If using nvm, it will add its paths when sourced below
-# This is a fallback for system npm if nvm isn't being used
+# Fallback npm-globals dir for a non-nvm setup (an old Homebrew node layout).
+# Only applies when ~/.nvm doesn't exist; removal candidate.
 if [[ ! -d "$HOME/.nvm" ]] && [[ -d "/usr/local/share/npm/bin" ]]; then
     export PATH="/usr/local/share/npm/bin:$PATH"
 fi
 
-# NVM (Node Version Manager) - adds node/npm to PATH
+# nvm: sourcing nvm.sh prepends the default node's bin. Goes away when mise
+# takes over runtimes (Modernize dotfiles project).
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Heroku CLI (could be installed standalone or via Homebrew)
+# Heroku's old standalone installer location. heroku now comes from brew
+# (Brewfile), and this dir no longer exists (2026-11); removal candidate.
 [[ -d "/usr/local/heroku/bin" ]] && export PATH="/usr/local/heroku/bin:$PATH"
 
-# FVM (Flutter Version Manager)
+# fvm (brew): ~/fvm/default/bin is the global Flutter/Dart SDK picked by
+# `fvm global`. ~/.pub-cache/bin holds `dart pub global activate`d tools
+# (absent today; harmless).
 [[ -d "$HOME/fvm/default/bin" ]] && export PATH="$HOME/fvm/default/bin:$PATH"
 [[ -d "$HOME/.pub-cache/bin" ]] && export PATH="$HOME/.pub-cache/bin:$PATH"
 
-# Maestro (Mobile UI testing)
+# Maestro (mobile UI testing; its curl installer puts it here). Not
+# installed (2026-11); removal candidate unless mobile testing returns.
 [[ -d "$HOME/.maestro/bin" ]] && export PATH="$HOME/.maestro/bin:$PATH"
 
-# Android SDK
+# Android SDK (Android Studio's default location), appended as a fallback:
+# adb and the emulator for Flutter/mobile work. Unguarded, and the SDK isn't
+# installed (2026-11), so these add dead entries; harmless.
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 export PATH=$PATH:$ANDROID_HOME/emulator
 
-# Legacy paths (kept for compatibility)
+# GHC 7.8.3 from a 2014-era Haskell app bundle. Gone (2026-11); removal
+# candidate.
 [[ -d "/Applications/ghc-7.8.3.app/Contents/bin" ]] && export PATH="/Applications/ghc-7.8.3.app/Contents/bin:$PATH"
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -209,7 +250,8 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 # Local secrets (not version controlled)
 [[ -f ~/.secrets ]] && source ~/.secrets
 
-# opencode
+# opencode (AI coding CLI; its curl installer appended this line). Unguarded
+# and last, so it's at the very front of PATH; fine, it only holds `opencode`.
 export PATH="$HOME/.opencode/bin:$PATH"
 
 # google-cloud-sdk (brew cask gcloud-cli)
