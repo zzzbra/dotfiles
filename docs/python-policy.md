@@ -26,13 +26,17 @@ survives that migration; only the tools filling the layers change.
   `/usr/local/bin/python3`. Harmless for interactive shells (shims win), but
   run `python-doctor` after brew upgrades; it warns loudly if this happened.
 
-## Machine context (2026-07-09)
+## Machine context
 
-Apple Silicon M1 Max running legacy *Intel* Homebrew under Rosetta
-(`/usr/local`). Existing pyenv interpreters are x86_64. Do **not** build new
-interpreters against this stack if avoidable (`pyenv install` hit
-arm64-vs-x86_64 linker mismatches); native arm64 interpreters arrive with the
-Modernize dotfiles project.
+Native arm64 since 2026-11. pyenv builds interpreters against `/opt/homebrew`.
+They need brew `openssl@3` (in the Brewfile), because brew's plain `openssl`
+is OpenSSL 4 and Python 3.11's `ssl` module won't compile against it.
+gdbm isn't installed, so `dbm.gnu` is absent; nothing uses it.
+
+Until 2026-11-13 the interpreters were x86_64 builds against Intel Homebrew
+under Rosetta. The global 3.11.1 was replaced by a native 3.11.18 with the
+same top-level packages. Version jumps came only where the old pins were
+Intel-only: torch, numpy, PyQt5, lxml, python-lzo.
 
 Removed 2026-07-09: corrupt `~/.pyenv/versions/"3.11.1 "` (trailing space),
 stale pyenv 3.9.10 / 3.9.16 / 3.10.2 / pypy2.7-7.3.6, orphaned brew
