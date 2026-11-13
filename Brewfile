@@ -22,7 +22,6 @@ brew "procs"
 brew "duf"
 brew "gping"
 brew "tlrc"              # official tldr client; the "tldr" formula is gone
-brew "speedtest-cli"
 brew "lf"
 brew "bat"
 brew "eza"               # replaces exa (unmaintained)
@@ -94,9 +93,10 @@ cask "signal"
 cask "wireshark-app"
 cask "blackhole-16ch"
 cask "ghostty"
+cask "keepingyouawake"   # menu-bar keep-awake; replaced Caffeine (Intel-only, 2026-11-12)
 
 # Dropped from the snapshot (2026-11-09):
-#   obsolete:  youtube-dl, exa, node, postgresql@9.6, postgresql@13, postgresql@14 (disabled 2026-11-12), reattach-to-user-namespace,
+#   obsolete:  speedtest-cli (deprecated 2026-11; macOS has `networkQuality`), youtube-dl, exa, node, postgresql@9.6, postgresql@13, postgresql@14 (disabled 2026-11-12), reattach-to-user-namespace,
 #              taps homebrew/cask-fonts, homebrew/cask-versions, homebrew/services, thoughtbot/formulae
 #   unused:    openvino, php, brew-php-switcher, elixir, zork, irssi, exercism, minikube (formula+cask),
 #              mysql, wxwidgets@3.2, innoextract, vim (nvim covers it), sphinx-doc, docutils, wireshark (old cask name)
