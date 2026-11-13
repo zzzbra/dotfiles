@@ -3,7 +3,7 @@
 # Dependencies are not listed; brew pulls them in. Drop something by deleting its line.
 
 tap "heroku/brew"        # heroku CLI (zshrc sets it up)
-tap "leoafarias/fvm"     # Flutter version manager (flutter-tools in nvim)
+tap "btwld/fvm"          # Flutter version manager (flutter-tools in nvim)
 
 # --- Shell & terminal ---
 brew "bash"
@@ -22,7 +22,6 @@ brew "procs"
 brew "duf"
 brew "gping"
 brew "tlrc"              # official tldr client; the "tldr" formula is gone
-brew "speedtest-cli"
 brew "lf"
 brew "bat"
 brew "eza"               # replaces exa (unmaintained)
@@ -52,16 +51,18 @@ brew "ninja"
 # --- Languages / version managers ---
 # pyenv, rbenv and pipx stay only until the mise and uv tasks replace them.
 brew "pyenv"
+brew "openssl@3"         # pyenv builds need it: plain "openssl" is OpenSSL 4, and Python 3.11's ssl module won't compile against it
+brew "lzo"               # C library python-lzo builds against (vocabsieve); no arm64 wheel for Python 3.11
 brew "rbenv"
 brew "pipx"
 brew "pnpm"
 brew "openjdk"
-brew "leoafarias/fvm/fvm"
+brew "btwld/fvm/fvm"
 brew "heroku/brew/heroku"
 # node is deliberately absent: nvm (later mise) owns Node.
 
 # --- Data & services ---
-brew "postgresql@17"     # fresh cluster in /opt/homebrew/var/postgresql@17; old Intel data left in /usr/local/var
+brew "postgresql@17", link: true  # keg-only; linked so psql is on PATH. Fresh cluster in /opt/homebrew/var/postgresql@17; old Intel data left in /usr/local/var
 brew "redis"
 
 # --- Media & documents ---
@@ -94,9 +95,10 @@ cask "signal"
 cask "wireshark-app"
 cask "blackhole-16ch"
 cask "ghostty"
+cask "keepingyouawake"   # menu-bar keep-awake; replaced Caffeine (Intel-only, 2026-11-12)
 
 # Dropped from the snapshot (2026-11-09):
-#   obsolete:  youtube-dl, exa, node, postgresql@9.6, postgresql@13, postgresql@14 (disabled 2026-11-12), reattach-to-user-namespace,
+#   obsolete:  speedtest-cli (deprecated 2026-11; macOS has `networkQuality`), youtube-dl, exa, node, postgresql@9.6, postgresql@13, postgresql@14 (disabled 2026-11-12), reattach-to-user-namespace,
 #              taps homebrew/cask-fonts, homebrew/cask-versions, homebrew/services, thoughtbot/formulae
 #   unused:    openvino, php, brew-php-switcher, elixir, zork, irssi, exercism, minikube (formula+cask),
 #              mysql, wxwidgets@3.2, innoextract, vim (nvim covers it), sphinx-doc, docutils, wireshark (old cask name)
