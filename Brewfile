@@ -51,6 +51,8 @@ brew "ninja"
 # --- Languages / version managers ---
 # pyenv, rbenv and pipx stay only until the mise and uv tasks replace them.
 brew "pyenv"
+brew "openssl@3"         # pyenv builds need it: plain "openssl" is OpenSSL 4, and Python 3.11's ssl module won't compile against it
+brew "lzo"               # C library python-lzo builds against (vocabsieve); no arm64 wheel for Python 3.11
 brew "rbenv"
 brew "pipx"
 brew "pnpm"
