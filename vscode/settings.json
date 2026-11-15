@@ -23,7 +23,7 @@
   "terminal.integrated.fontFamily": "MesloLGS NF", // only one that renders powerline fonts well
   "terminal.integrated.profiles.osx": {
     "zsh": {
-      "path": "/usr/local/bin/zsh",
+      "path": "/bin/zsh",
       "args": []
     }
   },
@@ -51,7 +51,6 @@
     "scminput": false,
     "yaml": false
   },
-  "GitHooks.hooksDirectory": "/Users/zachbrady/dev/mobile-dashboard/.git/hooks",
 
   // Language specific
 
@@ -89,7 +88,7 @@
     "editor.wordBasedSuggestions": "off"
   },
   "dart.runPubGetOnPubspecChanges": "prompt",
-  "dart.flutterSdkPath": "/Users/zachbrady/fvm/default",
+  "dart.flutterSdkPath": "~/fvm/default", // Dart-Code expands a leading ~/
   // "dart.flutterSdkPath": ".fvm/flutter_sdk,
   // "dart.debugExternalPackageLibraries": true,
   // "dart.debugSdkLibraries": true,
