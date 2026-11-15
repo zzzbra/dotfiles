@@ -11,14 +11,12 @@ Guidance for Claude Code sessions working in this repo.
   on PATH and holds only third-party links (docker, aws, gcm). The Git
   Credential Manager in `/usr/local/share/gcm-core` comes from its own pkg
   and is still in use. Never point new config at `/usr/local`.
-- Ruby is a native rbenv **4.0.9**, pinned in `ruby/version`. That file is
-  symlinked to `~/.rbenv/version`, so it's the global default, and
-  `install.sh` installs whatever it names. The Intel rubies (2.1–3.1) were
-  removed 2026-11-15.
-- pyenv interpreters are native arm64 (global 3.11.18). `pyenv install`
-  compiles against `/opt/homebrew` and needs brew `openssl@3`: brew's
-  `openssl` is OpenSSL 4, and Python 3.11's `ssl` module won't build against
-  it.
+- **mise** owns python, node and ruby (replaced pyenv, nvm and rbenv on
+  2026-11-15). Global versions live in `config/mise/config.toml`, symlinked
+  to `~/.config/mise/config.toml`: Python 3.11, Node 24, Ruby 4.0.9, all
+  prebuilt native arm64 downloads. Projects' `mise.toml`, `.python-version`,
+  `.nvmrc` and `.ruby-version` files win inside them. `mise activate` (no
+  shims) is in zshrc and bash_profile; `install.sh` runs `mise install`.
 
 ## Active project: Modernize dotfiles (July 2026)
 
@@ -28,7 +26,7 @@ read its final "Session handoff" section before starting work. Task order:
 
 1. Migrate Homebrew → native arm64 `/opt/homebrew` (spec + verification
    protocol on its task page)
-2. Migrate version management → mise (replaces pyenv/nvm/rbenv)
+2. Migrate version management → mise (replaces pyenv/nvm/rbenv) — done
 3. Migrate Python tooling → uv (replaces venv/pip/pipx/poetry)
 
 Verification approach (agreed with the user): no environment teardown.
@@ -62,11 +60,11 @@ conventions below.
   before running `makesymlinks.sh`, and review what they added before
   adopting it. Note the repo-root `CLAUDE.md` (this file) is repo-scoped, and
   `.claude/` here is this repo's local settings, not global.
-- Python policy (settled 2026-07-09): `docs/python-policy.md` — pyenv owns
+- Python policy (settled 2026-07-09): `docs/python-policy.md` — mise owns
   interpreters, venvs own project packages, brew pythons stay **unlinked**
   (dependency plumbing only), system python untouched. Verify with
   `python-doctor` (in `bin/`) — run it in a **fresh** terminal; long-lived
-  shells can false-positive on duplicate shims from inherited PATH.
+  shells can keep stale PATH entries from before a config change.
 - **Neovim** (`config/nvim` → `~/.config/nvim`): hand-rolled **lazy.nvim**
   config (NOT LazyVim), modules under `lua/aslan/`. Plugin keymaps belong in
   that plugin's spec (`keys = {}`), never duplicated in `init.lua` — defining
