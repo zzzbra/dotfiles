@@ -4,14 +4,17 @@ Guidance for Claude Code sessions working in this repo.
 
 ## Machine facts (do not re-derive; do not assume otherwise)
 
-- **Apple Silicon M1 Max** — but running a legacy **Intel Homebrew under
-  Rosetta** at `/usr/local` (no `/opt/homebrew` yet). Shells may report
-  `uname -m` = x86_64; that's Rosetta, not the hardware.
-- Consequence: do **not** compile new x86_64 artifacts or build interpreters
-  against this brew (arm64-vs-x86_64 linker failures). Native arm64 migration
-  is planned work, see below.
-- Existing pyenv interpreters (3.10.10, 3.11.1 global) are x86_64 — leave them
-  until the migration replaces them.
+- **Apple Silicon M1 Max, native arm64.** Homebrew lives at `/opt/homebrew`
+  and comes first on PATH. Shells should report `uname -m` = arm64; x86_64
+  means something is running under Rosetta, which is a bug to chase.
+- **Intel Homebrew is gone** (retired 2026-11-15). `/usr/local/bin` sits last
+  on PATH and holds only third-party links (docker, aws, gcm). The Git
+  Credential Manager in `/usr/local/share/gcm-core` comes from its own pkg
+  and is still in use. Never point new config at `/usr/local`.
+- pyenv interpreters are native arm64 (global 3.11.18). `pyenv install`
+  compiles against `/opt/homebrew` and needs brew `openssl@3`: brew's
+  `openssl` is OpenSSL 4, and Python 3.11's `ssl` module won't build against
+  it.
 
 ## Active project: Modernize dotfiles (July 2026)
 

@@ -78,8 +78,6 @@ else
     # Add Homebrew to PATH for this session
     if [[ -f /opt/homebrew/bin/brew ]]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
-    elif [[ -f /usr/local/bin/brew ]]; then
-        eval "$(/usr/local/bin/brew shellenv)"
     fi
     
     if command_exists brew; then
@@ -90,13 +88,14 @@ else
     fi
 fi
 
-# Install Git Credential Manager
-if brew list --cask git-credential-manager &>/dev/null; then
-    print_success "Git Credential Manager is already installed"
+# Everything Homebrew installs (formulae, casks, taps) is declared in the Brewfile.
+# Third-party taps (heroku, btwld/fvm) must be trusted once before bundle can use
+# them: brew trust --formula heroku/brew/heroku btwld/fvm/fvm
+print_step "Installing Brewfile dependencies (brew bundle)..."
+if brew bundle --file "$SCRIPT_DIR/Brewfile"; then
+    print_success "Brewfile dependencies installed"
 else
-    print_step "Installing Git Credential Manager..."
-    brew install --cask git-credential-manager
-    print_success "Git Credential Manager installed"
+    print_warning "brew bundle reported failures (see output above); rerun it after fixing them"
 fi
 
 # Step 2: Install Oh My Zsh
@@ -178,70 +177,12 @@ else
     print_success "zsh-syntax-highlighting installed"
 fi
 
-# Development tools via Homebrew
-print_step "Installing development tools..."
+# neovim, ripgrep, fd, fzf, cmake, git-lfs, gcloud-cli, pyenv, rbenv and fvm
+# come from the Brewfile (Step 1). Below: per-user setup brew can't do.
 
-# Neovim and dependencies (requires >= 0.11 for mason-lspconfig v2+ and nvim-lspconfig v3+)
-if command_exists nvim; then
-    print_success "Neovim is already installed"
-else
-    print_step "Installing Neovim..."
-    brew install neovim
-    print_success "Neovim installed"
-fi
-
-# Neovim dependencies
-if command_exists rg; then
-    print_success "ripgrep is already installed"
-else
-    print_step "Installing ripgrep (for telescope)..."
-    brew install ripgrep
-    print_success "ripgrep installed"
-fi
-
-# fzf - fuzzy finder (required for gcrb script)
-if command_exists fzf; then
-    print_success "fzf is already installed"
-else
-    print_step "Installing fzf (fuzzy finder)..."
-    brew install fzf
-    print_success "fzf installed"
-fi
-
-if command_exists cmake; then
-    print_success "cmake is already installed"
-else
-    print_step "Installing cmake (for telescope-fzf)..."
-    brew install cmake
-    print_success "cmake installed"
-fi
-
-# git-lfs (needed for repos with LFS-tracked media)
+# git-lfs hooks for this user
 if command_exists git-lfs; then
-    print_success "git-lfs is already installed"
-else
-    print_step "Installing git-lfs..."
-    brew install git-lfs
-    git lfs install
-    print_success "git-lfs installed"
-fi
-
-# google-cloud-sdk (gcloud CLI; PATH/completion sourced in zshrc)
-if brew list --cask gcloud-cli &>/dev/null; then
-    print_success "gcloud CLI is already installed"
-else
-    print_step "Installing gcloud CLI..."
-    brew install --cask gcloud-cli
-    print_success "gcloud CLI installed"
-fi
-
-# pyenv
-if command_exists pyenv; then
-    print_success "pyenv is already installed"
-else
-    print_step "Installing pyenv..."
-    brew install pyenv
-    print_success "pyenv installed"
+    git lfs install --skip-repo >/dev/null && print_success "git-lfs hooks configured"
 fi
 
 # Python policy (docs/python-policy.md): brew pythons are dependency plumbing
@@ -254,21 +195,12 @@ for formula in $(brew list --formula 2>/dev/null | grep -E '^python@'); do
 done
 print_success "Brew pythons unlinked per python policy"
 
-# rbenv
-if command_exists rbenv; then
-    print_success "rbenv is already installed"
-else
-    print_step "Installing rbenv..."
-    brew install rbenv
-    print_success "rbenv installed"
-fi
-
-# rustup
+# rustup (zshrc already puts ~/.cargo/bin on PATH, so don't let it edit shell files)
 if command_exists rustup; then
     print_success "rustup is already installed"
 else
     print_step "Installing rustup (Rust toolchain)..."
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
     print_success "rustup installed"
 fi
 
@@ -281,18 +213,10 @@ else
     print_success "nvm installed"
 fi
 
-# fvm (Flutter Version Manager)
-if command_exists fvm; then
-    print_success "fvm is already installed"
-else
-    print_step "Installing fvm (Flutter Version Manager)..."
-    brew tap leoafarias/fvm
-    brew install fvm
-    print_success "fvm installed"
-fi
-
-# Set up Flutter via FVM
-if [[ -L "$HOME/fvm/default" ]]; then
+# Set up Flutter via FVM (fvm itself comes from the Brewfile)
+if ! command_exists fvm; then
+    print_warning "fvm not installed (Brewfile step failed?) — skipping Flutter setup"
+elif [[ -L "$HOME/fvm/default" ]]; then
     print_success "Flutter default version is already configured"
 else
     print_step "Setting up Flutter via FVM..."

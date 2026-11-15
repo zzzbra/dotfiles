@@ -1,3 +1,4 @@
+export PATH="/Users/zzzbra/.openclaw/bin:$PATH"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -80,32 +81,28 @@ plugins=(
 #   into .zprofile lives on the Notion task "Make dotfiles Mac + Linux
 #   operable (portable tool layer)".
 # - Not everything is here: further down, `pyenv init` and `rbenv init`
-#   prepend their shims, and opencode prepends its dir, so they beat all of
-#   the entries below.
+#   prepend their shims, and opencode and OpenClaw prepend their dirs, so
+#   they beat all of the entries below.
 
 # Reset to a known base so re-sourcing (`reload`) and nested shells don't
 # pile up duplicates. Side effect: discards anything the terminal added
 # (see the Ghostty entry below).
-# /usr/local/bin first is Intel-Homebrew-era. It must stay on PATH (Docker
-# Desktop, VS Code's `code`, VirtualBox, Parallels, ollama install there),
-# but moves to the END once Intel Homebrew is uninstalled. Until then its perl,
-# vim, rsync, openssl etc. beat /usr/bin. Tracked: dotfiles PR #5, phase 6.
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+# /usr/local/bin goes LAST: since Intel Homebrew was retired (2026-11-15) it
+# only holds third-party links (Docker Desktop, aws, gcm, ollama), and those
+# should never shadow a system or Homebrew binary.
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
 
 # Homebrew. shellenv prepends its bin/sbin, so native brew wins over
-# /usr/local/bin. The elif is for Intel Macs; delete it if none are left.
+# /usr/local/bin. Native arm64 only (Intel Homebrew retired 2026-11-15).
 if [[ -f /opt/homebrew/bin/brew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [[ -f /usr/local/bin/brew ]]; then
-    eval "$(/usr/local/bin/brew shellenv)"
 fi
 
 # ~/.local/bin: personal scripts (symlinked from dotfiles/bin via
 # symlinks.conf) and self-updating standalone installs (claude, poetry).
 [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
-# ~/.cargo/bin: rustup's toolchain and `cargo install`ed tools. It's ahead of
-# brew, so its x86_64 rg/fd shadow brew's until `cargo uninstall ripgrep
-# fd-find` (Rosetta task, phase 5).
+# ~/.cargo/bin: rustup's toolchain (native aarch64 host) and `cargo install`ed
+# tools. It's ahead of brew, so anything installed here shadows brew's copy.
 [[ -d "$HOME/.cargo/bin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
 # ~/.cabal/bin: Haskell's cabal-installed tools. No longer exists on this
 # Mac (2026-11); removal candidate.
@@ -119,30 +116,19 @@ fi
 [[ -x "/Applications/Ghostty.app/Contents/MacOS/ghostty" ]] && export PATH="$PATH:/Applications/Ghostty.app/Contents/MacOS"
 
 # Java: the first openjdk found. Brew's openjdk is keg-only (not linked into
-# brew's bin), so it needs adding by hand. The /usr/local globs match only
-# Intel brew's JDKs and go when it's retired.
-for dir in /opt/homebrew/opt/openjdk*/bin(N) /usr/local/opt/openjdk*/bin(N); do
+# brew's bin), so it needs adding by hand.
+for dir in /opt/homebrew/opt/openjdk*/bin(N); do
     if [[ -d "$dir" ]]; then
         export PATH="$dir:$PATH"
         break
     fi
 done
 
-# Fallback npm-globals dir for a non-nvm setup (an old Homebrew node layout).
-# Only applies when ~/.nvm doesn't exist; removal candidate.
-if [[ ! -d "$HOME/.nvm" ]] && [[ -d "/usr/local/share/npm/bin" ]]; then
-    export PATH="/usr/local/share/npm/bin:$PATH"
-fi
-
 # nvm: sourcing nvm.sh prepends the default node's bin. Goes away when mise
 # takes over runtimes (Modernize dotfiles project).
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Heroku's old standalone installer location. heroku now comes from brew
-# (Brewfile), and this dir no longer exists (2026-11); removal candidate.
-[[ -d "/usr/local/heroku/bin" ]] && export PATH="/usr/local/heroku/bin:$PATH"
 
 # fvm (brew): ~/fvm/default/bin is the global Flutter/Dart SDK picked by
 # `fvm global`. ~/.pub-cache/bin holds `dart pub global activate`d tools
@@ -244,7 +230,7 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 ## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall
-[[ -f /Users/zachbrady/.dart-cli-completion/zsh-config.zsh ]] && . /Users/zachbrady/.dart-cli-completion/zsh-config.zsh || true
+[[ -f $HOME/.dart-cli-completion/zsh-config.zsh ]] && . $HOME/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
 
 # Local secrets (not version controlled)
@@ -254,6 +240,14 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 # and last, so it's at the very front of PATH; fine, it only holds `opencode`.
 export PATH="$HOME/.opencode/bin:$PATH"
 
-# google-cloud-sdk (brew cask gcloud-cli)
-[[ -f /usr/local/share/google-cloud-sdk/path.zsh.inc ]] && source /usr/local/share/google-cloud-sdk/path.zsh.inc
-[[ -f /usr/local/share/google-cloud-sdk/completion.zsh.inc ]] && source /usr/local/share/google-cloud-sdk/completion.zsh.inc
+# OpenClaw.app CLI (bundled runtime). The app rewrites line 1 of this file on
+# every launch with its own absolute-path export, which the PATH reset above
+# wipes out. This copy does the real work; its text differs on purpose
+# ($HOME), so the app leaves it alone.
+export PATH="$HOME/.openclaw/bin:$PATH"
+
+# google-cloud-sdk (brew cask gcloud-cli, native arm64 brew)
+_gcloud_sdk="${HOMEBREW_PREFIX:-/opt/homebrew}/share/google-cloud-sdk"
+[[ -f "$_gcloud_sdk/path.zsh.inc" ]] && source "$_gcloud_sdk/path.zsh.inc"
+[[ -f "$_gcloud_sdk/completion.zsh.inc" ]] && source "$_gcloud_sdk/completion.zsh.inc"
+unset _gcloud_sdk
