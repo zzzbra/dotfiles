@@ -13,7 +13,7 @@ survives that migration; only the tools filling the layers change.
 | Interpreters you deliberately use | **pyenv** | `python3` in a shell always resolves to a pyenv shim. Global default: `pyenv global`. Projects pin with `.python-version`. |
 | Project packages | **venv** | Every project gets `.venv` created from its pyenv interpreter (`python -m venv .venv`). Never `pip install` outside a venv. |
 | Global CLI tools | **pipx** | `pipx install <tool>`. (Becomes `uv tool` after the uv migration.) |
-| Homebrew's pythons | **Homebrew, internally** | Exist only as dependency plumbing for formulas (gcloud, vim, mpv, …). Kept **unlinked** (`brew unlink python@X.Y`) so they never appear in `/usr/local/bin`. Never `pip install` into them. Dependents use `/usr/local/opt/...` paths, so unlinking breaks nothing (verified 2026-07-09). |
+| Homebrew's pythons | **Homebrew, internally** | Exist only as dependency plumbing for formulas (gcloud, vim, mpv, …). Kept **unlinked** (`brew unlink python@X.Y`) so they never appear in `/opt/homebrew/bin`. Never `pip install` into them. Dependents use `/opt/homebrew/opt/...` paths, so unlinking breaks nothing. |
 | System python | **Apple** | `/usr/bin/python3` — never modify, never pip install. Deliberate fallback for macOS-integrated one-offs (e.g. `plistlib`-heavy scripts); it is the only interpreter guaranteed consistent with OS libraries. |
 
 ## Known hazards this policy prevents
@@ -23,7 +23,7 @@ survives that migration; only the tools filling the layers change.
   `ImportError`). Anything not going through pyenv shims hit it. Fix: brew
   pythons stay unlinked.
 - `brew upgrade` may **relink** a python formula and recreate
-  `/usr/local/bin/python3`. Harmless for interactive shells (shims win), but
+  `/opt/homebrew/bin/python3`. Harmless for interactive shells (shims win), but
   run `python-doctor` after brew upgrades; it warns loudly if this happened.
 
 ## Machine context

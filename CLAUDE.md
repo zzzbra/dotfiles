@@ -7,8 +7,10 @@ Guidance for Claude Code sessions working in this repo.
 - **Apple Silicon M1 Max, native arm64.** Homebrew lives at `/opt/homebrew`
   and comes first on PATH. Shells should report `uname -m` = arm64; x86_64
   means something is running under Rosetta, which is a bug to chase.
-- The legacy **Intel Homebrew at `/usr/local`** is still installed until it's
-  retired. Never install into it or point new config at its paths.
+- **Intel Homebrew is gone** (retired 2026-11-15). `/usr/local/bin` sits last
+  on PATH and holds only third-party links (docker, aws, gcm). The Git
+  Credential Manager in `/usr/local/share/gcm-core` comes from its own pkg
+  and is still in use. Never point new config at `/usr/local`.
 - pyenv interpreters are native arm64 (global 3.11.18). `pyenv install`
   compiles against `/opt/homebrew` and needs brew `openssl@3`: brew's
   `openssl` is OpenSSL 4, and Python 3.11's `ssl` module won't build against
