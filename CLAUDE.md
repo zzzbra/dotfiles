@@ -11,6 +11,10 @@ Guidance for Claude Code sessions working in this repo.
   on PATH and holds only third-party links (docker, aws, gcm). The Git
   Credential Manager in `/usr/local/share/gcm-core` comes from its own pkg
   and is still in use. Never point new config at `/usr/local`.
+- Ruby is a native rbenv **4.0.9**, pinned in `ruby/version`. That file is
+  symlinked to `~/.rbenv/version`, so it's the global default, and
+  `install.sh` installs whatever it names. The Intel rubies (2.1–3.1) were
+  removed 2026-11-15.
 - pyenv interpreters are native arm64 (global 3.11.18). `pyenv install`
   compiles against `/opt/homebrew` and needs brew `openssl@3`: brew's
   `openssl` is OpenSSL 4, and Python 3.11's `ssl` module won't build against
