@@ -49,17 +49,16 @@ brew "cmake"
 brew "ninja"
 
 # --- Languages / version managers ---
-# pyenv, rbenv and pipx stay only until the mise and uv tasks replace them.
-brew "pyenv"
-brew "openssl@3"         # pyenv builds need it: plain "openssl" is OpenSSL 4, and Python 3.11's ssl module won't compile against it
+brew "mise"              # python, node and ruby versions (config/mise/config.toml); replaced pyenv, nvm and rbenv 2026-11-15
+# pipx stays only until the uv task replaces it.
+brew "openssl@3"         # for anything compiled against Python 3.11/Ruby: plain "openssl" is OpenSSL 4, which their ssl modules won't build against
 brew "lzo"               # C library python-lzo builds against (vocabsieve); no arm64 wheel for Python 3.11
-brew "rbenv"
 brew "pipx"
 brew "pnpm"
 brew "openjdk"
 brew "btwld/fvm/fvm"
 brew "heroku/brew/heroku"
-# node is deliberately absent: nvm (later mise) owns Node.
+# node, python and ruby are deliberately absent: mise owns them.
 
 # --- Data & services ---
 brew "postgresql@17", link: true  # keg-only; linked so psql is on PATH. Fresh cluster in /opt/homebrew/var/postgresql@17; old Intel data left in /usr/local/var

@@ -80,8 +80,8 @@ plugins=(
 #   system PATH (the tmux LaunchAgent sets its own). A proposal to move PATH
 #   into .zprofile lives on the Notion task "Make dotfiles Mac + Linux
 #   operable (portable tool layer)".
-# - Not everything is here: further down, `pyenv init` and `rbenv init`
-#   prepend their shims, and opencode and OpenClaw prepend their dirs, so
+# - Not everything is here: further down, `mise activate` prepends the
+#   active python/node/ruby, and opencode and OpenClaw prepend their dirs, so
 #   they beat all of the entries below.
 
 # Reset to a known base so re-sourcing (`reload`) and nested shells don't
@@ -123,12 +123,6 @@ for dir in /opt/homebrew/opt/openjdk*/bin(N); do
         break
     fi
 done
-
-# nvm: sourcing nvm.sh prepends the default node's bin. Goes away when mise
-# takes over runtimes (Modernize dotfiles project).
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # fvm (brew): ~/fvm/default/bin is the global Flutter/Dart SDK picked by
 # `fvm global`. ~/.pub-cache/bin holds `dart pub global activate`d tools
@@ -210,16 +204,13 @@ ssh() {
   esac
 }
 
-# pyenv — sole owner of what `python3` means in a shell.
-# Policy: docs/python-policy.md (pyenv interpreters + per-project venvs;
-# brew pythons stay unlinked; system python untouched). Check: python-doctor
-if command -v pyenv >/dev/null 2>&1; then
-    eval "$(pyenv init -)"
-fi
-
-# rbenv
-if command -v rbenv >/dev/null 2>&1; then
-    eval "$(rbenv init -)"
+# mise: sole owner of what python3, node and ruby mean in a shell (replaced
+# pyenv, nvm and rbenv, 2026-11-15). Global versions: config/mise/config.toml;
+# a project's mise.toml, .python-version, .nvmrc or .ruby-version wins inside
+# it. No shims: a prompt hook puts the active versions' bin dirs on PATH.
+# Python policy: docs/python-policy.md. Check: python-doctor
+if command -v mise >/dev/null 2>&1; then
+    eval "$(mise activate zsh)"
 fi
 
 source ~/powerlevel10k/powerlevel10k.zsh-theme

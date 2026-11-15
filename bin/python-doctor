@@ -29,18 +29,26 @@ info "arch               → $(python3 -c 'import platform; print(platform.machi
 echo
 echo "Layer checks:"
 
-# 1. python3 must resolve through pyenv shims.
-if [[ "$(command -v python3)" == "$HOME/.pyenv/shims/python3" ]]; then
-    ok "python3 resolves through pyenv shims"
+# 1. python3 must resolve to mise's active Python (no shims; mise puts its bin
+#    dir on PATH from the shell hook).
+expected="$(mise which python3 2>/dev/null)"
+got="$(command -v python3)"
+if [[ -n "$expected" && "$got" == "$expected" ]]; then
+    ok "python3 resolves to mise's Python"
 else
-    warn "python3 does NOT resolve through pyenv shims (got: $(command -v python3))"
+    warn "python3 does NOT resolve to mise's Python (got: $got, mise: ${expected:-mise not installed})"
 fi
 
-# 2. pyenv global / local
-if command -v pyenv >/dev/null 2>&1; then
-    info "pyenv global: $(pyenv global 2>/dev/null), active: $(pyenv version-name 2>/dev/null)"
+# 2. Which mise config chose the version (global, or a project's file).
+if command -v mise >/dev/null 2>&1; then
+    info "mise python: $(mise current python 2>/dev/null) from $(mise ls --current python 2>/dev/null | awk '{print $3}')"
+fi
+# Leftover managers shadowing mise.
+stale="$(printf '%s' "$PATH" | tr ':' '\n' | grep -E '/\.(pyenv|rbenv|nvm)/' || true)"
+if [[ -n "$stale" ]]; then
+    warn "old version-manager dirs on PATH: $(echo "$stale" | tr '\n' ' ')"
 else
-    warn "pyenv not installed"
+    ok "no pyenv/rbenv/nvm dirs on PATH"
 fi
 
 # 3. Active venv

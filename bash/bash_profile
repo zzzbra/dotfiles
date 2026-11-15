@@ -18,7 +18,6 @@ export PATH="/Users/zzzbra/.openclaw/bin:$PATH"
 PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
 [ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 [ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
-PATH="$HOME/.rbenv/shims:$PATH"
 
 # ====================
 # File Navigation
@@ -270,27 +269,17 @@ if [ -d "$GHC_DOT_APP" ]; then
     export PATH="${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
 fi
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-
-
-
 # =================
-# Python
+# Runtimes: mise (python, node, ruby; same config as zsh)
 # =================
-export PYENV_ROOT="$HOME/.pyenv"
-
-# =================
-# Ruby
-# =================
-if command -v rbenv >/dev/null 2>&1; then
-    eval "$(rbenv init -)"
+if command -v mise >/dev/null 2>&1; then
+    eval "$(mise activate bash)"
 fi
 
 # ---------------------
 # Print Stats on terminal load
 # ---------------------
-# Last in the file so nvm and rbenv are already loaded; each line is skipped
+# Last in the file so mise has already set up runtimes; each line is skipped
 # if its tool isn't installed.
 echo -e "${BG_RED}${WHITE} zzzbra ${RESET}${WHITE}${BG_BLACK} Creative Technologist ${RESET}${BG_YELLOW}${BLACK} Ars longa, vita brevis ${RESET}"
 echo "------------------------------------------"

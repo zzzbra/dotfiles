@@ -177,7 +177,7 @@ else
     print_success "zsh-syntax-highlighting installed"
 fi
 
-# neovim, ripgrep, fd, fzf, cmake, git-lfs, gcloud-cli, pyenv, rbenv and fvm
+# neovim, ripgrep, fd, fzf, cmake, git-lfs, gcloud-cli, mise and fvm
 # come from the Brewfile (Step 1). Below: per-user setup brew can't do.
 
 # git-lfs hooks for this user
@@ -186,7 +186,7 @@ if command_exists git-lfs; then
 fi
 
 # Python policy (docs/python-policy.md): brew pythons are dependency plumbing
-# only — keep them unlinked so they never shadow pyenv as `python3`.
+# only — keep them unlinked so they never shadow mise's `python3`.
 for formula in $(brew list --formula 2>/dev/null | grep -E '^python@'); do
     if [[ -e "$(brew --prefix)/bin/python3" ]] || ls "$(brew --prefix)"/bin/python3.[0-9]* &>/dev/null; then
         print_step "Unlinking $formula (python policy)..."
@@ -204,27 +204,15 @@ else
     print_success "rustup installed"
 fi
 
-# nvm
-if [[ -d "$HOME/.nvm" ]]; then
-    print_success "nvm is already installed"
-else
-    print_step "Installing nvm..."
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-    print_success "nvm installed"
-fi
-
-# Ruby: install the version pinned in ruby/version (symlinked to
-# ~/.rbenv/version, so it's the global default). ruby-build compiles natively
-# against /opt/homebrew; openssl@3 comes from the Brewfile.
-if command_exists rbenv; then
-    ruby_version="$(cat "$SCRIPT_DIR/ruby/version")"
-    if rbenv versions --bare | grep -qx "$ruby_version"; then
-        print_success "Ruby $ruby_version is already installed"
+# Runtimes: mise (from the Brewfile) installs the global python/node/ruby pinned
+# in config/mise/config.toml (symlinked to ~/.config/mise/config.toml in Step 2).
+# Prebuilt native binaries, so this takes seconds. Idempotent.
+if command_exists mise; then
+    print_step "Installing runtimes with mise (config/mise/config.toml)..."
+    if mise install --yes; then
+        print_success "mise runtimes installed: $(mise ls --current 2>/dev/null | awk '{print $1"@"$2}' | tr '\n' ' ')"
     else
-        print_step "Installing Ruby $ruby_version (compiles; takes a few minutes)..."
-        RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@3)" rbenv install "$ruby_version" \
-            && print_success "Ruby $ruby_version installed" \
-            || print_warning "Ruby $ruby_version failed to build; rerun: rbenv install $ruby_version"
+        print_warning "mise install reported failures; rerun: mise install"
     fi
 fi
 
@@ -262,11 +250,10 @@ print_header "Installation Complete!"
 print_info "Next steps:"
 echo "  1. Restart your terminal or run: source ~/.zshrc"
 echo "  2. Configure Powerlevel10k by running: p10k configure"
-echo "  3. Install a Node.js version with: nvm install node"
-echo "  4. Install a Python version with: pyenv install 3.13 (policy: docs/python-policy.md, verify: python-doctor)"
-echo "  5. Install Rust stable toolchain with: rustup default stable"
-echo "  6. Install Flutter with: fvm install stable && fvm global stable"
-echo "  7. Authenticate MCP servers: open Claude Code and run /mcp, then sign in to each server"
+echo "  3. Runtimes: change global versions in config/mise/config.toml, then: mise install (verify python: python-doctor)"
+echo "  4. Install Rust stable toolchain with: rustup default stable"
+echo "  5. Install Flutter with: fvm install stable && fvm global stable"
+echo "  6. Authenticate MCP servers: open Claude Code and run /mcp, then sign in to each server"
 echo ""
 print_success "Your development environment is ready!"
 echo ""
