@@ -94,10 +94,11 @@ cask "signal"
 cask "wireshark-app"
 cask "blackhole-16ch"
 cask "ghostty"
+cask "tailscale-app"     # standalone Tailscale (not the App Store one); bin/tailscale wraps its CLI
 cask "keepingyouawake"   # menu-bar keep-awake; replaced Caffeine (Intel-only, 2026-11-12)
 
 # Dropped from the snapshot (2026-11-09):
-#   duplicate: tailscale (Tailscale.app ships its own CLI; the formula's version drifted from the app's daemon and broke OpenClaw, 2026-11-14)
+#   duplicate: tailscale formula (the tailscale-app cask ships its own CLI, wrapped by bin/tailscale; the formula drifted from the daemon and broke OpenClaw, 2026-11-14)
 #   obsolete:  speedtest-cli (deprecated 2026-11; macOS has `networkQuality`), youtube-dl, exa, node, postgresql@9.6, postgresql@13, postgresql@14 (disabled 2026-11-12), reattach-to-user-namespace,
 #              taps homebrew/cask-fonts, homebrew/cask-versions, homebrew/services, thoughtbot/formulae
 #   unused:    openvino, php, brew-php-switcher, elixir, zork, irssi, exercism, minikube (formula+cask),
