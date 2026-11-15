@@ -1,0 +1,5 @@
+# uv user config, symlinked to ~/.config/uv/uv.toml.
+# mise owns Python versions (config/mise/config.toml), so uv uses mise's
+# interpreters and only downloads its own when none on the machine fits a
+# project (e.g. Anki's pinned version).
+python-preference = "system"
