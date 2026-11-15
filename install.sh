@@ -78,8 +78,6 @@ else
     # Add Homebrew to PATH for this session
     if [[ -f /opt/homebrew/bin/brew ]]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
-    elif [[ -f /usr/local/bin/brew ]]; then
-        eval "$(/usr/local/bin/brew shellenv)"
     fi
     
     if command_exists brew; then

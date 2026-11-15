@@ -51,7 +51,7 @@ else
 fi
 
 # 4. Brew pythons must stay unlinked (brew upgrade can silently relink them).
-brew_prefix="$(brew --prefix 2>/dev/null || echo /usr/local)"
+brew_prefix="$(brew --prefix 2>/dev/null || echo /opt/homebrew)"
 if [[ -e "$brew_prefix/bin/python3" ]]; then
     warn "brew relinked a python: $brew_prefix/bin/python3 exists — run: brew unlink python@X.Y"
 else
