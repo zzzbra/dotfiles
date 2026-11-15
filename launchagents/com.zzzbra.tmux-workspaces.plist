@@ -8,13 +8,16 @@
     <string>com.zzzbra.tmux-workspaces</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/zzzbra/.local/bin/tmux-workspaces</string>
-        <string>--detached</string>
+        <!-- launchd doesn't expand $HOME, so let sh do it (launchd sets HOME
+             for user agents). -->
+        <string>/bin/sh</string>
+        <string>-c</string>
+        <string>exec "$HOME/.local/bin/tmux-workspaces" --detached</string>
     </array>
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
-        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <string>/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin</string>
         <key>SHELL</key>
         <string>/bin/zsh</string>
         <key>LANG</key>
