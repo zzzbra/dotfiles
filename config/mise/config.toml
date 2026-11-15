@@ -1,0 +1,12 @@
+# Global runtime versions (mise replaces pyenv, nvm and rbenv; 2026-11-15).
+# Symlinked to ~/.config/mise/config.toml. A project overrides these with its own
+# mise.toml, or with the old per-tool files mise reads (see settings below).
+[tools]
+python = "3.11"   # matches the global packages (vocabsieve, pyobjc...); revisit in the uv task
+node = "24"
+ruby = "4.0.9"
+
+[settings]
+# Honour the version files projects already have: .python-version, .nvmrc /
+# .node-version, .ruby-version.
+idiomatic_version_file_enable_tools = ["python", "node", "ruby"]
