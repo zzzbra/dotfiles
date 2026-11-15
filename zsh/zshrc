@@ -1,3 +1,4 @@
+export PATH="/Users/zzzbra/.openclaw/bin:$PATH"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -206,6 +207,12 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 # opencode
 export PATH="$HOME/.opencode/bin:$PATH"
+
+# OpenClaw.app CLI (bundled runtime). The app rewrites line 1 of this file on
+# every launch with its own absolute-path export, which the PATH reset above
+# wipes out. This copy does the real work; its text differs on purpose
+# ($HOME), so the app leaves it alone.
+export PATH="$HOME/.openclaw/bin:$PATH"
 
 # google-cloud-sdk (brew cask gcloud-cli, native arm64 brew)
 _gcloud_sdk="${HOMEBREW_PREFIX:-/opt/homebrew}/share/google-cloud-sdk"
