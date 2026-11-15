@@ -47,13 +47,13 @@ brew "libfido2"          # ssh security-key (sk-*) support
 # --- Build toolchain ---
 brew "cmake"
 brew "ninja"
+brew "just"              # command runner (justfiles); Anki's source build uses it (`just run`, `just check`)
 
 # --- Languages / version managers ---
 brew "mise"              # python, node and ruby versions (config/mise/config.toml); replaced pyenv, nvm and rbenv 2026-11-15
-# pipx stays only until the uv task replaces it.
+brew "uv"                # Python venvs, packages, `uv tool` global CLIs and `uv run` scripts; replaced pip/pipx/poetry 2026-11-15
 brew "openssl@3"         # for anything compiled against Python 3.11/Ruby: plain "openssl" is OpenSSL 4, which their ssl modules won't build against
-brew "lzo"               # C library python-lzo builds against (vocabsieve); no arm64 wheel for Python 3.11
-brew "pipx"
+brew "lzo"               # C library python-lzo builds against (vocabsieve, a uv tool); no arm64 wheel for Python 3.11
 brew "pnpm"
 brew "openjdk"
 brew "btwld/fvm/fvm"

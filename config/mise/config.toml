@@ -10,3 +10,8 @@ ruby = "4.0.9"
 # Honour the version files projects already have: .python-version, .nvmrc /
 # .node-version, .ruby-version.
 idiomatic_version_file_enable_tools = ["python", "node", "ruby"]
+
+# Entering a uv project (one with uv.lock) creates its .venv if missing and
+# activates it; leaving deactivates it. uv owns venvs and packages.
+[settings.python]
+uv_venv_auto = "create|source"
