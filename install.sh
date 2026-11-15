@@ -213,6 +213,21 @@ else
     print_success "nvm installed"
 fi
 
+# Ruby: install the version pinned in ruby/version (symlinked to
+# ~/.rbenv/version, so it's the global default). ruby-build compiles natively
+# against /opt/homebrew; openssl@3 comes from the Brewfile.
+if command_exists rbenv; then
+    ruby_version="$(cat "$SCRIPT_DIR/ruby/version")"
+    if rbenv versions --bare | grep -qx "$ruby_version"; then
+        print_success "Ruby $ruby_version is already installed"
+    else
+        print_step "Installing Ruby $ruby_version (compiles; takes a few minutes)..."
+        RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@3)" rbenv install "$ruby_version" \
+            && print_success "Ruby $ruby_version installed" \
+            || print_warning "Ruby $ruby_version failed to build; rerun: rbenv install $ruby_version"
+    fi
+fi
+
 # Set up Flutter via FVM (fvm itself comes from the Brewfile)
 if ! command_exists fvm; then
     print_warning "fvm not installed (Brewfile step failed?) — skipping Flutter setup"
@@ -249,10 +264,9 @@ echo "  1. Restart your terminal or run: source ~/.zshrc"
 echo "  2. Configure Powerlevel10k by running: p10k configure"
 echo "  3. Install a Node.js version with: nvm install node"
 echo "  4. Install a Python version with: pyenv install 3.13 (policy: docs/python-policy.md, verify: python-doctor)"
-echo "  5. Install a Ruby version with: rbenv install 3.2.2"
-echo "  6. Install Rust stable toolchain with: rustup default stable"
-echo "  7. Install Flutter with: fvm install stable && fvm global stable"
-echo "  8. Authenticate MCP servers: open Claude Code and run /mcp, then sign in to each server"
+echo "  5. Install Rust stable toolchain with: rustup default stable"
+echo "  6. Install Flutter with: fvm install stable && fvm global stable"
+echo "  7. Authenticate MCP servers: open Claude Code and run /mcp, then sign in to each server"
 echo ""
 print_success "Your development environment is ready!"
 echo ""
