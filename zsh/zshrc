@@ -66,8 +66,10 @@ plugins=(
 
 # User configuration
 
-# Start with system defaults
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+# Start with system defaults. /usr/local/bin goes last: since Intel Homebrew was
+# retired (2026-11-15) it only holds third-party links (docker, aws, code, gcm),
+# and those should never shadow a system or Homebrew binary.
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
 
 # Add Homebrew (works for both Intel and Apple Silicon)
 if [[ -f /opt/homebrew/bin/brew ]]; then
