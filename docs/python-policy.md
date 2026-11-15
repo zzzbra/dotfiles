@@ -2,17 +2,19 @@
 
 Settled 2026-07-09 (Notion: "Settle Python version management" task). One
 deterministic answer to "what does `python3` mean on this machine," enforced by
-these dotfiles. Interim policy — supersession path is the "Modernize dotfiles"
-Notion project (native arm64 Homebrew → mise → uv), but the *layer model* below
-survives that migration; only the tools filling the layers change.
+these dotfiles. The "Modernize dotfiles" Notion project swapped the tools
+(native arm64 Homebrew → mise → uv, finished 2026-11-15); the layer model
+itself has stayed the same since July.
 
 ## The layer model — one owner per layer
 
 | Layer | Owner | Rule |
 |---|---|---|
-| Interpreters you deliberately use | **mise** | `python3` in a shell always resolves to mise's active Python. Global default: `config/mise/config.toml` (3.11). Projects pin with `mise.toml` or `.python-version`. |
-| Project packages | **venv** | Every project gets `.venv` created from its mise interpreter (`python -m venv .venv`). Never `pip install` outside a venv. |
-| Global CLI tools | **pipx** | `pipx install <tool>`. (Becomes `uv tool` after the uv migration.) |
+| Interpreters | **mise** | `python3` in a shell always resolves to mise's active Python. Global default: `config/mise/config.toml` (3.11). Projects pin with `.python-version` (or `mise.toml`). uv uses these interpreters (`config/uv/uv.toml`: `python-preference = "system"`) and downloads its own only when nothing installed fits. |
+| Project packages | **uv** | Every project is a uv project: `uv init` / `uv add`, a committed `uv.lock`, and a `.venv` uv manages. mise creates and activates that `.venv` on `cd` (`python.uv_venv_auto`); `uv sync` (or any `uv run`) installs the packages into it. Older requirements.txt projects: `uv venv && uv pip install -r requirements.txt`. Never `pip install` outside a venv. |
+| One-off scripts | **uv run** | A script declares its libraries in a PEP 723 header (`uv add --script foo.py lib`) and runs with `uv run foo.py`, or directly via the shebang `#!/usr/bin/env -S uv run --script`. |
+| Global CLI tools | **uv tool** | `uv tool install <tool>` (or `-e <checkout>` for your own). Each tool gets its own environment; its commands land in `~/.local/bin`. One-shot use: `uvx <tool>` (e.g. `uvx poetry` for a poetry project you don't own). |
+| Global Python's own packages | **just pynvim** | Neovim's Python provider imports it from `python3`. Nothing else goes in the global interpreter. |
 | Homebrew's pythons | **Homebrew, internally** | Exist only as dependency plumbing for formulas (gcloud, vim, mpv, …). Kept **unlinked** (`brew unlink python@X.Y`) so they never appear in `/opt/homebrew/bin`. Never `pip install` into them. Dependents use `/opt/homebrew/opt/...` paths, so unlinking breaks nothing. |
 | System python | **Apple** | `/usr/bin/python3` — never modify, never pip install. Deliberate fallback for macOS-integrated one-offs (e.g. `plistlib`-heavy scripts); it is the only interpreter guaranteed consistent with OS libraries. |
 
@@ -30,11 +32,19 @@ survives that migration; only the tools filling the layers change.
 
 Native arm64 since 2026-11. Since 2026-11-15 interpreters come from mise as
 prebuilt python-build-standalone binaries (no compiling; they bundle their own
-OpenSSL). The global 3.11.18 carries a few top-level packages (anthropic,
-genanki, openpyxl, pynvim, pyobjc, typer-slim, plus editable installs of
-`~/dev/projects/boox-mokuro` and `~/dev/projects/anki_projects/vocabsieve`).
-These were copied over from pyenv at identical versions; pyobjc 9 needs
-setuptools for `pkg_resources`. The uv task moves them to `uv tool`.
+OpenSSL).
+
+The global Python used to carry apps and libraries too. On 2026-11-15 they
+moved, at identical versions:
+- vocabsieve and boox-mokuro (with mokuro and manga_ocr) became editable
+  `uv tool`s of `~/dev/projects/anki_projects/vocabsieve` and
+  `~/dev/projects/boox-mokuro`. boox-mokuro's environment carries
+  setuptools 79, because mokuro still imports `pkg_resources`.
+- anthropic and genanki moved into `build_deck.py`'s inline header (in the
+  1100-Korean-phrases project). openpyxl, pyobjc and typer had no remaining
+  users; add them to a script's header when one needs them.
+- pipx and its dead poetry were removed. yt-to-anki (an upstream clone that
+  uses poetry) can run with `uvx poetry`.
 
 Before that, pyenv compiled interpreters against `/opt/homebrew` with brew
 `openssl@3` (brew's plain `openssl` is OpenSSL 4).

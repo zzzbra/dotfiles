@@ -17,6 +17,12 @@ Guidance for Claude Code sessions working in this repo.
   prebuilt native arm64 downloads. Projects' `mise.toml`, `.python-version`,
   `.nvmrc` and `.ruby-version` files win inside them. `mise activate` (no
   shims) is in zshrc and bash_profile; `install.sh` runs `mise install`.
+- **uv** owns everything Python above the interpreter (since 2026-11-15):
+  project venvs and lockfiles, `uv tool` global CLIs (vocabsieve,
+  boox-mokuro), and `uv run` scripts with inline dependencies. The global
+  Python carries only pynvim. Entering a uv project makes mise create and
+  activate its `.venv`; `uv sync` (or `uv run`) installs the packages.
+  `config/uv/uv.toml` makes uv prefer mise's Pythons. No pipx, no poetry.
 
 ## Active project: Modernize dotfiles (July 2026)
 
@@ -27,7 +33,7 @@ read its final "Session handoff" section before starting work. Task order:
 1. Migrate Homebrew → native arm64 `/opt/homebrew` (spec + verification
    protocol on its task page)
 2. Migrate version management → mise (replaces pyenv/nvm/rbenv) — done
-3. Migrate Python tooling → uv (replaces venv/pip/pipx/poetry)
+3. Migrate Python tooling → uv (replaces venv/pip/pipx/poetry) — done
 
 Verification approach (agreed with the user): no environment teardown.
 Side-by-side installs, fresh-terminal checks, Brewfile snapshot before
@@ -61,7 +67,7 @@ conventions below.
   adopting it. Note the repo-root `CLAUDE.md` (this file) is repo-scoped, and
   `.claude/` here is this repo's local settings, not global.
 - Python policy (settled 2026-07-09): `docs/python-policy.md` — mise owns
-  interpreters, venvs own project packages, brew pythons stay **unlinked**
+  interpreters, uv owns venvs, packages and global tools, brew pythons stay **unlinked**
   (dependency plumbing only), system python untouched. Verify with
   `python-doctor` (in `bin/`) — run it in a **fresh** terminal; long-lived
   shells can keep stale PATH entries from before a config change.
