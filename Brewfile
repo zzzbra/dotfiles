@@ -47,6 +47,7 @@ brew "libfido2"          # ssh security-key (sk-*) support
 # --- Build toolchain ---
 brew "cmake"
 brew "ninja"
+brew "just"              # command runner (justfiles); Anki's source build uses it (`just run`, `just check`)
 
 # --- Languages / version managers ---
 brew "mise"              # python, node and ruby versions (config/mise/config.toml); replaced pyenv, nvm and rbenv 2026-11-15
