@@ -214,6 +214,28 @@ if command_exists mise; then
     else
         print_warning "mise install reported failures; rerun: mise install"
     fi
+    # The global Python carries one library: pynvim, Neovim's Python provider.
+    # Everything else goes in a project venv, a `uv tool`, or a script's
+    # inline dependencies (docs/python-policy.md).
+    mise exec -- python3 -m pip install -q pynvim && print_success "pynvim installed in mise's global Python"
+fi
+
+# Global Python CLIs: `uv tool`s, each in its own environment. These two are
+# editable installs of local checkouts, so they're skipped where the checkout
+# doesn't exist. python-lzo (vocabsieve) builds against brew's lzo; mokuro
+# still imports pkg_resources, which setuptools 84 no longer ships (79 works).
+if command_exists uv; then
+    vocabsieve_src="$HOME/dev/projects/anki_projects/vocabsieve"
+    boox_src="$HOME/dev/projects/boox-mokuro"
+    if [[ -d "$vocabsieve_src" ]]; then
+        CPPFLAGS="-I$(brew --prefix)/include" LDFLAGS="-L$(brew --prefix)/lib" \
+            mise exec -- uv tool install -q -p 3.11 -e "$vocabsieve_src" \
+            && print_success "uv tool: vocabsieve" || print_warning "uv tool install vocabsieve failed"
+    fi
+    if [[ -d "$boox_src" ]]; then
+        mise exec -- uv tool install -q -p 3.11 --with "setuptools<80" --with-executables-from mokuro,manga-ocr -e "$boox_src" \
+            && print_success "uv tool: boox-mokuro (+ mokuro, manga_ocr)" || print_warning "uv tool install boox-mokuro failed"
+    fi
 fi
 
 # Set up Flutter via FVM (fvm itself comes from the Brewfile)
