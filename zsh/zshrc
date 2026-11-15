@@ -71,11 +71,9 @@ plugins=(
 # and those should never shadow a system or Homebrew binary.
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
 
-# Add Homebrew (works for both Intel and Apple Silicon)
+# Add Homebrew (native arm64)
 if [[ -f /opt/homebrew/bin/brew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [[ -f /usr/local/bin/brew ]]; then
-    eval "$(/usr/local/bin/brew shellenv)"
 fi
 
 # Add tools conditionally - only if they exist
@@ -85,27 +83,17 @@ fi
 [[ -d "/opt/X11/bin" ]] && export PATH="/opt/X11/bin:$PATH"
 
 # Java/OpenJDK (checks for any installed version)
-for dir in /opt/homebrew/opt/openjdk*/bin(N) /usr/local/opt/openjdk*/bin(N); do
+for dir in /opt/homebrew/opt/openjdk*/bin(N); do
     if [[ -d "$dir" ]]; then
         export PATH="$dir:$PATH"
         break
     fi
 done
 
-# NPM/Node handling
-# If using nvm, it will add its paths when sourced below
-# This is a fallback for system npm if nvm isn't being used
-if [[ ! -d "$HOME/.nvm" ]] && [[ -d "/usr/local/share/npm/bin" ]]; then
-    export PATH="/usr/local/share/npm/bin:$PATH"
-fi
-
 # NVM (Node Version Manager) - adds node/npm to PATH
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Heroku CLI (could be installed standalone or via Homebrew)
-[[ -d "/usr/local/heroku/bin" ]] && export PATH="/usr/local/heroku/bin:$PATH"
 
 # FVM (Flutter Version Manager)
 [[ -d "$HOME/fvm/default/bin" ]] && export PATH="$HOME/fvm/default/bin:$PATH"
