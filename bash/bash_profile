@@ -13,20 +13,12 @@ export PATH="/Users/zzzbra/.openclaw/bin:$PATH"
 # =====================
 # Path
 # =====================
-# Homebrew directories
-# PATH="/usr/local/bin:$PATH"
-# Node Package Manager
-# PATH="/usr/local/share/npm/bin:$PATH"
-# Heroku Toolbelt
-# PATH="/usr/local/heroku/bin:$PATH"
-
-# assigning it its variables here
-PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/usr/local/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin"
-PATH="/usr/local/share/npm/bin:$PATH"
-PATH="/usr/local/heroku/bin:$PATH"
+# Same order as zshrc: system base, /usr/local/bin last (third-party links only
+# since Intel Homebrew was retired 2026-11-15), then native Homebrew in front.
+PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
+[ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
 PATH="$HOME/.rbenv/shims:$PATH"
-
-# TODO dynamically build PATH with USER env variable
 
 # ====================
 # File Navigation
@@ -240,8 +232,6 @@ fi
 # Directories
 alias dev="cd ~/dev"
 alias storage="cd ~/dev/libraries"
-alias installs="cd /usr/local/bin"
-alias cellar="cd /usr/local/Cellar"
 alias scratch="cd ~/dev/scratch"
 alias sites="cd ~/dev/sites"
 alias dotfiles="cd ~/dotfiles"
@@ -294,7 +284,6 @@ fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-source /usr/local/opt/nvm/nvm.sh
 
 
 

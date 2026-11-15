@@ -7,3 +7,6 @@ backups/
 
 # Neovim generated files
 packer_compiled.lua
+
+# Claude Code per-machine permission approvals
+.claude/settings.local.json
