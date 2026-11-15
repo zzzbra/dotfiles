@@ -66,6 +66,10 @@ conventions below.
   before running `makesymlinks.sh`, and review what they added before
   adopting it. Note the repo-root `CLAUDE.md` (this file) is repo-scoped, and
   `.claude/` here is this repo's local settings, not global.
+- **SSH** (`ssh/config` → `~/.ssh/config`): shared client config for tailnet
+  hosts. Never commit private keys; each machine keeps its own key under the
+  file name an entry expects. Machine-specific or private hosts go in
+  `~/.ssh/config.local` (included first, not in git).
 - Python policy (settled 2026-07-09): `docs/python-policy.md` — mise owns
   interpreters, uv owns venvs, packages and global tools, brew pythons stay **unlinked**
   (dependency plumbing only), system python untouched. Verify with

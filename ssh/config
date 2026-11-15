@@ -1,0 +1,23 @@
+# SSH client config, shared by every machine that installs these dotfiles.
+# Symlinked to ~/.ssh/config by symlinks.conf.
+#
+# - Only host names, ports, users and key FILE NAMES belong here. Private keys
+#   never go in git: each machine makes its own key under the name an entry
+#   expects, and that key's .pub goes in the host's authorized_keys.
+# - Hosts that are private or only matter on one machine go in
+#   ~/.ssh/config.local (not in git). It is read first, and for each setting
+#   ssh keeps the first value it finds, so local entries win.
+# - An entry for the machine you are on is harmless. This file only shapes
+#   outgoing connections; the SSH server reads /etc/ssh/sshd_config.
+
+Include ~/.ssh/config.local
+
+# Synology DS920+ NAS on the tailnet. DSM's SSH listens on a custom port.
+Host nas super-good
+    HostName super-good
+    Port 49222
+    User zzzbra
+    IdentitiesOnly yes
+    IdentityFile ~/.ssh/nas_ed25519
+    ServerAliveInterval 30
+    ServerAliveCountMax 5
