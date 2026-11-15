@@ -199,7 +199,7 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 ## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall
-[[ -f /Users/zachbrady/.dart-cli-completion/zsh-config.zsh ]] && . /Users/zachbrady/.dart-cli-completion/zsh-config.zsh || true
+[[ -f $HOME/.dart-cli-completion/zsh-config.zsh ]] && . $HOME/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
 
 # Local secrets (not version controlled)
