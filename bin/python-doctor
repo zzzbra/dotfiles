@@ -51,14 +51,31 @@ else
     ok "no pyenv/rbenv/nvm dirs on PATH"
 fi
 
-# 3. Active venv
+# 3. The global Python carries only pynvim (Neovim's provider) and its deps.
+extra="$(python3 -m pip list --not-required --format=freeze 2>/dev/null | grep -v -i -E '^(pip|pynvim|setuptools|wheel)==' | tr '\n' ' ')"
+if [[ -n "$extra" ]]; then
+    warn "global Python has extra packages (move them to a uv tool, venv, or script header): $extra"
+else
+    ok "global Python carries only pynvim"
+fi
+python3 -c 'import pynvim' 2>/dev/null && ok "pynvim importable (Neovim python3 provider)" || warn "pynvim missing: mise exec -- python3 -m pip install pynvim"
+
+# 4. uv: venvs, packages and global tools.
+if command -v uv >/dev/null 2>&1; then
+    info "uv $(uv --version | awk '{print $2}'); tools: $(uv tool list 2>/dev/null | grep -v '^-' | awk '{print $1}' | tr '\n' ' ')"
+else
+    warn "uv not installed (brew bundle)"
+fi
+command -v pipx >/dev/null 2>&1 && warn "pipx is still installed; global tools belong to uv tool"
+
+# 5. Active venv
 if [[ -n "${VIRTUAL_ENV:-}" ]]; then
     info "active venv: $VIRTUAL_ENV"
 else
     info "no venv active (fine outside a project)"
 fi
 
-# 4. Brew pythons must stay unlinked (brew upgrade can silently relink them).
+# 6. Brew pythons must stay unlinked (brew upgrade can silently relink them).
 brew_prefix="$(brew --prefix 2>/dev/null || echo /opt/homebrew)"
 if [[ -e "$brew_prefix/bin/python3" ]]; then
     warn "brew relinked a python: $brew_prefix/bin/python3 exists — run: brew unlink python@X.Y"
@@ -72,7 +89,7 @@ else
     ok "no versioned brew pythons in $brew_prefix/bin"
 fi
 
-# 5. Duplicate shim dirs in PATH cause confusing resolution.
+# 7. Duplicate shim dirs in PATH cause confusing resolution.
 dupes="$(printf '%s' "$PATH" | tr ':' '\n' | sort | uniq -d | grep -E 'shims' || true)"
 if [[ -n "$dupes" ]]; then
     warn "duplicate shim entries in PATH: $(echo "$dupes" | tr '\n' ' ')"
@@ -80,7 +97,7 @@ else
     ok "no duplicate shim entries in PATH"
 fi
 
-# 6. Stdlib sanity — catches the 2026-07 pyexpat/libexpat class of breakage.
+# 8. Stdlib sanity — catches the 2026-07 pyexpat/libexpat class of breakage.
 if python3 -c 'import ssl, sqlite3, plistlib, pyexpat' 2>/dev/null; then
     ok "stdlib sanity (ssl, sqlite3, plistlib, pyexpat) imports clean"
 else
