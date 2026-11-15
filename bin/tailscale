@@ -1,0 +1,11 @@
+#!/bin/sh
+# tailscale: the CLI that ships inside Tailscale.app (the standalone variant, from the
+# Brewfile's tailscale-app cask). Being the app's own binary, it always matches the
+# running daemon, which a separate brew formula didn't (that drift broke OpenClaw,
+# 2026-11-14). A real executable on PATH, unlike an alias, so scripts see it too.
+# It works from background services as long as something else launched it (OpenClaw's
+# gateway calls the app binary directly). Only a launchd job whose program IS this CLI
+# fails: the binary then thinks it's the app starting up ("GUI failed to start").
+app=/Applications/Tailscale.app/Contents/MacOS/Tailscale
+[ -x "$app" ] || { echo "tailscale: $app not found (brew install --cask tailscale-app)" >&2; exit 127; }
+exec "$app" "$@"
