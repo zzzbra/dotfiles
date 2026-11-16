@@ -1,17 +1,28 @@
-# Global runtime versions (mise replaces pyenv, nvm and rbenv; 2026-11-15).
+# Global runtime versions. mise replaced pyenv, nvm and rbenv on 2026-11-15 and
+# took on Go the same day.
 # Symlinked to ~/.config/mise/config.toml. A project overrides these with its own
 # mise.toml, or with the old per-tool files mise reads (see settings below).
 [tools]
 python = "3.11"   # matches the global packages (vocabsieve, pyobjc...); revisit in the uv task
 node = "24"
 ruby = "4.0.9"
+# Go: projects pin with go.mod's `toolchain` line or a mise.toml. `go install`ed
+# binaries land in ~/go/bin (on PATH in zshrc).
+go = "1.27"
+# Rust is NOT here: rustup owns it (~/.cargo, installed by install.sh), because
+# projects pin toolchains with rust-toolchain.toml, which rustup reads.
 
 [settings]
 # Honour the version files projects already have: .python-version, .nvmrc /
-# .node-version, .ruby-version.
-idiomatic_version_file_enable_tools = ["python", "node", "ruby"]
+# .node-version, .ruby-version, and Go's .go-version.
+idiomatic_version_file_enable_tools = ["python", "node", "ruby", "go"]
 
 # Entering a uv project (one with uv.lock) creates its .venv if missing and
 # activates it; leaving deactivates it. uv owns venvs and packages.
 [settings.python]
 uv_venv_auto = "create|source"
+
+# `go install` puts binaries in ~/go/bin (on PATH in zshrc), not in the
+# versioned install dir, where they'd vanish on the next Go upgrade.
+[settings.go]
+set_gobin = false
