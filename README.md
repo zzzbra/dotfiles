@@ -1,107 +1,97 @@
 # dotfiles
 
-## Quick Start
+Shell, editor, terminal and tooling config for an Apple Silicon Mac
+(native arm64). macOS only for now.
+
+## Install
 
 ```bash
 git clone https://github.com/zzzbra/dotfiles.git ~/dotfiles
 cd ~/dotfiles && ./install.sh
 ```
 
-## Manual Installation
+On a brand-new machine, trust the two third-party Homebrew taps once
+first, or `brew bundle` skips their formulae:
+`brew trust --formula heroku/brew/heroku btwld/fvm/fvm`.
 
-### Step 1: Install Core Dependencies
+`install.sh` is the whole bootstrap and is safe to re-run. In order, it:
 
-1. **Homebrew** (package manager):
-   ```bash
-   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-   ```
+1. Installs Homebrew (`/opt/homebrew`) and everything in the `Brewfile`
+   (`brew bundle`), then Oh My Zsh.
+2. Checks out the tmux plugins (git submodules) and links the config into
+   place (`makesymlinks.sh`, driven by `symlinks.conf`). Existing files are
+   backed up to `backups/<timestamp>/` first.
+3. Loads the LaunchAgents and sets default apps per file type (`duti`).
+4. Installs the zsh theme and plugins (Powerlevel10k,
+   zsh-autosuggestions, zsh-syntax-highlighting).
+5. Installs the language toolchains: rustup for Rust, and `mise install`
+   for Python, Node, Ruby and Go.
+6. Sets up Flutter (fvm) and Claude Code's Notion MCP server.
 
-2. **Oh My Zsh** (Zsh framework):
-   ```bash
-   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-   ```
+Afterwards, open a new terminal. To check the Python setup, run
+`python-doctor`.
 
-### Step 2: Clone and Run Dotfiles Setup
+Open nvim once from a terminal after a fresh install. lazy.nvim installs the
+plugins, and Mason installs the language servers and formatters. Some of
+those are built with the language toolchains, which only exist in terminal
+shells.
 
-```bash
-git clone https://github.com/zzzbra/dotfiles.git ~/dotfiles
-cd ~/dotfiles && chmod +x makesymlinks.sh && ./makesymlinks.sh
-```
+## Who installs what
 
-After running the script, restart your terminal or run:
-```bash
-source ~/.zshrc
-```
+| Layer | Owner | Where it's declared |
+|---|---|---|
+| Apps, services (Postgres, Redis), system libraries, everyday CLI tools (git, tmux, rg, jq, fzf...) | Homebrew | `Brewfile` |
+| Language runtimes: Python, Node, Ruby, Go | mise | `config/mise/config.toml` |
+| Rust | rustup | projects pin with `rust-toolchain.toml` |
+| Python packages, venvs, Python CLI tools | uv | `docs/python-policy.md` |
+| Editor plugins | lazy.nvim | `config/nvim/lazy-lock.json` |
+| Language servers, formatters | Mason | `config/nvim/lua/aslan/plugins/lsp.lua` |
 
-### Step 3: Install Additional Tools
+The rule behind the split: mise owns things whose version should change
+from project to project. Everyday utilities should behave the same in every
+folder, so Homebrew owns them. A project's own `mise.toml`,
+`.python-version`, `.nvmrc`, `.ruby-version` or `.go-version` overrides the
+global runtime versions inside it.
 
-With Homebrew now in your PATH, install the remaining tools:
+mise is hooked in with `mise activate` (no shims), so its runtimes are on
+PATH in terminal shells only.
 
-1. **Zsh theme and plugins**:
-   ```bash
-   # Install Powerlevel10k theme
-   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-   
-   # Install zsh-autosuggestions
-   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-   
-   # Install zsh-syntax-highlighting
-   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-   ```
+## Layout
 
-2. **Development tools**:
-   ```bash
-   brew install --cask git-credential-manager
-   brew install neovim
-   brew install pyenv
-   brew install rbenv
-   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+| Path | What |
+|---|---|
+| `install.sh` | From-zero bootstrap |
+| `makesymlinks.sh`, `symlinks.conf` | Links repo files into `~` |
+| `Brewfile` | Homebrew packages and casks |
+| `zsh/`, `bash/` | Shell config (`zshrc` holds PATH, with a reason next to each entry) |
+| `config/nvim/` | Neovim: a hand-rolled lazy.nvim config, modules in `lua/aslan/` |
+| `config/ghostty/` | Ghostty terminal (themes follow macOS light/dark) |
+| `config/mise/`, `config/uv/` | Runtime versions; uv prefers mise's Pythons |
+| `tmux/` | `tmux.conf`, plus tmux-resurrect and tmux-continuum as pinned submodules |
+| `git/` | Git config, global ignore, commit template |
+| `ssh/` | Shared SSH client config for tailnet hosts (no keys) |
+| `bin/` | Scripts, linked into `~/.local/bin` |
+| `launchagents/` | macOS LaunchAgents (e.g. tmux workspaces at login) |
+| `duti/` | Default apps per file type |
+| `vscode/` | VS Code settings and keybindings |
+| `claude/` | Claude Code global instructions and settings, linked into `~/.claude/` |
+| `docs/` | Policies (`python-policy.md`) |
 
-   # Java/OpenJDK - install any version (PATH auto-configured)
-   brew install openjdk@17  # or openjdk@11, openjdk@21, openjdk (latest)
-   # To switch versions: brew unlink openjdk@17 && brew link openjdk@21
-   ```
+## Conventions
 
-3. **Final step** - Source your shell to make all tools available:
-   ```bash
-   source ~/.zshrc
-   ```
+- **Every change lands here.** A new tool or setting goes into the repo
+  (and `install.sh` if it needs installing), never only into live shell
+  state.
+- **Linking:** add a line `source -> ~/destination` to `symlinks.conf`,
+  then run `./makesymlinks.sh`.
+- **Formatting in nvim is opt-in per project.** `<leader>f` formats only
+  with a formatter the project has committed a config for, and falls back
+  to the language server. There's no format-on-save. The rationale is the
+  header of `config/nvim/lua/aslan/plugins/formatting.lua`.
+- **tmux sessions** are saved every 15 minutes and restored at login.
+- **SSH:** shared hosts live in `ssh/config`. Machine-specific or private
+  hosts go in `~/.ssh/config.local`, which isn't in git. Private keys never
+  go in the repo.
+- **Secrets** go in `~/.secrets`, which `zshrc` sources and git never sees.
 
-## Project Structure & Conventions
-
-This dotfiles repository follows these conventions for organizing configuration files:
-
-### File Organization
-- **Root-level files**: Individual config files (e.g., `zshrc`, `gitconfig`, `tmux.conf`) are stored in the repository root
-- **Directories**: Multi-file configurations are stored in their own directories:
-  - `config/nvim/` - Neovim configuration
-  - `vscode/` - VS Code settings and keybindings
-
-### Symlink Strategy
-The `makesymlinks.sh` script creates symlinks from this repository to their appropriate locations:
-- Root-level files → `~/.{filename}` (e.g., `zshrc` → `~/.zshrc`)
-- Config directories → `~/.config/{dirname}` (e.g., `config/nvim` → `~/.config/nvim`)
-- Platform-specific locations:
-  - VS Code (macOS): `vscode/` → `~/Library/Application Support/Code/User/`
-
-### Adding New Configurations
-To add a new configuration file or directory:
-1. Place the file/directory in the repository following the conventions above
-2. For standard dotfiles: Add the filename to the `files` variable in `makesymlinks.sh`
-3. For platform-specific configs: Add custom handling logic in `makesymlinks.sh` (see VS Code section as example)
-
-### Backup Strategy
-When running `makesymlinks.sh`, existing configurations are automatically backed up to `~/dotfiles/backups/{timestamp}/` before creating new symlinks.
-
-## TODO
-- [ ] add session exit script
-- [ ] follow .config/ directory convention
-- [ ] explore yadm for dotfiles management
-- [ ] investigate mise/asdf for runtime version management
-- [x] fix neovim issues (migrated to lazy.nvim, updated deprecated plugins)
-- [ ] make entirety of dotfiles work on Linux machines
-- [x] investigate https://www.lazyvim.org/ for Neovim configuration (investigated LazyVim, opted to modernize existing config with lazy.nvim instead)
-- [x] replace vim with neovim config
-- [x] replace bash with zsh config
-- [x] add VS Code configuration support
+`CLAUDE.md` holds the same facts in more detail, for Claude Code sessions.
