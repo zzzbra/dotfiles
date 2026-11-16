@@ -4,3 +4,5 @@
 # this machine alone, like an app holding a library that lives here.
 
 cask "calibre"   # e-book library + reader; its library lives on this Mac (2026-11-16)
+cask "kobo"      # Kobo store + desktop reader. Intel-only (runs under Rosetta); kept while Kobo is the bookstore
+cask "thorium"   # open-source EPUB/PDF/comics reader; on trial as Calibre's external reader (2026-11-16)
