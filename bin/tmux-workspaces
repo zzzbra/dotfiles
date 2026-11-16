@@ -13,9 +13,24 @@
 #
 # Idempotent: existing session/windows are left untouched; a missing window
 # (e.g. one you closed) is recreated.
+#
+# When no tmux server is running and tmux-resurrect has a save (tmux.conf has
+# tmux-continuum save every 15 minutes), the save is restored first, so after
+# a reboot you get your splits, directories and programs back rather than
+# three empty windows.
 
 TMUX_BIN="$(command -v tmux || echo /opt/homebrew/bin/tmux)"
 SESSION=main
+RESURRECT="$HOME/dotfiles/tmux/plugins/tmux-resurrect/scripts/restore.sh"
+LAST_SAVE="$HOME/.local/share/tmux/resurrect/last"   # @resurrect-dir in tmux.conf
+
+if ! "$TMUX_BIN" has-session 2>/dev/null && [ -e "$LAST_SAVE" ] && [ -x "$RESURRECT" ]; then
+  # Start the server with a throwaway session named "0". resurrect treats a
+  # one-pane server as a fresh start: it rebuilds the saved sessions and then
+  # removes session "0". run-shell waits for the restore to finish.
+  "$TMUX_BIN" new-session -d -s 0
+  "$TMUX_BIN" run-shell "$RESURRECT"
+fi
 
 has_window() { # name
   "$TMUX_BIN" list-windows -t "=$SESSION" -F '#{window_name}' 2>/dev/null \
