@@ -17,10 +17,21 @@ Guidance for Claude Code sessions working in this repo.
   all prebuilt native arm64 downloads. Projects' `mise.toml`,
   `.python-version`, `.nvmrc`, `.ruby-version` and `.go-version` files win
   inside them. `go install` goes to `~/go/bin` (GOBIN unset on purpose).
-  Decided 2026-11-15: mise will also own CLI tools (the portable layer).
+- **Who owns what (rule, 2026-11-16):** mise owns things whose version
+  should change per project (language runtimes). Everyday utilities (git,
+  tmux, rg, jq, fzf...) should behave the same in every folder, so they come
+  from the OS package manager: Homebrew here, apt on Linux. Any repo can ship
+  a `mise.toml`, so a mise-owned utility could be repinned by someone else's
+  config, and shims would put mise in front of every call. This supersedes
+  the 2026-11-15 "mise owns CLI tools too" decision. Linux support is a
+  separate, paused project.
 - **Rust** stays on **rustup** (`~/.cargo/bin`, installed by `install.sh`),
-  not mise, because projects pin toolchains with `rust-toolchain.toml`. `mise activate` (no
-  shims) is in zshrc and bash_profile; `install.sh` runs `mise install`.
+  not mise, because projects pin toolchains with `rust-toolchain.toml`.
+- `mise activate` (no shims) is in zshrc and bash_profile; `install.sh` runs
+  `mise install`. So mise's tools exist only in terminal shells: anything
+  started elsewhere (LaunchAgents, scripts, GUI-launched nvim) won't find
+  them. mise's documented fix is a hybrid (shims in `.zprofile`); not adopted
+  yet.
 - **uv** owns everything Python above the interpreter (since 2026-11-15):
   project venvs and lockfiles, `uv tool` global CLIs (vocabsieve,
   boox-mokuro), and `uv run` scripts with inline dependencies. The global

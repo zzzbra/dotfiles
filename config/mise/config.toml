@@ -1,5 +1,6 @@
 # Global runtime versions. mise replaced pyenv, nvm and rbenv on 2026-11-15 and
-# took on Go the same day.
+# took on Go the same day. Runtimes only: everyday CLI tools stay with Homebrew,
+# so they behave the same in every folder (rule in CLAUDE.md).
 # Symlinked to ~/.config/mise/config.toml. A project overrides these with its own
 # mise.toml, or with the old per-tool files mise reads (see settings below).
 [tools]

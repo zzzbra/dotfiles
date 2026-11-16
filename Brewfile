@@ -1,6 +1,8 @@
 # Native arm64 Homebrew (/opt/homebrew). Curated from Brewfile.intel-snapshot on 2026-11-09.
 # Install:  arch -arm64 /opt/homebrew/bin/brew bundle --file=~/dotfiles/Brewfile
 # Dependencies are not listed; brew pulls them in. Drop something by deleting its line.
+# Brew owns everyday utilities, which should behave the same in every folder;
+# mise owns per-project language runtimes (rule in CLAUDE.md).
 
 tap "heroku/brew"        # heroku CLI (zshrc sets it up)
 tap "btwld/fvm"          # Flutter version manager (flutter-tools in nvim)
