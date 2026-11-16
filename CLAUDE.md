@@ -11,11 +11,15 @@ Guidance for Claude Code sessions working in this repo.
   on PATH and holds only third-party links (docker, aws, gcm). The Git
   Credential Manager in `/usr/local/share/gcm-core` comes from its own pkg
   and is still in use. Never point new config at `/usr/local`.
-- **mise** owns python, node and ruby (replaced pyenv, nvm and rbenv on
+- **mise** owns python, node, ruby and go (replaced pyenv, nvm and rbenv on
   2026-11-15). Global versions live in `config/mise/config.toml`, symlinked
-  to `~/.config/mise/config.toml`: Python 3.11, Node 24, Ruby 4.0.9, all
-  prebuilt native arm64 downloads. Projects' `mise.toml`, `.python-version`,
-  `.nvmrc` and `.ruby-version` files win inside them. `mise activate` (no
+  to `~/.config/mise/config.toml`: Python 3.11, Node 24, Ruby 4.0.9, Go 1.27,
+  all prebuilt native arm64 downloads. Projects' `mise.toml`,
+  `.python-version`, `.nvmrc`, `.ruby-version` and `.go-version` files win
+  inside them. `go install` goes to `~/go/bin` (GOBIN unset on purpose).
+  Decided 2026-11-15: mise will also own CLI tools (the portable layer).
+- **Rust** stays on **rustup** (`~/.cargo/bin`, installed by `install.sh`),
+  not mise, because projects pin toolchains with `rust-toolchain.toml`. `mise activate` (no
   shims) is in zshrc and bash_profile; `install.sh` runs `mise install`.
 - **uv** owns everything Python above the interpreter (since 2026-11-15):
   project venvs and lockfiles, `uv tool` global CLIs (vocabsieve,
