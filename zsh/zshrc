@@ -104,6 +104,9 @@ fi
 # ~/.cargo/bin: rustup's toolchain (native aarch64 host) and `cargo install`ed
 # tools. It's ahead of brew, so anything installed here shadows brew's copy.
 [[ -d "$HOME/.cargo/bin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
+# ~/go/bin: `go install`ed tools (Go itself comes from mise; GOBIN is left
+# unset so installs survive Go upgrades). Appears after the first go install.
+[[ -d "$HOME/go/bin" ]] && export PATH="$HOME/go/bin:$PATH"
 # /opt/X11/bin: XQuartz (X11 apps on macOS). Remove with XQuartz.
 [[ -d "/opt/X11/bin" ]] && export PATH="/opt/X11/bin:$PATH"
 # Ghostty's CLI (`ghostty +list-themes` etc.) lives inside the app bundle. Ghostty
