@@ -77,6 +77,7 @@ there is one. A machine without that file gets only the core.
 | `makesymlinks.sh`, `symlinks.conf` | Links repo files into `~` |
 | `Brewfile` | Homebrew packages and casks |
 | `hosts/` | Per-machine extras (e.g. `hosts/tv-scorpion/Brewfile`) |
+| `modules/` | Opt-in extras, run by hand (e.g. `modules/spotlight-exclude/`) |
 | `zsh/`, `bash/` | Shell config (`zshrc` holds PATH, with a reason next to each entry) |
 | `config/nvim/` | Neovim: a hand-rolled lazy.nvim config, modules in `lua/aslan/` |
 | `config/ghostty/` | Ghostty terminal (themes follow macOS light/dark) |
