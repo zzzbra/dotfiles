@@ -83,8 +83,10 @@ conventions below.
   config (NOT LazyVim), modules under `lua/aslan/`. Plugin keymaps belong in
   that plugin's spec (`keys = {}`), never duplicated in `init.lua` — defining
   in both shadows the spec and breaks lazy-loading. `init.lua` holds only
-  editor-global, plugin-independent maps. Leader = Space. On Nvim 0.11 (native
+  editor-global, plugin-independent maps. Leader = Space. On Nvim 0.12 (native
   `vim.lsp.config`/`enable`); some `vim.lsp.buf.*` legacy fns are gone.
+  nvim-treesitter is on its `main` branch (master is frozen and breaks on
+  0.12): it only installs parsers, and `vim.treesitter.start()` highlights.
 - **Formatting** (`.../plugins/formatting.lua`): conform.nvim, **project-
   config-gated and manual only** (`<leader>f`; deliberately no format-on-save).
   A project opts in by committing a formatter config; configless buffers fall
