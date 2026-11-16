@@ -137,7 +137,7 @@ return {
 
   -- In-buffer markdown rendering (headings, bullets, code blocks, tables).
   -- ft-gated so it only loads for markdown buffers. Needs the `markdown` and
-  -- `markdown_inline` treesitter parsers (declared in editor.lua ensure_installed).
+  -- `markdown_inline` treesitter parsers (installed by editor.lua).
   -- Toggle at runtime with :RenderMarkdown toggle.
   {
     "MeanderingProgrammer/render-markdown.nvim",
