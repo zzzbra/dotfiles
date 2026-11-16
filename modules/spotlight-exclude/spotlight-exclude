@@ -1,0 +1,138 @@
+#!/bin/zsh
+# spotlight-exclude: keep build folders (node_modules, .venv, Rust target/)
+# out of Spotlight. Replaces the npm tool spotlight-manager (2021) with the
+# same approach and no dependencies: find the folders named in ./rules, add
+# them to Spotlight's exclusion list, restart Spotlight's indexer.
+#
+# Opt-in module: install.sh never runs it. Run it as yourself (it calls sudo
+# for the parts that need root) from a terminal that has Full Disk Access;
+# a tmux started before that access was granted won't do.
+#
+#   spotlight-exclude status            rules, and what is/isn't excluded yet
+#   spotlight-exclude apply [--dry-run] exclude anything new that matches
+#   spotlight-exclude undo              remove every exclusion the rules match
+
+set -euo pipefail
+
+HERE=${0:A:h}
+RULES=$HERE/rules
+PLIST=/System/Volumes/Data/.Spotlight-V100/VolumeConfiguration.plist
+BACKUPS=${XDG_STATE_HOME:-$HOME/.local/state}/spotlight-exclude
+
+die() { print -u2 -- "spotlight-exclude: $*"; exit 1; }
+
+(( EUID != 0 )) || die "run it as yourself, not with sudo; it asks for sudo when it needs it"
+command -v jq >/dev/null || die "needs jq (it's in the Brewfile)"
+
+# ---- policy: parse ./rules ---------------------------------------------------
+typeset -a roots names markers
+while read -r kw a b _; do
+  case $kw in
+    root) roots+=("${a/#\~/$HOME}") ;;
+    skip) names+=("$a"); markers+=("${b:--}") ;;
+    '')   ;;
+    *)    die "rules: don't understand '$kw $a'" ;;
+  esac
+done < <(sed 's/#.*//' "$RULES")
+(( $#roots && $#names )) || die "rules needs at least one 'root' and one 'skip' line"
+
+# ---- mechanism ---------------------------------------------------------------
+
+# Every folder the rules match, one per line. find stops descending at a
+# match (-prune), so nested copies inside a match are never listed.
+candidates() {
+  local -a expr=() ; local n d i
+  for n in $names; do expr+=(-o -name "$n"); done
+  for d in $roots; do
+    [[ -d $d ]] && find "$d" -type d \( "${(@)expr[2,-1]}" \) -prune -print 2>/dev/null
+  done | while IFS= read -r d; do
+    i=${names[(ie)${d:t}]}
+    [[ ${markers[i]} == - || -e ${d:h}/${markers[i]} ]] && print -r -- "$d"
+  done
+}
+
+as_json() { jq -R . | jq -sc '[.[] | select(length > 0)]'; }
+
+# Spotlight's current exclusion list, as a JSON array.
+read_list() {
+  sudo plutil -extract Exclusions json -o - "$PLIST" 2>/dev/null \
+    || die "can't read $PLIST. This terminal needs Full Disk Access (System Settings > Privacy & Security), and tmux sessions started before it was granted don't have it: use a plain tab."
+}
+
+# Replace the list (backing up the old one first), then restart Spotlight's
+# indexer (mds) so it picks the change up; launchd starts it again at once.
+write_list() {
+  local old=$1 new=$2 backup
+  mkdir -p "$BACKUPS"
+  backup=$BACKUPS/exclusions-$(date +%Y%m%d-%H%M%S).json
+  print -r -- "$old" > "$backup"
+  sudo plutil -replace Exclusions -json "$new" "$PLIST"
+  sudo killall mds 2>/dev/null || true
+  print "Old list saved to $backup"
+}
+
+# The excluded paths the rules account for (a matching name under a root).
+matched_by_rules() {
+  jq -c --argjson names "$(print -rl -- $names | as_json)" \
+        --argjson roots "$(print -rl -- $roots | as_json)" \
+    '[.[] | . as $p | select((($p | split("/") | last) | IN($names[]))
+                             and any($roots[]; . as $r | $p | startswith($r + "/")))]'
+}
+
+# ---- commands ----------------------------------------------------------------
+
+cmd_status() {
+  print "Rules ($RULES):"
+  print "  search in: ${(j:, :)roots}"
+  print "  skip:      ${(j:, :)names}"
+  local found current todo
+  found=$(candidates | as_json)
+  current=$(read_list)
+  todo=$(jq -c --argjson cur "$current" '. - $cur' <<<"$found")
+  print "\nFolders matching the rules: $(jq length <<<"$found")"
+  print "Already excluded:           $(( $(jq length <<<"$found") - $(jq length <<<"$todo") ))"
+  print "Not yet excluded:           $(jq length <<<"$todo")"
+  print "Other exclusions (not ours): $(( $(jq length <<<"$current") - $(matched_by_rules <<<"$current" | jq length) ))"
+  (( $(jq length <<<"$todo") == 0 )) || print "\nRun 'spotlight-exclude apply' to exclude them."
+}
+
+cmd_apply() {
+  local dry=${1:-} found current todo n
+  found=$(candidates | as_json)
+  current=$(read_list)
+  todo=$(jq -c --argjson cur "$current" '. - $cur' <<<"$found")
+  n=$(jq length <<<"$todo")
+  if (( n == 0 )); then print "Nothing new to exclude."; return; fi
+  jq -r '.[]' <<<"$todo" | sed 's/^/  + /'
+  print "$n new folder(s) to exclude."
+  [[ $dry == --dry-run ]] && { print "(dry run: nothing changed)"; return; }
+  write_list "$current" "$(jq -c --argjson new "$todo" '. + $new' <<<"$current")"
+  sleep 3
+  local missing
+  missing=$(jq -c --argjson want "$todo" '$want - .' <<<"$(read_list)")
+  if [[ $missing == '[]' ]]; then
+    print "Done: $n folder(s) excluded."
+  else
+    die "Spotlight didn't keep $(jq length <<<"$missing") of them; it may have rewritten the list on restart."
+  fi
+}
+
+cmd_undo() {
+  local current ours n
+  current=$(read_list)
+  ours=$(matched_by_rules <<<"$current")
+  n=$(jq length <<<"$ours")
+  if (( n == 0 )); then print "No exclusions match the rules."; return; fi
+  jq -r '.[]' <<<"$ours" | sed 's/^/  - /'
+  read -q "?Remove these $n exclusion(s)? [y/N] " || { print; return 1; }
+  print
+  write_list "$current" "$(jq -c --argjson ours "$ours" '. - $ours' <<<"$current")"
+  print "Done: Spotlight will index them again."
+}
+
+case ${1:-} in
+  status) cmd_status ;;
+  apply)  cmd_apply "${2:-}" ;;
+  undo)   cmd_undo ;;
+  *)      sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'; exit 2 ;;
+esac

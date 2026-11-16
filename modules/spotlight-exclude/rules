@@ -1,0 +1,16 @@
+# What spotlight-exclude keeps out of Spotlight (the policy; the script is
+# the mechanism). Edit this file, then run `spotlight-exclude apply`.
+#
+#   root <folder>             search here (repeatable; ~ is allowed)
+#   skip <name> [<marker>]    exclude every folder called <name>; with a
+#                             marker, only when its parent folder contains
+#                             a file of that name
+#
+# Matching stops at the first hit, so the thousands of node_modules nested
+# inside a project's own node_modules are covered by excluding that one.
+
+root ~/dev
+
+skip node_modules              # JavaScript packages
+skip .venv                     # Python virtual environments
+skip target       Cargo.toml   # Rust build output (only in Rust projects)
