@@ -39,21 +39,17 @@ Guidance for Claude Code sessions working in this repo.
   activate its `.venv`; `uv sync` (or `uv run`) installs the packages.
   `config/uv/uv.toml` makes uv prefer mise's Pythons. No pipx, no poetry.
 
-## Active project: Modernize dotfiles (July 2026)
+## Project history and what's next
 
-Live state, task specs, and session handoffs live in the Notion project
-**"Modernize dotfiles"** (page id `3988f358-d22b-816c-8cd6-ce4eb02ffae2`) —
-read its final "Session handoff" section before starting work. Task order:
+The Notion project **"Modernize dotfiles"** (page id
+`3988f358-d22b-816c-8cd6-ce4eb02ffae2`) is **completed** (2026-11-16):
+native arm64 Homebrew, mise for runtimes, uv for Python. Its page keeps the
+decision log. Follow-on work: the Notion project **"Dotfiles on Linux"**
+(Backlog; page id `41a8f358-d22b-8140-8065-c3782e3773b8`).
 
-1. Migrate Homebrew → native arm64 `/opt/homebrew` (spec + verification
-   protocol on its task page)
-2. Migrate version management → mise (replaces pyenv/nvm/rbenv) — done
-3. Migrate Python tooling → uv (replaces venv/pip/pipx/poetry) — done
-
-Verification approach (agreed with the user): no environment teardown.
-Side-by-side installs, fresh-terminal checks, Brewfile snapshot before
-changes, doctor script after each step, `grep -r /usr/local` sweep before
-retiring anything old.
+Verification approach for environment changes (agreed with the user): no
+teardown. Side-by-side installs, fresh-terminal checks, a snapshot before
+changes, and a check after each step.
 
 ## Parallel effort: Neovim + tmux audit
 
