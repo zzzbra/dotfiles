@@ -5,9 +5,10 @@
 font-family = Hack Nerd Font Mono
 font-size = 14
 
-# Colours: follow macOS light/dark. Themes live in ./themes and share their
-# palette with tmux.conf's light-theme-*/dark-theme-* (miramare + warm paper).
-theme = light:miramare-light,dark:miramare-dark
+# Colours: follow macOS light/dark, using Ghostty's built-in Claude pair
+# (chosen 2026-11-16). tmux.conf's light-theme-*/dark-theme-* palettes copy
+# these colours; nvim keeps its own on purpose.
+theme = light:Claude Light,dark:Claude Dark
 window-theme = auto
 
 # Window
