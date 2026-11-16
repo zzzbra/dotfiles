@@ -65,6 +65,13 @@ conventions below.
   scripts in `bin/` symlink into `~/.local/bin`).
 - `install.sh` is the from-zero machine bootstrap; keep it idempotent. Any
   new tool/policy must land here, not just in live shell state.
+- **Three tiers (2026-11-16):** core (repo root; every machine, applied by
+  `install.sh`), modules (`modules/<name>/`; self-contained, switched on by
+  hand per machine, never by `install.sh`), hosts (`hosts/<name>/`; one
+  machine only). `install.sh` reads the host name from
+  `~/.config/dotfiles/host` (outside git) and applies
+  `hosts/<name>/Brewfile` if present. This Mac is `tv-scorpion`. Ask
+  which tier something belongs in before adding it to the core.
 - **Claude Code global config** lives in `claude/` (`CLAUDE.md` instructions,
   `settings.json` preferences), symlinked into `~/.claude/` via
   `symlinks.conf`. The instructions load in every Claude Code session on this
