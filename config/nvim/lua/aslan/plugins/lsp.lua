@@ -114,7 +114,8 @@ return {
     opts = {
       ensure_installed = {
         'ts_ls',
-        'rust_analyzer',
+        'rust_analyzer', -- formats with the toolchain's rustfmt (honors rustfmt.toml)
+        'gopls',         -- formats with gofmt; organize imports is a code action
         'pyright',
         'jsonls',
         'lua_ls',

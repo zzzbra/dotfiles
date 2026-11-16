@@ -26,6 +26,11 @@
 --           biome    -> biome.json / biome.jsonc   (pattern primed but inert;
 --                       to adopt: add "biome" to mason-tool-installer +
 --                       uncomment the arm below)
+--   Rust    rustfmt -> no conform entry. rust_analyzer's own formatting runs
+--                      the toolchain's rustfmt, which reads the project's
+--                      rustfmt.toml when it has one.
+--   Go      gofmt   -> no conform entry. gopls formats with gofmt, which has
+--                      no configuration: in Go there is nothing to opt into.
 --
 -- Precedence: one project, one toolchain. Ruff supersedes black/isort when a
 -- project opts into ruff -- the same way biome would supersede prettier.
