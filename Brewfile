@@ -97,6 +97,7 @@ cask "blackhole-16ch"
 cask "ghostty"
 cask "tailscale-app"     # standalone Tailscale (not the App Store one); bin/tailscale wraps its CLI
 cask "keepingyouawake"   # menu-bar keep-awake; replaced Caffeine (Intel-only, 2026-11-12)
+cask "calibre"           # e-book library + reader; replaces the Intel-only Kobo app (2026-11-16)
 
 # Dropped from the snapshot (2026-11-09):
 #   duplicate: tailscale formula (the tailscale-app cask ships its own CLI, wrapped by bin/tailscale; the formula drifted from the daemon and broke OpenClaw, 2026-11-14)
