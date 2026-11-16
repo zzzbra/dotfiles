@@ -104,9 +104,6 @@ fi
 # ~/.cargo/bin: rustup's toolchain (native aarch64 host) and `cargo install`ed
 # tools. It's ahead of brew, so anything installed here shadows brew's copy.
 [[ -d "$HOME/.cargo/bin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
-# ~/.cabal/bin: Haskell's cabal-installed tools. No longer exists on this
-# Mac (2026-11); removal candidate.
-[[ -d "$HOME/.cabal/bin" ]] && export PATH="$HOME/.cabal/bin:$PATH"
 # /opt/X11/bin: XQuartz (X11 apps on macOS). Remove with XQuartz.
 [[ -d "/opt/X11/bin" ]] && export PATH="/opt/X11/bin:$PATH"
 # Ghostty's CLI (`ghostty +list-themes` etc.) lives inside the app bundle. Ghostty
@@ -130,20 +127,10 @@ done
 [[ -d "$HOME/fvm/default/bin" ]] && export PATH="$HOME/fvm/default/bin:$PATH"
 [[ -d "$HOME/.pub-cache/bin" ]] && export PATH="$HOME/.pub-cache/bin:$PATH"
 
-# Maestro (mobile UI testing; its curl installer puts it here). Not
-# installed (2026-11); removal candidate unless mobile testing returns.
-[[ -d "$HOME/.maestro/bin" ]] && export PATH="$HOME/.maestro/bin:$PATH"
-
-# Android SDK (Android Studio's default location), appended as a fallback:
-# adb and the emulator for Flutter/mobile work. Unguarded, and the SDK isn't
-# installed (2026-11), so these add dead entries; harmless.
-export ANDROID_HOME=$HOME/Library/Android/sdk
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-export PATH=$PATH:$ANDROID_HOME/emulator
-
-# GHC 7.8.3 from a 2014-era Haskell app bundle. Gone (2026-11); removal
-# candidate.
-[[ -d "/Applications/ghc-7.8.3.app/Contents/bin" ]] && export PATH="/Applications/ghc-7.8.3.app/Contents/bin:$PATH"
+# Removed 2026-11-15, all pointing at software no longer installed: Haskell
+# (~/.cabal/bin, GHC 7.8.3), Maestro, and the Android SDK (ANDROID_HOME plus
+# platform-tools/emulator). If Android Studio returns, Flutter finds the SDK
+# at its default location without ANDROID_HOME.
 
 # export MANPATH="/usr/local/man:$MANPATH"
 source $ZSH/oh-my-zsh.sh
