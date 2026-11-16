@@ -98,6 +98,23 @@ else
     print_warning "brew bundle reported failures (see output above); rerun it after fixing them"
 fi
 
+# Per-machine extras: hosts/<name>/Brewfile, for apps only one machine should
+# have. The name comes from ~/.config/dotfiles/host, a one-line file kept out
+# of git. Machines without that file get only the core Brewfile.
+HOST_NAME_FILE="$HOME/.config/dotfiles/host"
+if [ -f "$HOST_NAME_FILE" ]; then
+    DOTFILES_HOST="$(tr -d '[:space:]' < "$HOST_NAME_FILE")"
+    HOST_BREWFILE="$SCRIPT_DIR/hosts/$DOTFILES_HOST/Brewfile"
+    if [ -f "$HOST_BREWFILE" ]; then
+        print_step "Installing extras for this machine ($DOTFILES_HOST)..."
+        if brew bundle --file "$HOST_BREWFILE"; then
+            print_success "Machine extras installed"
+        else
+            print_warning "brew bundle reported failures for $HOST_BREWFILE"
+        fi
+    fi
+fi
+
 # Step 2: Install Oh My Zsh
 if [[ -d "$HOME/.oh-my-zsh" ]]; then
     print_success "Oh My Zsh is already installed"

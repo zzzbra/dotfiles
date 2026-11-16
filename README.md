@@ -17,7 +17,8 @@ first, or `brew bundle` skips their formulae:
 `install.sh` is the whole bootstrap and is safe to re-run. In order, it:
 
 1. Installs Homebrew (`/opt/homebrew`) and everything in the `Brewfile`
-   (`brew bundle`), then Oh My Zsh.
+   (`brew bundle`), plus the machine's `hosts/<name>/Brewfile` if it has
+   one, then Oh My Zsh.
 2. Checks out the tmux plugins (git submodules) and links the config into
    place (`makesymlinks.sh`, driven by `symlinks.conf`). Existing files are
    backed up to `backups/<timestamp>/` first.
@@ -56,6 +57,18 @@ global runtime versions inside it.
 mise is hooked in with `mise activate` (no shims), so its runtimes are on
 PATH in terminal shells only.
 
+## Three tiers
+
+| Tier | Applied | Where |
+|---|---|---|
+| **Core** | On every machine, by `install.sh` | everything at the repo root |
+| **Modules** | By hand, per machine; never by `install.sh` | `modules/<name>/`, each self-contained with its own README |
+| **Hosts** | Only on the machine named | `hosts/<name>/` |
+
+`install.sh` picks the host from `~/.config/dotfiles/host`, a one-line file
+outside git (e.g. `tv-scorpion`), and applies `hosts/<name>/Brewfile` when
+there is one. A machine without that file gets only the core.
+
 ## Layout
 
 | Path | What |
@@ -63,6 +76,7 @@ PATH in terminal shells only.
 | `install.sh` | From-zero bootstrap |
 | `makesymlinks.sh`, `symlinks.conf` | Links repo files into `~` |
 | `Brewfile` | Homebrew packages and casks |
+| `hosts/` | Per-machine extras (e.g. `hosts/tv-scorpion/Brewfile`) |
 | `zsh/`, `bash/` | Shell config (`zshrc` holds PATH, with a reason next to each entry) |
 | `config/nvim/` | Neovim: a hand-rolled lazy.nvim config, modules in `lua/aslan/` |
 | `config/ghostty/` | Ghostty terminal (themes follow macOS light/dark) |

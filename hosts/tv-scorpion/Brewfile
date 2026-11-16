@@ -1,0 +1,6 @@
+# Extras for TV Scorpion only. install.sh applies this
+# file when ~/.config/dotfiles/host says "tv-scorpion". The core Brewfile at
+# the repo root is for every machine; this one is for things that belong to
+# this machine alone, like an app holding a library that lives here.
+
+cask "calibre"   # e-book library + reader; its library lives on this Mac (2026-11-16)
