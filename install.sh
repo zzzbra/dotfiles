@@ -211,7 +211,7 @@ else
     print_success "rustup installed"
 fi
 
-# Runtimes: mise (from the Brewfile) installs the global python/node/ruby pinned
+# Runtimes: mise (from the Brewfile) installs the global python/node/ruby/go pinned
 # in config/mise/config.toml (symlinked to ~/.config/mise/config.toml in Step 2).
 # Prebuilt native binaries, so this takes seconds. Idempotent.
 if command_exists mise; then
