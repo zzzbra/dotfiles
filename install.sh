@@ -111,7 +111,7 @@ fi
 print_section "Step 2: Dotfiles Configuration"
 
 # tmux plugins are pinned git submodules (tmux-resurrect, tmux-continuum).
-# Named explicitly: the old vim/bundle entries have no .gitmodules mapping.
+# Named explicitly so a checkout only ever touches these two.
 print_step "Checking out tmux plugins..."
 git -C "$SCRIPT_DIR" submodule update --init -- tmux/plugins/tmux-resurrect tmux/plugins/tmux-continuum \
     && print_success "tmux plugins checked out" \
