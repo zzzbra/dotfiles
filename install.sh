@@ -110,6 +110,13 @@ fi
 # Step 3: Set up dotfiles symlinks
 print_section "Step 2: Dotfiles Configuration"
 
+# tmux plugins are pinned git submodules (tmux-resurrect, tmux-continuum).
+# Named explicitly: the old vim/bundle entries have no .gitmodules mapping.
+print_step "Checking out tmux plugins..."
+git -C "$SCRIPT_DIR" submodule update --init -- tmux/plugins/tmux-resurrect tmux/plugins/tmux-continuum \
+    && print_success "tmux plugins checked out" \
+    || print_error "tmux plugin checkout failed (tmux works, without save/restore)"
+
 print_step "Creating symlinks..."
 "$SCRIPT_DIR/makesymlinks.sh" > /dev/null 2>&1
 if [[ $? -eq 0 ]]; then
