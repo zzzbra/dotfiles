@@ -1,8 +1,10 @@
 export PATH="/Users/zzzbra/.openclaw/bin:$PATH"
+# Prompt engine: p10k (default) or starship (trial, 2026-11-23). Try Starship
+# in one tab with: PROMPT_ENGINE=starship exec zsh
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+if [[ $PROMPT_ENGINE != starship && -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
@@ -203,12 +205,16 @@ if command -v mise >/dev/null 2>&1; then
     eval "$(mise activate zsh)"
 fi
 
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+if [[ $PROMPT_ENGINE == starship ]] && command -v starship >/dev/null 2>&1; then
+    source "${${(%):-%x}:A:h}/starship.zsh"
+else
+    source ~/powerlevel10k/powerlevel10k.zsh-theme
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-# Theme-proof colours on top of it (dotfiles/zsh/p10k-colors.zsh).
-source "${${(%):-%x}:A:h}/p10k-colors.zsh"
+    # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+    # Theme-proof colours on top of it (dotfiles/zsh/p10k-colors.zsh).
+    source "${${(%):-%x}:A:h}/p10k-colors.zsh"
+fi
 
 
 ## [Completion]
