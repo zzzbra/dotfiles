@@ -70,7 +70,8 @@ conventions below.
   hand per machine, never by `install.sh`), hosts (`hosts/<name>/`; one
   machine only). `install.sh` reads the host name from
   `~/.config/dotfiles/host` (outside git) and applies
-  `hosts/<name>/Brewfile` if present. This Mac is `tv-scorpion`. Ask
+  `hosts/<name>/Brewfile` if present, then links and starts
+  `hosts/<name>/launchagents/*.plist`. This Mac is `tv-scorpion`. Ask
   which tier something belongs in before adding it to the core.
 - **Claude Code global config** lives in `claude/` (`CLAUDE.md` instructions,
   `settings.json` preferences), symlinked into `~/.claude/` via

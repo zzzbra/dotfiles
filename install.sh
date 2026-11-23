@@ -155,6 +155,22 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
         launchctl load "$OLLAMA_ENV_PLIST"
         print_success "LaunchAgents loaded"
     fi
+
+    # This machine's own LaunchAgents: hosts/<name>/launchagents/*.plist are
+    # linked into ~/Library/LaunchAgents and (re)started.
+    if [[ -n "${DOTFILES_HOST:-}" && -d "$SCRIPT_DIR/hosts/$DOTFILES_HOST/launchagents" ]]; then
+        for plist in "$SCRIPT_DIR/hosts/$DOTFILES_HOST/launchagents"/*.plist; do
+            [[ -f "$plist" ]] || continue
+            label="$(basename "$plist" .plist)"
+            ln -sfn "$plist" "$HOME/Library/LaunchAgents/$label.plist"
+            launchctl bootout "gui/$(id -u)/$label" 2>/dev/null
+            if launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/$label.plist"; then
+                print_success "Started $label ($DOTFILES_HOST)"
+            else
+                print_warning "Couldn't start $label"
+            fi
+        done
+    fi
 fi
 
 # Default apps per file type (macOS only; duti comes from the Brewfile)

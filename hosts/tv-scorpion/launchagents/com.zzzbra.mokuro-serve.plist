@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Serve the mokuro-processed manga in ~/manga-processed on port 8119, from
+     login onwards, restarting it if it stops. Reach it over the tailnet at
+     http://<this machine's tailnet name>:8119/.
+     boox-mokuro is a uv tool (~/dev/projects/boox-mokuro); its launcher points
+     at its own Python, so it needs no shell or mise setup. -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.zzzbra.mokuro-serve</string>
+    <key>ProgramArguments</key>
+    <array>
+        <!-- launchd doesn't expand $HOME, so let sh do it. -->
+        <string>/bin/sh</string>
+        <string>-c</string>
+        <string>exec "$HOME/.local/bin/boox-mokuro" serve --target "$HOME/manga-processed" --port 8119</string>
+    </array>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>LANG</key>
+        <string>en_US.UTF-8</string>
+    </dict>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <!-- Wait this long before restarting it after a crash. -->
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+    <key>StandardOutPath</key>
+    <string>/tmp/mokuro-serve.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/mokuro-serve.log</string>
+</dict>
+</plist>
