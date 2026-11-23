@@ -1,0 +1,129 @@
+# Starship prompt: https://starship.rs/config/
+# Symlinked to ~/.config/starship.toml by symlinks.conf.
+#
+# Same layout as the Powerlevel10k "rainbow" prompt it replaces: one line,
+# powerline segments with angled separators, sharp heads and flat tails.
+#   left:  OS icon | directory | git
+#   right: status | duration | jobs | runtimes   time
+# Colours are fixed hex values (palette below), not the terminal's ANSI
+# palette, so the prompt reads the same on Ghostty's Claude Light and Claude
+# Dark (the ANSI-palette approach is what broke p10k on 2026-11-23).
+#
+# Glyphs are Nerd Font code points written as \u escapes: E0B0/E0B2 solid
+# arrows, E0B3 thin arrow.
+
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = true
+scan_timeout = 100
+palette = "fleet"
+
+format = "$os[](fg:stone bg:blue)$directory$git_branch$git_status "
+
+# The right side is one charcoal run (status plus optional segments, split
+# by thin arrows) then the time. Optional segments only ever sit inside the
+# charcoal run, so every arrow's colours are known in advance.
+right_format = "[](fg:charcoal)$status$cmd_duration$jobs$python$nodejs$ruby$golang$rust[](fg:stone bg:charcoal)$time"
+
+[palettes.fleet]
+ink = "#1f1e1d"           # dark text on light fills
+paper = "#fbfaf6"         # light text on dark fills
+stone = "#d6d3c7"
+blue = "#3f72b5"
+green = "#9ccf86"
+charcoal = "#3d3d3a"
+sep = "#8a8984"           # thin arrows inside the charcoal run
+ok = "#8fd07a"
+err = "#ff9488"
+amber = "#f0cf6e"
+sky = "#8ab8f0"
+mint = "#7fd8cb"
+rose = "#e0a0c8"
+
+[os]
+disabled = false
+format = "[ $symbol ](fg:ink bg:stone)"
+
+[os.symbols]
+Macos = ""
+Linux = ""
+Debian = ""
+Ubuntu = ""
+Windows = ""
+
+[directory]
+truncation_length = 4
+truncate_to_repo = false
+truncation_symbol = "…/"
+home_symbol = " ~"
+read_only = " "
+# Outside a git repo the directory is the last segment, so it closes the
+# prompt. Inside one (repo_root_format) it hands over to the git segment.
+format = "[ $path$read_only ](fg:paper bg:blue)[](fg:blue)"
+before_repo_root_style = "fg:paper bg:blue"
+repo_root_style = "bold fg:paper bg:blue"
+repo_root_format = "[ $before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path$read_only ](fg:paper bg:blue)[](fg:blue bg:green)"
+
+[git_branch]
+symbol = " "
+format = "[ $symbol$branch(:$remote_branch) ](fg:ink bg:green)"
+
+[git_status]
+# Always renders inside a repo, so it owns the closing arrow.
+format = "([$all_status$ahead_behind ](fg:ink bg:green))[](fg:green)"
+
+[status]
+disabled = false
+success_symbol = "✔"
+symbol = "✘"
+success_style = "fg:ok bg:charcoal"
+failure_style = "fg:err bg:charcoal"
+format = "[ $symbol( $maybe_int)( $signal_name) ]($style)"
+map_symbol = false
+pipestatus = false
+
+[cmd_duration]
+min_time = 3_000
+show_milliseconds = false
+format = "[](fg:sep bg:charcoal)[ $duration  ](fg:amber bg:charcoal)"
+
+[jobs]
+symbol = ""
+number_threshold = 2
+format = "[](fg:sep bg:charcoal)[ $symbol( $number) ](fg:mint bg:charcoal)"
+
+# Runtimes (versions come from mise via PATH). Shown only where a project
+# pins or declares one, not for any stray source file.
+[python]
+detect_extensions = []
+detect_files = [".python-version", "pyproject.toml", "uv.lock", "requirements.txt", "Pipfile"]
+symbol = " "
+format = "[](fg:sep bg:charcoal)[ $symbol$version( $virtualenv) ](fg:sky bg:charcoal)"
+
+[nodejs]
+detect_extensions = []
+detect_files = [".nvmrc", ".node-version", "package.json"]
+symbol = " "
+format = "[](fg:sep bg:charcoal)[ $symbol$version ](fg:ok bg:charcoal)"
+
+[ruby]
+detect_extensions = []
+detect_files = [".ruby-version", "Gemfile"]
+detect_variables = []
+symbol = " "
+format = "[](fg:sep bg:charcoal)[ $symbol$version ](fg:err bg:charcoal)"
+
+[golang]
+detect_extensions = []
+symbol = " "
+format = "[](fg:sep bg:charcoal)[ $symbol$version ](fg:mint bg:charcoal)"
+
+[rust]
+detect_extensions = []
+symbol = " "
+format = "[](fg:sep bg:charcoal)[ $symbol$version ](fg:rose bg:charcoal)"
+
+[time]
+disabled = false
+time_format = "%H:%M:%S"
+format = "[ $time  ](fg:ink bg:stone)"
