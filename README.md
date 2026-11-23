@@ -67,7 +67,9 @@ PATH in terminal shells only.
 
 `install.sh` picks the host from `~/.config/dotfiles/host`, a one-line file
 outside git (e.g. `tv-scorpion`), and applies `hosts/<name>/Brewfile` when
-there is one. A machine without that file gets only the core.
+there is one. It also links and starts any LaunchAgents in
+`hosts/<name>/launchagents/` (on tv-scorpion: the mokuro manga server).
+A machine without that file gets only the core.
 
 ## Layout
 
