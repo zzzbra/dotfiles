@@ -50,6 +50,9 @@ Thumbs.db
 #####################################
 api_keys
 .secrets
+.env
+.env.local
+*.pem
 
 # Project Files
 #####################################
