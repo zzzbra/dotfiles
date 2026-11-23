@@ -9,3 +9,8 @@ packer_compiled.lua
 
 # Claude Code per-machine permission approvals
 .claude/settings.local.json
+
+# Local secrets: also in the global ignore (git/ignore), repeated here so a
+# fresh clone is safe before install.sh links ~/.gitignore
+api_keys
+.secrets
