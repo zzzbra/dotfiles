@@ -1,0 +1,12 @@
+# Dependabot: weekly PRs when a git submodule (tmux plugins) has new commits.
+# Not covered (Dependabot has no support): Brewfile, mise (config/mise/config.toml),
+# and lazy.nvim plugins (config/nvim/lazy-lock.json). Update those by hand:
+#   brew outdated / brew upgrade · mise outdated / mise upgrade · :Lazy update
+version: 2
+updates:
+  - package-ecosystem: gitsubmodule
+    directory: "/"
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "deps(submodules)"
