@@ -72,7 +72,8 @@ conventions below.
   `~/.config/dotfiles/host` (outside git) and applies
   `hosts/<name>/Brewfile` if present, then links and starts
   `hosts/<name>/launchagents/*.plist`. This Mac is `tv-scorpion`. Ask
-  which tier something belongs in before adding it to the core.
+  which tier something belongs in only when it isn't obvious; something
+  every machine benefits from just goes in core.
 - **Claude Code global config** lives in `claude/` (`CLAUDE.md` instructions,
   `settings.json` preferences), symlinked into `~/.claude/` via
   `symlinks.conf`. The instructions load in every Claude Code session on this
