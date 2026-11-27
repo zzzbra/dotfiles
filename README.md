@@ -23,8 +23,8 @@ first, or `brew bundle` skips their formulae:
    place (`makesymlinks.sh`, driven by `symlinks.conf`). Existing files are
    backed up to `backups/<timestamp>/` first.
 3. Loads the LaunchAgents and sets default apps per file type (`duti`).
-4. Installs the zsh theme and plugins (Powerlevel10k,
-   zsh-autosuggestions, zsh-syntax-highlighting).
+4. Installs the zsh plugins (zsh-autosuggestions,
+   zsh-syntax-highlighting). The prompt is Starship, from the Brewfile.
 5. Installs the language toolchains: rustup for Rust, and `mise install`
    for Python, Node, Ruby and Go.
 6. Sets up Flutter (fvm) and Claude Code's Notion MCP server.

@@ -14,7 +14,7 @@ brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 brew "autojump"
 brew "fzf"
-brew "starship"            # prompt (config/starship.toml); replacing powerlevel10k
+brew "starship"            # prompt (config/starship.toml)
 brew "coreutils"
 brew "duti"                 # default apps per file type, from duti/defaults.duti
 brew "findutils"

@@ -186,17 +186,8 @@ fi
 # Step 4: Install additional tools
 print_section "Step 3: Development Tools"
 
-# Zsh theme and plugins
+# Zsh plugins
 print_step "Installing Zsh customizations..."
-
-# Powerlevel10k
-if [[ -d "$HOME/powerlevel10k" ]]; then
-    print_success "Powerlevel10k is already installed"
-else
-    print_step "Installing Powerlevel10k theme..."
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-    print_success "Powerlevel10k installed"
-fi
 
 # Zsh plugins
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
@@ -311,11 +302,10 @@ print_header "Installation Complete!"
 
 print_info "Next steps:"
 echo "  1. Restart your terminal or run: source ~/.zshrc"
-echo "  2. Configure Powerlevel10k by running: p10k configure"
-echo "  3. Runtimes: change global versions in config/mise/config.toml, then: mise install (verify python: python-doctor)"
-echo "  4. Install Rust stable toolchain with: rustup default stable"
-echo "  5. Install Flutter with: fvm install stable && fvm global stable"
-echo "  6. Authenticate MCP servers: open Claude Code and run /mcp, then sign in to each server"
+echo "  2. Runtimes: change global versions in config/mise/config.toml, then: mise install (verify python: python-doctor)"
+echo "  3. Install Rust stable toolchain with: rustup default stable"
+echo "  4. Install Flutter with: fvm install stable && fvm global stable"
+echo "  5. Authenticate MCP servers: open Claude Code and run /mcp, then sign in to each server"
 echo ""
 print_success "Your development environment is ready!"
 echo ""
