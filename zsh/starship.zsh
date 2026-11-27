@@ -1,6 +1,5 @@
 # Starship prompt (config: config/starship.toml -> ~/.config/starship.toml).
-# Sourced by zshrc unless PROMPT_ENGINE=p10k (Starship is the default since
-# 2026-11-23).
+# Sourced by zshrc. Replaced Powerlevel10k (fully removed 2026-11-27).
 
 # Starship logs warnings (e.g. a slow directory scan) to stderr, which would
 # print into the terminal. Only show real errors.
