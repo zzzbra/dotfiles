@@ -70,6 +70,7 @@ brew "redis"
 # --- Media & documents ---
 brew "imagemagick"
 brew "gifsicle"
+brew "ffmpeg"            # used directly (video conversion); mpv also pulls it in
 brew "mpv"
 brew "yt-dlp"            # replaces youtube-dl (dead)
 brew "pandoc"
